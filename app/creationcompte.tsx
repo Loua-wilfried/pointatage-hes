@@ -146,7 +146,7 @@ export default function CreationCompte() {
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
       >
-        <Image source={require('../assets/images/font1.png')} style={styles.logo} />
+        <Image source={require('../assets/images/font4.jpeg')} style={styles.logo} />
         <View style={styles.container1}>
           <View style={styles.formContainer}>
             <Text style={styles.title}>Créer un compte</Text>
@@ -326,10 +326,9 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: '100%',
-    height: 300,
-    resizeMode: 'contain',
+    height: 350,
+    resizeMode: 'cover',
     alignSelf: 'center',
-    marginTop: 10,
   },
   container1: {
     flex: 1,
@@ -342,6 +341,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 10,
+    top: -30,
   },
   formContainer: {
     padding: 24,

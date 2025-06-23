@@ -1,19 +1,35 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { router } from 'expo-router';
 import { ArrowLeft, Camera, CircleAlert as AlertCircle } from 'lucide-react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function ScanScreen() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
+  const [cameraReady, setCameraReady] = useState(false);
 
+  // Gestion des permissions
   useEffect(() => {
-    if (!permission?.granted) {
-      requestPermission();
-    }
-  }, [permission]);
+    (async () => {
+      if (!permission?.granted) {
+        await requestPermission();
+      }
+    })();
+  }, []);
+
+  // Gestion du cycle de vie de la caméra
+  useFocusEffect(
+    useCallback(() => {
+      setCameraReady(true);
+      
+      return () => {
+        setCameraReady(false);
+      };
+    }, [])
+  );
 
   const handleBarCodeScanned = ({ type, data }: { type: string; data: string }) => {
     if (scanned) return;
@@ -29,7 +45,7 @@ export default function ScanScreen() {
         },
         {
           text: 'Retour',
-          onPress: () => router.back(),
+          onPress: handleGoBack,
           style: 'cancel',
         },
       ]
@@ -37,7 +53,13 @@ export default function ScanScreen() {
   };
 
   const handleGoBack = () => {
-    router.back();
+    setCameraReady(false);
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      // Remplacez par votre écran de repli principal
+      router.replace('/'); 
+    }
   };
 
   if (!permission) {
@@ -87,23 +109,25 @@ export default function ScanScreen() {
       </View>
 
       <View style={styles.cameraContainer}>
-        <CameraView
-          style={styles.camera}
-          facing={facing}
-          onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
-          barcodeScannerSettings={{
-            barcodeTypes: ['qr'],
-          }}
-        >
-          <View style={styles.overlay}>
-            <View style={styles.scanArea}>
-              <View style={[styles.corner, styles.topLeft]} />
-              <View style={[styles.corner, styles.topRight]} />
-              <View style={[styles.corner, styles.bottomLeft]} />
-              <View style={[styles.corner, styles.bottomRight]} />
-            </View>
+        {cameraReady && (
+          <CameraView
+            style={styles.camera}
+            facing={facing}
+            onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+            barcodeScannerSettings={{
+              barcodeTypes: ['qr', 'pdf417', 'ean13'],
+            }}
+          />
+        )}
+        
+        <View style={styles.overlay}>
+          <View style={styles.scanArea}>
+            <View style={[styles.corner, styles.topLeft]} />
+            <View style={[styles.corner, styles.topRight]} />
+            <View style={[styles.corner, styles.bottomLeft]} />
+            <View style={[styles.corner, styles.bottomRight]} />
           </View>
-        </CameraView>
+        </View>
       </View>
 
       <View style={styles.footer}>
@@ -123,6 +147,7 @@ export default function ScanScreen() {
   );
 }
 
+// Vos styles restent exactement les mêmes
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -137,7 +162,6 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 16,
     color: '#64748b',
-    marginTop: 16,
   },
   permissionContainer: {
     flex: 1,
@@ -180,7 +204,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingTop: 60,
+    paddingTop: 10,
     paddingBottom: 16,
     backgroundColor: '#fff',
   },
@@ -205,16 +229,23 @@ const styles = StyleSheet.create({
   },
   cameraContainer: {
     flex: 1,
-    overflow: 'hidden',
+    position: 'relative',
   },
   camera: {
     flex: 1,
+    width: '100%',
+    height: '100%',
   },
   overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    pointerEvents: 'none',
   },
   scanArea: {
     width: 250,
