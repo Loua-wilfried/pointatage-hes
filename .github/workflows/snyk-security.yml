@@ -9,17 +9,19 @@ on:
 jobs:
   security-scan:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"  # Expo recommande Node 18+ (v19+ pour React 19)
+          node-version: "20"
           cache: "npm"
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps  # Ignore les conflits de peerDependencies
+        run: npm install --legacy-peer-deps
 
       - name: Setup Snyk CLI
         uses: snyk/actions/setup@master
@@ -29,12 +31,14 @@ jobs:
       - name: Run Snyk Open Source Scan (SCA)
         run: |
           snyk test --all-projects --json-file-output=snyk-scanner-results.json
-          echo "SCA scan completed"
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Run Snyk Code Scan (SAST)
         run: |
-          snyk code test --sarif > snyk-code.sarif --json-file-output=snyk-code-results.json
-          echo "SAST scan completed"
+          snyk code test --sarif-file-output=snyk-code.sarif --json-file-output=snyk-code-results.json
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Generate HTML Reports
         run: |
@@ -50,6 +54,7 @@ jobs:
             snyk-code-report.html
             snyk-scanner-results.json
             snyk-code-results.json
+            snyk-code.sarif
 
       - name: Monitor in Snyk Dashboard
         run: snyk monitor --all-projects
