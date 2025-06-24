@@ -56,6 +56,9 @@ jobs:
             snyk-code-results.json
             snyk-code.sarif
 
+      - name: Reminder: Where to find your reports
+        run: echo "::notice ::✅ Download the Snyk reports from the 'Artifacts' section at the bottom of this page."
+
       - name: Monitor in Snyk Dashboard
         run: snyk monitor --all-projects
         env:
