@@ -30,13 +30,13 @@ jobs:
 
       - name: Run Snyk Open Source Scan (SCA)
         run: |
-          snyk test --all-projects --exit-code=0 --json-file-output=snyk-scanner-results.json
+          snyk test --all-projects --json-file-output=snyk-scanner-results.json || true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Run Snyk Code Scan (SAST)
         run: |
-          snyk code test --sarif-file-output=snyk-code.sarif --json-file-output=snyk-code-results.json --exit-code=0
+          snyk code test --sarif-file-output=snyk-code.sarif --json-file-output=snyk-code-results.json || true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
