@@ -45,6 +45,17 @@ jobs:
           npx snyk-to-html -i snyk-scanner-results.json -o snyk-scanner-report.html
           npx snyk-to-html -i snyk-code-results.json -o snyk-code-report.html
 
+      - name: Install Puppeteer dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libx11-dev libxkbcommon-x11-0 libgtk-3-0 libnss3 libxss1 libasound2
+
+      - name: Install Puppeteer
+        run: npm install puppeteer
+
+      - name: Convert HTML to PDF
+        run: node generate-pdf.js
+
       - name: Upload Reports
         uses: actions/upload-artifact@v4
         with:
@@ -52,12 +63,10 @@ jobs:
           path: |
             snyk-scanner-report.html
             snyk-code-report.html
+            snyk-scanner-report.pdf
             snyk-scanner-results.json
             snyk-code-results.json
             snyk-code.sarif
-
-      - name: Reminder: vous pouvez voir votre rapport
-        run: echo "::notice ::✅ Download the Snyk reports from the 'Artifacts' section at the bottom of this page."
 
       - name: Monitor in Snyk Dashboard
         run: snyk monitor --all-projects
