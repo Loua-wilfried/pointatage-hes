@@ -19,14 +19,19 @@ jobs:
         with:
           node-version: "20"
 
-      # Vérifier si package.json existe avant d'installer
-      - name: Check for package.json
+      - name: Check for package.json and lock file
         run: |
           if [ -f package.json ]; then
-            echo "package.json found, installing Node dependencies..."
-            npm install --legacy-peer-deps
+            echo "package.json found."
+            if [ -f package-lock.json ]; then
+              echo "package-lock.json found. Running npm ci..."
+              npm ci
+            else
+              echo "No package-lock.json found. Running npm install..."
+              npm install --legacy-peer-deps
+            fi
           else
-            echo "No package.json found, skipping Node dependencies installation."
+            echo "No package.json found. Skipping Node.js dependencies install."
           fi
 
       - name: Setup Python
@@ -71,6 +76,6 @@ jobs:
             snyk-code.sarif
 
       - name: Monitor in Snyk Dashboard
-        run: snyk monitor --all-projects
+        run: snyk monitor --all-projects || true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
