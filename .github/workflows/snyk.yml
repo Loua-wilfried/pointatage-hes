@@ -63,6 +63,8 @@ jobs:
         run: |
           npx snyk-to-html -i snyk-scanner-results.json -o snyk-scanner-report.html
           npx snyk-to-html -i snyk-code-results.json -o snyk-code-report.html
+          npx html-pdf-cli snyk-scanner-report.html snyk-scanner-report.pdf || true
+          npx html-pdf-cli snyk-code-report.html snyk-code-report.pdf || true
 
       - name: Upload Reports
         uses: actions/upload-artifact@v4
@@ -71,9 +73,14 @@ jobs:
           path: |
             snyk-scanner-report.html
             snyk-code-report.html
+            snyk-scanner-report.pdf
+            snyk-code-report.pdf
             snyk-scanner-results.json
             snyk-code-results.json
             snyk-code.sarif
+
+      - name: Share Download Link
+        run: echo "Télécharge le rapport PDF depuis l'onglet Actions > run > Artifacts."
 
       - name: Monitor in Snyk Dashboard
         run: snyk monitor --all-projects || true
