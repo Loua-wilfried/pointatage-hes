@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Sanctions disciplinaires</h2>
+    <a href="{% url 'sanction_create' %}" class="btn btn-primary mb-3">Nouvelle sanction</a>
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Employé</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Motif</th>
+                <th>Durée</th>
+                <th>Justificatif</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sanction in sanctions %}
+            <tr>
+                <td>{{ sanction.employe }}</td>
+                <td>{{ sanction.get_type_display }}</td>
+                <td>{{ sanction.date }}</td>
+                <td>{{ sanction.motif }}</td>
+                <td>{{ sanction.duree }}</td>
+                <td>
+                  {% if sanction.justificatif %}
+                    <a href="{{ sanction.justificatif.url }}" target="_blank">Voir</a>
+                  {% else %}-{% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'sanction_update' sanction.pk %}" class="btn btn-sm btn-warning">Modifier</a>
+                    <a href="{% url 'sanction_delete' sanction.pk %}" class="btn btn-sm btn-danger">Supprimer</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">Aucune sanction enregistrée.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

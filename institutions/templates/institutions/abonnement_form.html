@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if form.instance.pk %}Modifier l'abonnement{% else %}Attribuer un abonnement{% endif %}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% include 'clients/partials/messages.html' %}
+        {{ form.non_field_errors }}
+        <div class="mb-3">
+            <label for="id_institution" class="form-label">Institution</label>
+            {{ form.institution }}
+            {{ form.institution.errors }}
+        </div>
+        <div class="mb-3">
+            <label for="id_plan" class="form-label">Plan SaaS</label>
+            {{ form.plan }}
+            {{ form.plan.errors }}
+        </div>
+        <div class="mb-3">
+            <label for="id_date_debut" class="form-label">Date de début</label>
+            {{ form.date_debut }}
+            {{ form.date_debut.errors }}
+        </div>
+        <div class="mb-3">
+            <label for="id_mode_paiement" class="form-label">Mode de paiement</label>
+            {{ form.mode_paiement }}
+            {{ form.mode_paiement.errors }}
+        </div>
+        <div class="mb-3">
+            <label for="id_duree_mois" class="form-label">Durée (mois)</label>
+            {{ form.duree_mois }}
+            {{ form.duree_mois.errors }}
+        </div>
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+        <a href="{% url 'abonnement_list' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}

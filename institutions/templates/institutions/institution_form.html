@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if object %}Modifier{% else %}Créer{% endif %} une institution</h2>
+    {% include 'clients/partials/messages.html' %}
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="row g-3">
+            {% for field in form %}
+                <div class="col-md-6">
+                    <label class="form-label">{{ field.label }}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}</label>
+                    {{ field }}
+                    {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                    {% for error in field.errors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="{% url 'institution_list' %}" class="btn btn-secondary">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

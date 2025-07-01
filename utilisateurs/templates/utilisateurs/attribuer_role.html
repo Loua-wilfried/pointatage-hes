@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4" style="max-width:400px;">
+    <h2>Attribuer un rôle</h2>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="role" class="form-label">Rôle</label>
+            <select name="role" id="role" class="form-select">
+                {% for role in roles %}
+                <option value="{{ role.id }}" {% if utilisateur.role.id == role.id %}selected{% endif %}>{{ role.nom_role }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success w-100">Attribuer</button>
+        <a href="{% url 'liste_utilisateurs' %}" class="btn btn-secondary w-100 mt-2">Annuler</a>
+    </form>
+</div>
+{% endblock %}

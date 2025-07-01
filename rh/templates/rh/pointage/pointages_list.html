@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block content %}
+<nav class="navbar navbar-expand-lg" style="background-color: #ff6600; color: #fff;">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" style="color: #fff;" href="#">Pointages</a>
+    </div>
+</nav>
+<style>
+  .filter-bar {
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: thin;
+  }
+  .filter-bar select, .filter-bar input {
+    min-width: 120px;
+    max-width: 180px;
+    flex: 0 0 auto;
+  }
+  .filter-bar button, .filter-bar a.btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+</style>
+<nav class="navbar navbar-expand-lg" style="background-color: #ff6600; color: #fff;">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" style="color: #fff;" href="#">Pointages</a>
+    <form class="d-flex flex-nowrap align-items-end filter-bar" method="get" action="">
+  <style>
+    .filter-bar {
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      scrollbar-width: thin;
+    }
+    .filter-bar select, .filter-bar input {
+      min-width: 120px;
+      max-width: 180px;
+      flex: 0 0 auto;
+    }
+    .filter-bar button, .filter-bar a.btn {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+  </style>
+      <select class="form-select" name="employe" style="min-width: 140px;">
+        <option value="">Employé</option>
+        {% for e in employes %}
+          <option value="{{ e.id }}" {% if request.GET.employe == e.id|stringformat:'s' %}selected{% endif %}>{{ e }}</option>
+        {% endfor %}
+      </select>
+      <select class="form-select" name="fonction" style="min-width: 140px;">
+        <option value="">Fonction</option>
+        {% for f in fonctions %}
+          <option value="{{ f.id }}" {% if request.GET.fonction == f.id|stringformat:'s' %}selected{% endif %}>{{ f.nom_role }}</option>
+        {% endfor %}
+      </select>
+      <select class="form-select" name="agence" style="min-width: 140px;">
+        <option value="">Agence</option>
+        {% for a in agences %}
+          <option value="{{ a.id }}" {% if request.GET.agence == a.id|stringformat:'s' %}selected{% endif %}>{{ a.nom }}</option>
+        {% endfor %}
+      </select>
+      <input class="form-control" type="date" name="date" value="{{ request.GET.date }}" style="min-width: 140px;">
+      <input class="form-control" type="time" name="heure_min" value="{{ request.GET.heure_min }}" style="min-width: 110px;" placeholder="Début" title="Heure début">
+<input class="form-control" type="time" name="heure_max" value="{{ request.GET.heure_max }}" style="min-width: 110px;" placeholder="Fin" title="Heure fin">
+      <select class="form-select" name="type" style="min-width: 120px;">
+        <option value="">Type</option>
+        <option value="entree" {% if request.GET.type == 'entree' %}selected{% endif %}>Entrée</option>
+        <option value="sortie" {% if request.GET.type == 'sortie' %}selected{% endif %}>Sortie</option>
+      </select>
+      <select class="form-select" name="statut" style="min-width: 120px;">
+        <option value="">Statuts</option>
+        <option value="retard" {% if request.GET.statut == 'retard' %}selected{% endif %}>Retard</option>
+        <option value="absent" {% if request.GET.statut == 'absent' %}selected{% endif %}>Absent</option>
+        <option value="present" {% if request.GET.statut == 'present' %}selected{% endif %}>Présent</option>
+        <option value="depart_anticipe" {% if request.GET.statut == 'depart_anticipe' %}selected{% endif %}>Départ anticipé</option>
+        <option value="sortie_respectee" {% if request.GET.statut == 'sortie_respectee' %}selected{% endif %}>Sortie respectée</option>
+      </select>
+      <select class="form-select" name="source" style="min-width: 150px;">
+        <option value="">Source</option>
+        <option value="qr_code" {% if request.GET.source == 'qr_code' %}selected{% endif %}>QR Code</option>
+        <option value="geolocalisation" {% if request.GET.source == 'geolocalisation' %}selected{% endif %}>Géolocalisation</option>
+        <option value="manuel" {% if request.GET.source == 'manuel' %}selected{% endif %}>Manuel</option>
+      </select>
+      <button class="btn fw-bold" style="background-color: #222; color: #fff;" type="submit">Filtrer</button>
+      <a href="?{% for k,v in request.GET.items %}{% if k != 'export' %}{{k}}={{v|urlencode}}&{% endif %}{% endfor %}export=pdf" class="btn fw-bold" style="background-color: #fff; color: #ff6600; border: 1px solid #ff6600;">Exporter PDF</a>
+      <a href="?{% for k,v in request.GET.items %}{% if k != 'export' %}{{k}}={{v|urlencode}}&{% endif %}{% endfor %}export=excel" class="btn fw-bold" style="background-color: #fff; color: #ff6600; border: 1px solid #ff6600;">Exporter Excel</a>
+      <a href="/rh/tableau_de_bord_pointage/?{% for k,v in request.GET.items %}{{k}}={{v|urlencode}}&{% endfor %}" class="btn btn-primary fw-bold" style="background-color: #4f46e5; border: none;">Tableau de bord pointage</a>
+    </form>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <h2>Liste des pointages</h2>
+  <a href="{% url 'pointage_create' %}" class="btn btn-success mb-3">Nouveau pointage</a>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Employé</th>
+        <th>Fonction</th>
+        <th>Agence</th> <!-- Ajout colonne Agence -->
+        <th>Date</th>
+        <th>Heure</th>
+        <th>Type</th>
+        <th>Source</th>
+        <th>Statuts</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {% for pointage in pointages %}
+      <tr>
+        <td>{{ pointage.employe }}</td>
+        <td>{{ pointage.employe.role.nom_role }}</td>
+        <td>{{ pointage.agence.nom }}</td>
+        <td>{{ pointage.date|date:'d/m/Y' }}</td>
+        <td>{{ pointage.heure|time:'H:i' }}</td>
+        <td>{{ pointage.get_type_display }}</td>
+        <td>{{ pointage.get_source_display }}</td>
+        <td 
+  {% if pointage.statut == 'retard' %}style="background-color: #ff4d4d; color: #fff; font-weight: bold;"{% elif pointage.statut == 'depart_anticipe' %}style="background-color: #ffa500; color: #fff; font-weight: bold;"{% endif %}
+>{{ pointage.statut }}</td>
+        
+      </tr>
+      {% empty %}
+      <tr><td colspan="8">Aucun pointage enregistré.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

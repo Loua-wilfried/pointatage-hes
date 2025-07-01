@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Supprimer ce pointage ?</h2>
+  <form method="post">
+    {% csrf_token %}
+    <p>Confirmez-vous la suppression du pointage de <strong>{{ pointage.employe }}</strong> du {{ pointage.date }} à {{ pointage.heure }} ({{ pointage.get_type_display }}) ?</p>
+    <button type="submit" class="btn btn-danger">Supprimer</button>
+    <a href="{% url 'pointages_list' %}" class="btn btn-secondary">Annuler</a>
+  </form>
+</div>
+{% endblock %}
+pointage_confirm_delete

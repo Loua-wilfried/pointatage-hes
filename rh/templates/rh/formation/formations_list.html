@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Plan de formation annuel</h2>
+    <a href="{% url 'formation_create' %}" class="btn btn-primary mb-3">Ajouter une formation</a>
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Nom</th>
+                <th>Année</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for formation in formations %}
+            <tr>
+                <td>{{ formation.nom }}</td>
+                <td>{{ formation.annee }}</td>
+                <td>{{ formation.description }}</td>
+                <td>
+    <a href="{% url 'sessions_list' formation_id=formation.id %}" class="btn btn-sm btn-info">Sessions</a>
+    <a href="{% url 'formation_update' pk=formation.id %}" class="btn btn-sm btn-warning">Modifier</a>
+    <a href="{% url 'formation_delete' pk=formation.id %}" class="btn btn-sm btn-danger">Supprimer</a>
+</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">Aucune formation enregistrée.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

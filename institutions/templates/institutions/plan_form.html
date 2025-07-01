@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if form.instance.pk %}Modifier le plan{% else %}Nouveau plan SaaS{% endif %}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% include 'clients/partials/messages.html' %}
+        {{ form.non_field_errors }}
+        <div class="mb-3">
+            <label for="id_nom_plan" class="form-label">Nom du plan</label>
+            {{ form.nom_plan }}
+            {{ form.nom_plan.errors }}
+        </div>
+        <div class="mb-3">
+            <label for="id_description" class="form-label">Description</label>
+            {{ form.description }}
+            {{ form.description.errors }}
+        </div>
+        <div class="mb-3">
+            <label for="id_prix_mensuel" class="form-label">Prix mensuel (€)</label>
+            {{ form.prix_mensuel }}
+            {{ form.prix_mensuel.errors }}
+        </div>
+        <div class="mb-3">
+            <label for="id_limite_utilisateurs" class="form-label">Limite d'utilisateurs</label>
+            {{ form.limite_utilisateurs }}
+            {{ form.limite_utilisateurs.errors }}
+        </div>
+        <div class="mb-3">
+            <label for="id_fonctionnalites_incluses" class="form-label">Fonctionnalités incluses (JSON)</label>
+            {{ form.fonctionnalites_incluses }}
+            {{ form.fonctionnalites_incluses.errors }}
+            <div class="form-text">Exemple: ["Export PDF", "Support prioritaire"]</div>
+        </div>
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+        <a href="{% url 'plan_list' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Affectations (Rôle → Permission)</h2>
+    <a href="{% url 'affectation_create' %}" class="btn btn-success mb-3">Nouvelle affectation</a>
+    <a href="{% url 'affectation_visuelle' %}" class="btn btn-info mb-3 ms-2">Affectation visuelle</a>
+    {% include 'roles_permissions/partials/messages.html' %}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Rôle</th>
+                <th>Permission</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for aff in affectations %}
+            <tr>
+                <td>{{ aff.role.nom_role }}</td>
+                <td>{{ aff.permission.nom_permission }}</td>
+                <td>
+                    <a href="{% url 'affectation_delete' aff.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3">Aucune affectation trouvée.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

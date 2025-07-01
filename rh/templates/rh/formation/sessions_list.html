@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Sessions de formation{% if formation %} : {{ formation.nom }}{% endif %}</h2>
+    <a href="{% url 'session_create' formation_id=formation.id %}" class="btn btn-primary mb-3">Ajouter une session</a>
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Formation</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+                <th>Lieu</th>
+                <th>Thème</th>
+                <th>Intervenant</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for session in sessions %}
+            <tr>
+                <td>{{ session.formation.nom }}</td>
+<td>{{ session.date_debut }}</td>
+<td>{{ session.date_fin }}</td>
+<td>{{ session.lieu }}</td>
+<td>{{ session.theme }}</td>
+<td>{{ session.intervenant }}</td>
+<td>
+    <a href="{% url 'session_update' pk=session.id %}" class="btn btn-sm btn-warning">Modifier</a>
+    <a href="{% url 'session_delete' pk=session.id %}" class="btn btn-sm btn-danger">Supprimer</a>
+</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6">Aucune session enregistrée.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

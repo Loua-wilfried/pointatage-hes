@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if agence %}Modifier{% else %}Créer{% endif %} une agence</h2>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+        <a href="{% url 'liste_agences' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}

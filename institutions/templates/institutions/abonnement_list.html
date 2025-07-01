@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Abonnements</h2>
+    <a href="{% url 'abonnement_create' %}" class="btn btn-success mb-3">Nouvel abonnement</a>
+    {% include 'institutions/partials/messages.html' %}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Institution</th>
+                <th>Plan</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+                <th>Statut</th>
+                <th>Mode paiement</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ab in abonnements %}
+            <tr>
+                <td>{{ ab.institution }}</td>
+                <td>{{ ab.plan }}</td>
+                <td>{{ ab.date_debut }}</td>
+                <td>{{ ab.date_fin }}</td>
+                <td>
+                    {% if ab.statut == 'actif' %}<span class="badge bg-success">Actif</span>{% elif ab.statut == 'suspendu' %}<span class="badge bg-warning">Suspendu</span>{% elif ab.statut == 'termine' %}<span class="badge bg-danger">Terminé</span>{% else %}<span class="badge bg-secondary">En attente</span>{% endif %}
+                </td>
+                <td>{{ ab.mode_paiement }}</td>
+                <td>
+                    <a href="{% url 'abonnement_update' pk=ab.pk %}" class="btn btn-primary btn-sm">Modifier</a>
+                    <a href="{% url 'abonnement_delete' pk=ab.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+                    <form action="{% url 'abonnement_renew' pk=ab.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button class="btn btn-info btn-sm" title="Renouveler"><i class="bi bi-arrow-repeat"></i> Renouveler</button>
+                    </form>
+                    {% if ab.statut == 'actif' %}
+                    <form action="{% url 'abonnement_suspend' pk=ab.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button class="btn btn-warning btn-sm" title="Suspendre">Suspendre</button>
+                    </form>
+                    {% endif %}
+                    {% if ab.statut != 'termine' %}
+                    <form action="{% url 'abonnement_resilier' pk=ab.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button class="btn btn-secondary btn-sm" title="Résilier">Résilier</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">Aucun abonnement enregistré.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if is_paginated %}
+    <nav>
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Précédent</a></li>
+            {% endif %}
+            <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivant</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

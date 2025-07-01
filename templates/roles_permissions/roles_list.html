@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Rôles</h2>
+    <a href="{% url 'role_create' %}" class="btn btn-success mb-3">Nouveau rôle</a>
+    {% include 'roles_permissions/partials/messages.html' %}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Slug</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for role in roles %}
+            <tr>
+                <td>{{ role.nom_role }}</td>
+                <td>{{ role.description }}</td>
+                <td>{{ role.slug }}</td>
+                <td>
+                    <a href="{% url 'role_edit' role.pk %}" class="btn btn-primary btn-sm">Modifier</a>
+                    <a href="{% url 'role_delete' role.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">Aucun rôle trouvé.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

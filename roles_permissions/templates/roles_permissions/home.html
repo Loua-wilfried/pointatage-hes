@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Bienvenue sur la plateforme RH & Gestion</h2>
+    <p class="lead">Accédez à toutes les fonctionnalités principales :</p>
+    <div class="list-group" style="max-width:400px;">
+        <a href="/utilisateurs/" class="list-group-item list-group-item-action">Utilisateurs</a>
+        <a href="/agences/" class="list-group-item list-group-item-action">Agences</a>
+        <a href="/roles/" class="list-group-item list-group-item-action">Rôles</a>
+        <a href="/roles/permissions/" class="list-group-item list-group-item-action">Permissions</a>
+        <a href="/roles/affectations/" class="list-group-item list-group-item-action">Affectations</a>
+        <a href="/admin/" class="list-group-item list-group-item-action">Administration Django</a>
+    </div>
+    <hr>
+    <p class="text-muted">Sélectionnez une section pour démarrer.</p>
+</div>
+{% endblock %}

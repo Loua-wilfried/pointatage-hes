@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="alert alert-danger">
+        <h4>Confirmation de suppression</h4>
+        <p>Êtes-vous sûr de vouloir supprimer l'institution <strong>{{ object.nom }}</strong> ?</p>
+        <form method="post">
+            {% csrf_token %}
+            <a href="{% url 'institution_list' %}" class="btn btn-secondary">Annuler</a>
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

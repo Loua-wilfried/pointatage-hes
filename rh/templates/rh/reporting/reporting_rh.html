@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Reporting RH</h2>
+    <form method="get" class="row g-3 mb-4 border rounded p-3 bg-light">
+      <div class="col-md-3">{{ filter_form.employe.label_tag }} {{ filter_form.employe }}</div>
+      <div class="col-md-2">{{ filter_form.date_debut.label_tag }} {{ filter_form.date_debut }}</div>
+      <div class="col-md-2">{{ filter_form.date_fin.label_tag }} {{ filter_form.date_fin }}</div>
+      <div class="col-md-3">{{ filter_form.type_evenement.label_tag }} {{ filter_form.type_evenement }}</div>
+      <div class="col-md-2 d-flex align-items-end"><button type="submit" class="btn btn-primary w-100">Filtrer</button></div>
+    </form>
+    <div class="mb-3 d-flex gap-2">
+      <a href="{% url 'export_top_absents_excel' %}?{{ request.GET.urlencode }}" class="btn btn-outline-primary btn-sm">Exporter Top Absents (Excel)</a>
+      <a href="{% url 'export_top_sanctionnes_excel' %}?{{ request.GET.urlencode }}" class="btn btn-outline-danger btn-sm">Exporter Top Sanctionnés (Excel)</a>
+      <a href="{% url 'export_reporting_pdf' %}?{{ request.GET.urlencode }}" class="btn btn-outline-secondary btn-sm">Exporter Reporting (PDF)</a>
+      <a href="/rh/generer_qr/" class="btn btn-outline-success btn-sm">Générer & Imprimer QR Code</a>
+    </div>
+
+    <!-- Modal QR Code -->
+    <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="qrModalLabel">QR Code d'accès au site</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+          </div>
+          <div class="modal-body text-center">
+            <iframe id="qrIframe" src="" style="width:360px;height:420px;border:none;" title="QR Code"></iframe>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var qrModal = document.getElementById('qrModal');
+    var qrIframe = document.getElementById('qrIframe');
+    if(qrModal && qrIframe) {
+      qrModal.addEventListener('show.bs.modal', function() {
+        qrIframe.src = '/rh/generer_qr/?iframe=1&ts=' + Date.now();
+      });
+      qrModal.addEventListener('hidden.bs.modal', function() {
+        qrIframe.src = '';
+      });
+    }
+  });
+</script>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-3"><div class="card text-bg-primary mb-3"><div class="card-body"><h5 class="card-title">Employés</h5><p class="card-text display-6">{{ total_employes }}</p></div></div></div>
+        <div class="col-md-3"><div class="card text-bg-success mb-3"><div class="card-body"><h5 class="card-title">Pointages</h5><p class="card-text display-6">{{ total_pointages }}</p></div></div></div>
+        <div class="col-md-3"><div class="card text-bg-warning mb-3"><div class="card-body"><h5 class="card-title">Absences</h5><p class="card-text display-6">{{ total_absences }}</p></div></div></div>
+        <div class="col-md-3"><div class="card text-bg-danger mb-3"><div class="card-body"><h5 class="card-title">Sanctions</h5><p class="card-text display-6">{{ total_sanctions }}</p></div></div></div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-4"><div class="card border-info mb-3"><div class="card-header">Absences ce mois ({{ mois }}/{{ annee }})</div><div class="card-body"><h5 class="card-title">{{ absences_mois }}</h5></div></div></div>
+        <div class="col-md-4"><div class="card border-danger mb-3"><div class="card-header">Sanctions ce mois ({{ mois }}/{{ annee }})</div><div class="card-body"><h5 class="card-title">{{ sanctions_mois }}</h5></div></div></div>
+        <div class="col-md-4"><div class="card border-success mb-3"><div class="card-header">Pointages ce mois ({{ mois }}/{{ annee }})</div><div class="card-body"><h5 class="card-title">{{ pointages_mois }}</h5></div></div></div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-12">
+        <canvas id="statsChart" height="80"></canvas>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const ctx = document.getElementById('statsChart').getContext('2d');
+      const statsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: {{ chart_labels|safe }},
+          datasets: [
+            {
+              label: 'Absences',
+              data: {{ chart_absences|safe }},
+              borderColor: '#0dcaf0',
+              backgroundColor: 'rgba(13,202,240,0.1)',
+              tension: 0.2,
+              fill: true
+            },
+            {
+              label: 'Sanctions',
+              data: {{ chart_sanctions|safe }},
+              borderColor: '#dc3545',
+              backgroundColor: 'rgba(220,53,69,0.1)',
+              tension: 0.2,
+              fill: true
+            },
+            {
+              label: 'Pointages',
+              data: {{ chart_pointages|safe }},
+              borderColor: '#198754',
+              backgroundColor: 'rgba(25,135,84,0.1)',
+              tension: 0.2,
+              fill: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: true, text: "Évolution mensuelle RH (12 derniers mois)" }
+          }
+        }
+      });
+    </script>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Top 5 employés les plus absents</h4>
+            <table class="table table-sm table-striped">
+                <thead><tr><th>Nom</th><th>Prénom</th><th>Absences</th></tr></thead>
+                <tbody>
+                {% for a in top_absents %}
+                    <tr><td>{{ a.employe__nom }}</td><td>{{ a.employe__prenom }}</td><td>{{ a.total }}</td></tr>
+                {% empty %}<tr><td colspan="3">Aucune donnée</td></tr>{% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h4>Top 5 employés les plus sanctionnés</h4>
+            <table class="table table-sm table-striped">
+                <thead><tr><th>Nom</th><th>Prénom</th><th>Sanctions</th></tr></thead>
+                <tbody>
+                {% for s in top_sanctionnes %}
+                    <tr><td>{{ s.employe__nom }}</td><td>{{ s.employe__prenom }}</td><td>{{ s.total }}</td></tr>
+                {% empty %}<tr><td colspan="3">Aucune donnée</td></tr>{% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

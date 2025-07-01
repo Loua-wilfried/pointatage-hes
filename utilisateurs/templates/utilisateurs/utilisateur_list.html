@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Liste des utilisateurs</h2>
+    <a href="{% url 'creer_utilisateur' %}" class="btn btn-primary mb-3">Nouvel utilisateur</a>
+    <form method="get" class="row g-3 mb-3">
+        <div class="col-md-3">
+            <select name="role" class="form-select">
+                <option value="">-- Tous rôles --</option>
+                {% for role in roles %}
+                <option value="{{ role.id }}">{{ role.nom_role }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="agence" class="form-select">
+                <option value="">-- Toutes agences --</option>
+                {% for agence in agences %}
+                <option value="{{ agence.id }}">{{ agence.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="statut" class="form-select">
+                <option value="">-- Tous statuts --</option>
+                <option value="actif">Actif</option>
+                <option value="inactif">Inactif</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-outline-secondary">Filtrer</button>
+        </div>
+    </form>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>Agence</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for utilisateur in utilisateurs %}
+                <tr>
+                    <td>{{ utilisateur.id }}</td>
+                    <td>{{ utilisateur.nom }}</td>
+                    <td>{{ utilisateur.prenom }}</td>
+                    <td>{{ utilisateur.email }}</td>
+                    <td>{{ utilisateur.role.nom_role }}</td>
+                    <td>{{ utilisateur.agence.nom }}</td>
+                    <td>{{ utilisateur.get_statut_display }}</td>
+                    <td>
+                        <a href="{% url 'modifier_utilisateur' utilisateur.id %}" class="btn btn-sm btn-warning">Modifier</a>
+                        <a href="{% url 'supprimer_utilisateur' utilisateur.id %}" class="btn btn-sm btn-danger">Supprimer</a>
+                        {% if utilisateur.statut == 'actif' %}
+                        <a href="{% url 'desactiver_utilisateur' utilisateur.id %}" class="btn btn-sm btn-secondary">Désactiver</a>
+                        {% else %}
+                        <a href="{% url 'activer_utilisateur' utilisateur.id %}" class="btn btn-sm btn-success">Activer</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8">Aucun utilisateur trouvé.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

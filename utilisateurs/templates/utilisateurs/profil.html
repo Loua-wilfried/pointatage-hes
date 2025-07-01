@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Mon profil</h2>
+    <div class="card" style="max-width: 400px;">
+        <div class="card-body">
+            {% if utilisateur.photo %}
+            <img src="{{ utilisateur.photo.url }}" class="rounded mb-3" width="120" height="120" alt="Photo de profil">
+            {% endif %}
+            <p><strong>Nom :</strong> {{ utilisateur.nom }}</p>
+            <p><strong>Prénom :</strong> {{ utilisateur.prenom }}</p>
+            <p><strong>Email :</strong> {{ utilisateur.email }}</p>
+            <p><strong>Téléphone :</strong> {{ utilisateur.telephone }}</p>
+            <p><strong>Rôle :</strong> {{ utilisateur.role.nom_role }}</p>
+            <p><strong>Agence :</strong> {{ utilisateur.agence.nom }}</p>
+            <a href="{% url 'changer_mot_de_passe' utilisateur.id %}" class="btn btn-warning">Changer le mot de passe</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

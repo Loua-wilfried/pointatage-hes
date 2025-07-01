@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Certifications obtenues{% if employe %} : {{ employe.nom }} {{ employe.prenom }}{% endif %}</h2>
+    <a href="{% url 'certification_create' %}" class="btn btn-primary mb-3">Ajouter une certification</a>
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Employé</th>
+                <th>Session</th>
+                <th>Certification</th>
+                <th>Date obtention</th>
+                <th>Validée</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for certification in certifications %}
+            <tr>
+                <td>{{ certification.employe }}</td>
+<td>{{ certification.session }}</td>
+<td>{{ certification.certification }}</td>
+<td>{{ certification.date_obtention }}</td>
+<td>{% if certification.validee %}<span class="badge bg-success">Oui</span>{% else %}<span class="badge bg-secondary">Non</span>{% endif %}</td>
+<td>
+    <a href="{% url 'certification_update' pk=certification.id %}" class="btn btn-sm btn-warning">Modifier</a>
+    <a href="{% url 'certification_delete' pk=certification.id %}" class="btn btn-sm btn-danger">Supprimer</a>
+</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">Aucune certification enregistrée.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

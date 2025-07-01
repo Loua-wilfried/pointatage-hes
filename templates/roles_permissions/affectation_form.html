@@ -1,0 +1,6 @@
+<h2>Affecter une permission à un rôle</h2>
+<form method="post">{% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-success">Affecter</button>
+  <a href="{% url 'affectations_list' %}" class="btn btn-secondary">Annuler</a>
+</form>

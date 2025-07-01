@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Supprimer l'évaluation</h2>
+    <p>Êtes-vous sûr de vouloir supprimer cette évaluation ?</p>
+    <form method="post">{% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirmer</button>
+        <a href="{% url 'evaluations_list' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}

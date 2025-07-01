@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Types d'absence</h2>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Code</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in types_absence %}
+      <tr>
+        <td>{{ t.nom }}</td>
+        <td>{{ t.code }}</td>
+        <td>{{ t.description }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="3">Aucun type d'absence défini.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

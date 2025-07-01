@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Supprimer l'abonnement</h2>
+    <form method="post">
+        {% csrf_token %}
+        <p>Confirmez-vous la suppression de l'abonnement de <strong>{{ object.institution }}</strong> au plan <strong>{{ object.plan }}</strong> ?</p>
+        <button type="submit" class="btn btn-danger">Supprimer</button>
+        <a href="{% url 'abonnement_list' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}

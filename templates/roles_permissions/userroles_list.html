@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Utilisateurs et leurs rôles</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Nom d'utilisateur</th>
+                <th>Email</th>
+                <th>Rôle</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ur in userroles %}
+            <tr>
+                <td>{{ ur.user.username }}</td>
+                <td>{{ ur.user.email }}</td>
+                <td>{{ ur.role.nom_role }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3">Aucun utilisateur avec un rôle.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

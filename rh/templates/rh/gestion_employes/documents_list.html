@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Documents RH de {{ employe.nom }} {{ employe.prenom }}</h2>
+  <a href="#" class="btn btn-primary mb-3">Ajouter un document</a>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Type de document</th>
+        <th>Fichier</th>
+        <th>Date d'upload</th>
+        <th>Commentaire</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for doc in documents %}
+      <tr>
+        <td>{{ doc.type_document }}</td>
+        <td>{% if doc.fichier %}<a href="{{ doc.fichier.url }}" target="_blank">Télécharger</a>{% endif %}</td>
+        <td>{{ doc.date_upload|date:'d/m/Y H:i' }}</td>
+        <td>{{ doc.commentaire }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4">Aucun document RH trouvé.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

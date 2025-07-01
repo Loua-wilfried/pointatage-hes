@@ -1,0 +1,16 @@
+<div class="container mt-4 text-center">
+    <h2 style="font-size:1.2rem">QR Code Pointage Agence</h2>
+    {% if qr_code_url %}
+        <img src="{{ qr_code_url }}" alt="QR Code" style="width: 300px; height: 300px;"/>
+        <div class="mt-3">
+            <button onclick="window.print()" class="btn btn-primary btn-sm">Imprimer le QR Code</button>
+        </div>
+        <div class="mt-2">
+            <strong>Agence :</strong> {{ agence_nom }}<br/>
+            <strong>Type :</strong> {{ type_pointage|title }}<br/>
+            <strong>ID Agence :</strong> {{ agence_id }}
+        </div>
+    {% else %}
+        <p class="text-muted">Aucun QR code généré.</p>
+    {% endif %}
+</div>

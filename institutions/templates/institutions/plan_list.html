@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Plans SaaS</h2>
+    <a href="{% url 'plan_create' %}" class="btn btn-success mb-3">Nouveau plan</a>
+    {% include 'institutions/partials/messages.html' %}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Prix mensuel</th>
+                <th>Limite utilisateurs</th>
+                <th>Fonctionnalités</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for plan in plans %}
+            <tr>
+                <td>{{ plan.nom_plan }}</td>
+                <td>{{ plan.description }}</td>
+                <td>{{ plan.prix_mensuel }} €</td>
+                <td>{{ plan.limite_utilisateurs }}</td>
+                <td>
+                    <ul>
+                        {% for f in plan.fonctionnalites_incluses %}
+                        <li>{{ f }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <a href="{% url 'plan_update' pk=plan.pk %}" class="btn btn-primary btn-sm">Modifier</a>
+                    <a href="{% url 'plan_delete' pk=plan.pk %}" class="btn btn-danger btn-sm">Supprimer</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6">Aucun plan enregistré.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if is_paginated %}
+    <nav>
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Précédent</a></li>
+            {% endif %}
+            <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivant</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

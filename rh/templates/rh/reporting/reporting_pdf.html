@@ -1,0 +1,38 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+      body { font-family: Arial, sans-serif; }
+      h2 { color: #1a237e; }
+      table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+      th, td { border: 1px solid #888; padding: 6px; text-align: left; }
+      th { background: #e3e3e3; }
+    </style>
+</head>
+<body>
+    <h2>Reporting RH (PDF)</h2>
+    <h4>Statistiques du mois {{ mois }}/{{ annee }}</h4>
+    <ul>
+        <li>Absences ce mois : <strong>{{ absences_mois }}</strong></li>
+        <li>Sanctions ce mois : <strong>{{ sanctions_mois }}</strong></li>
+    </ul>
+    <h4>Top 5 employés les plus absents</h4>
+    <table>
+        <thead><tr><th>Nom</th><th>Prénom</th><th>Absences</th></tr></thead>
+        <tbody>
+        {% for a in top_absents %}
+            <tr><td>{{ a.employe__nom }}</td><td>{{ a.employe__prenom }}</td><td>{{ a.total }}</td></tr>
+        {% empty %}<tr><td colspan="3">Aucune donnée</td></tr>{% endfor %}
+        </tbody>
+    </table>
+    <h4>Top 5 employés les plus sanctionnés</h4>
+    <table>
+        <thead><tr><th>Nom</th><th>Prénom</th><th>Sanctions</th></tr></thead>
+        <tbody>
+        {% for s in top_sanctionnes %}
+            <tr><td>{{ s.employe__nom }}</td><td>{{ s.employe__prenom }}</td><td>{{ s.total }}</td></tr>
+        {% empty %}<tr><td colspan="3">Aucune donnée</td></tr>{% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
