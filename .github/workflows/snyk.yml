@@ -19,8 +19,15 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install Node dependencies
-        run: npm install --legacy-peer-deps
+      # Vérifier si package.json existe avant d'installer
+      - name: Check for package.json
+        run: |
+          if [ -f package.json ]; then
+            echo "package.json found, installing Node dependencies..."
+            npm install --legacy-peer-deps
+          else
+            echo "No package.json found, skipping Node dependencies installation."
+          fi
 
       - name: Setup Python
         uses: actions/setup-python@v5
