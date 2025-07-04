@@ -26,9 +26,9 @@ for employe in Employe.objects.all():
         except User.DoesNotExist:
             username = employe.email.split('@')[0]
             if employe.nom.lower() == 'roland':
-                password = '12334'
+                password = os.environ.get('ROLAND_PASSWORD', '12334')
             else:
-                password = 'changeme123'
+                password = os.environ.get('DEFAULT_USER_PASSWORD', 'changeme123')
             user = User.objects.create_user(
                 username=username,
                 email=employe.email,

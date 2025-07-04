@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .form-container {
+    max-width: 600px;
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    max-height: 90vh;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #111;
+  }
+
+  .form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    height: 45px;
+  }
+
+  .form-title {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #ff6600; /* orange */
+    font-weight: bold;
+  }
+
+  .btn-orange {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+  }
+
+  .btn-orange:hover {
+    background-color: #e65c00;
+  }
+
+  .btn-cancel {
+    border: 1px solid #999;
+    color: #333;
+  }
+
+  .btn-cancel:hover {
+    background: #f5f5f5;
+  }
+</style>
+
+<div class="d-flex justify-content-center align-items-center min-vh-100" style="background:#f8f9fa;min-height:100vh;">
+  <div class="form-container">
+    <h3 class="form-title">Formulaire d'ajout d'un employé</h3>
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      <div class="mb-3"><label class="form-label" for="{{ form.prenom.id_for_label }}">Prénom</label>{{ form.prenom }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.nom.id_for_label }}">Nom</label>{{ form.nom }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.sexe.id_for_label }}">Sexe</label>{{ form.sexe }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.date_naissance.id_for_label }}">Date de naissance</label>{{ form.date_naissance }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.lieu_naissance.id_for_label }}">Lieu de naissance</label>{{ form.lieu_naissance }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.nationalite.id_for_label }}">Nationalité</label>{{ form.nationalite }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.situation_familiale.id_for_label }}">Situation familiale</label>{{ form.situation_familiale }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.adresse.id_for_label }}">Adresse</label>{{ form.adresse }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.email.id_for_label }}">Email</label>{{ form.email }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.telephone.id_for_label }}">Téléphone</label>{{ form.telephone }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.numero_cni.id_for_label }}">Numéro CNI</label>{{ form.numero_cni }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.photo.id_for_label }}">Photo</label>{{ form.photo }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.date_embauche.id_for_label }}">Date d'embauche</label>{{ form.date_embauche }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.date_fin_contrat.id_for_label }}">Date fin contrat</label>{{ form.date_fin_contrat }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.type_contrat.id_for_label }}">Type de contrat</label>{{ form.type_contrat }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.periode_essai.id_for_label }}">Période d'essai</label>{{ form.periode_essai }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.agence.id_for_label }}">Agence</label>{{ form.agence }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.role.id_for_label }}">Fonction</label>{{ form.role }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.statut.id_for_label }}">Statut</label>{{ form.statut }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.horaire_travail.id_for_label }}">Horaire de travail</label>{{ form.horaire_travail }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.salaire_base.id_for_label }}">Salaire de base</label>{{ form.salaire_base }}</div>
+      <div class="mb-3"><label class="form-label" for="{{ form.rib_banque.id_for_label }}">RIB Banque</label>{{ form.rib_banque }}</div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button type="submit" class="btn btn-orange px-4">Ajouter</button>
+        <a href="{% url 'pointages_list' %}" class="btn btn-cancel px-4">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

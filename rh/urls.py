@@ -10,7 +10,7 @@ from .views import formation_crud
 
 from .views.gestion_pointage import generate_qr_code
 
-from .views.gestion_pointage import tableau_de_bord_pointage
+from .views.gestion_pointage import tableau_de_bord_pointage, ajouter_employe
 
 urlpatterns = [
     path('planning/horaires/', gestion_planning.horaires_standard_list, name='horaires_standard_list'),
@@ -43,6 +43,7 @@ urlpatterns = [
     path('pointage/<int:pk>/edit/', gestion_pointage.pointage_update, name='pointage_update'),
     path('pointage/<int:pk>/delete/', gestion_pointage.pointage_delete, name='pointage_delete'),
     path('tableau_de_bord_pointage/', tableau_de_bord_pointage, name='tableau_de_bord_pointage'),
+    path('ajouter-employe/', ajouter_employe, name='ajouter_employe'),
 
     # Sanctions
     path('sanctions/', gestion_sanctions_crud.sanctions_list, name='sanctions_list'),

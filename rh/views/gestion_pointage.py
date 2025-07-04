@@ -6,7 +6,11 @@ import qrcode
 import io
 import base64
 from rh.models import Pointage
-from rh.forms import PointageForm
+from rh.forms import PointageForm, EmployeForm
+from institutions.models import Employe
+
+from institutions.models import Employe
+
 
 @login_required
 @permission_required('rh.delete_pointage', raise_exception=True)
@@ -29,6 +33,7 @@ def pointages_list(request):
     employe_id = request.GET.get('employe')
     fonction_id = request.GET.get('fonction')
     agence_id = request.GET.get('agence')
+    telephone = request.GET.get('telephone')
     date_selected = request.GET.get('date')
     heure_min = request.GET.get('heure_min')
     heure_max = request.GET.get('heure_max')
@@ -51,6 +56,8 @@ def pointages_list(request):
         employes = employes.filter(role_id=fonction_id)
     if agence_id:
         employes = employes.filter(agence_id=agence_id)
+    if telephone:
+        employes = employes.filter(telephone=telephone)
 
     # Récupérer tous les pointages du jour filtré
     pointages = Pointage.objects.select_related('employe', 'employe__role', 'agence').filter(date=date_cible)
@@ -240,6 +247,22 @@ def pointage_update(request, pk):
         form = PointageForm(instance=pointage)
     return render(request, 'rh/pointage/pointage_form.html', {'form': form, 'action': 'Modifier'})
 
+# --- AJOUT EMPLOYÉ ---
+from django.contrib import messages
+
+@login_required
+@permission_required('institutions.add_employe', raise_exception=True)
+def ajouter_employe(request):
+    if request.method == 'POST':
+        form = EmployeForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Employé ajouté avec succès.")
+            return redirect('pointages_list')
+    else:
+        form = EmployeForm()
+    return render(request, 'rh/pointage/ajouter_employer.html', {'form': form})
+
 # --- VUE TABLEAU DE BORD POINTAGE ---
 from django import forms
 from django.utils import timezone
@@ -291,6 +314,7 @@ def tableau_de_bord_pointage(request):
     employe_id = GET.get('employe')
     fonction_id = GET.get('fonction')
     agence_id = GET.get('agence')
+    telephone = GET.get('telephone')
     date_selected = GET.get('date')
     heure_min = GET.get('heure_min')
     heure_max = GET.get('heure_max')
@@ -316,6 +340,8 @@ def tableau_de_bord_pointage(request):
         filtered_employes = filtered_employes.filter(role_id=fonction_id)
     if agence_id:
         filtered_employes = filtered_employes.filter(agence_id=agence_id)
+    if telephone:
+        filtered_employes = filtered_employes.filter(telephone=telephone)
 
     # Récupérer tous les pointages du jour filtré
     pointages = Pointage.objects.select_related('employe', 'employe__role', 'agence').filter(date=date_cible)

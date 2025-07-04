@@ -1,26 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-<nav class="navbar navbar-expand-lg" style="background-color: #ff6600; color: #fff;">
-  <div class="container-fluid">
-    <a class="navbar-brand fw-bold" style="color: #fff;" href="#">Pointages</a>
-    </div>
-</nav>
-<style>
-  .filter-bar {
-    gap: 0.5rem;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-    scrollbar-width: thin;
-  }
-  .filter-bar select, .filter-bar input {
-    min-width: 120px;
-    max-width: 180px;
-    flex: 0 0 auto;
-  }
-  .filter-bar button, .filter-bar a.btn {
-    flex: 0 0 auto;
-    white-space: nowrap;
-  }
+
+
 </style>
 <nav class="navbar navbar-expand-lg" style="background-color: #ff6600; color: #fff;">
   <div class="container-fluid">
@@ -49,6 +30,7 @@
           <option value="{{ e.id }}" {% if request.GET.employe == e.id|stringformat:'s' %}selected{% endif %}>{{ e }}</option>
         {% endfor %}
       </select>
+      <input class="form-control" type="text" name="telephone" placeholder="Téléphone" value="{{ request.GET.telephone }}" style="min-width: 140px;">
       <select class="form-select" name="fonction" style="min-width: 140px;">
         <option value="">Fonction</option>
         {% for f in fonctions %}
@@ -93,40 +75,71 @@
 
 <div class="container mt-4">
   <h2>Liste des pointages</h2>
-  <a href="{% url 'pointage_create' %}" class="btn btn-success mb-3">Nouveau pointage</a>
-  <table class="table table-bordered table-striped">
+  
+<a href="{% url 'ajouter_employe' %}" class="btn btn-primary mb-3" style="background-color: #ff6600; border: none;">Ajouter un employé</a>
+  <div class="table-responsive">
+  <table class="table table-bordered table-striped align-middle" style="min-width: 900px;">
+
     <thead>
       <tr>
-        <th>Employé</th>
+        <th>Matricule</th>
+        <th>Nom complet</th>
         <th>Fonction</th>
-        <th>Agence</th> <!-- Ajout colonne Agence -->
+        <th>Téléphone</th>
+        <th>Agence</th>
         <th>Date</th>
         <th>Heure</th>
         <th>Type</th>
         <th>Source</th>
-        <th>Statuts</th>
+        <th>Statut</th>
         
       </tr>
     </thead>
     <tbody>
       {% for pointage in pointages %}
       <tr>
-        <td>{{ pointage.employe }}</td>
+        <td>{{ pointage.employe.matricule_interne }}</td>
+        <td>{{ pointage.employe.prenom }} {{ pointage.employe.nom }}</td>
         <td>{{ pointage.employe.role.nom_role }}</td>
+        <td>{{ pointage.employe.telephone }}</td>
         <td>{{ pointage.agence.nom }}</td>
         <td>{{ pointage.date|date:'d/m/Y' }}</td>
         <td>{{ pointage.heure|time:'H:i' }}</td>
         <td>{{ pointage.get_type_display }}</td>
         <td>{{ pointage.get_source_display }}</td>
-        <td 
-  {% if pointage.statut == 'retard' %}style="background-color: #ff4d4d; color: #fff; font-weight: bold;"{% elif pointage.statut == 'depart_anticipe' %}style="background-color: #ffa500; color: #fff; font-weight: bold;"{% endif %}
->{{ pointage.statut }}</td>
+        <td>
+          <span class="badge {% if pointage.statut == 'retard' %}bg-danger fw-bold{% elif pointage.statut == 'depart_anticipe' %}bg-warning fw-bold{% else %}bg-secondary{% endif %}">
+            {{ pointage.statut }}
+          </span>
+        </td>
         
       </tr>
       {% empty %}
-      <tr><td colspan="8">Aucun pointage enregistré.</td></tr>
+      <tr><td colspan="10">Aucun pointage enregistré.</td></tr>
       {% endfor %}
     </tbody>
   </table>
+</div>
+<style>
+  .table-responsive {
+    overflow-x: auto;
+  }
+  table th, table td {
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  @media (max-width: 1200px) {
+    table th, table td {
+      font-size: 0.95em;
+      padding: 0.4rem;
+    }
+  }
+  @media (max-width: 900px) {
+    table th, table td {
+      font-size: 0.90em;
+      padding: 0.3rem;
+    }
+  }
+</style>
 </div>
 {% endblock %}

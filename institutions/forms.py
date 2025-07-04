@@ -1,5 +1,5 @@
 from django import forms
-from .models import Institution, PlanSaaS, Abonnement
+from .models import Institution, PlanSaaS, Abonnement, Employe
 from django import forms
 from django.utils import timezone
 from datetime import timedelta, date
@@ -42,6 +42,107 @@ class PlanSaaSForm(forms.ModelForm):
         return data
 
 class AbonnementForm(forms.ModelForm):
+    duree_mois = forms.IntegerField(min_value=1, initial=1, label="Durée (mois)", widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    class Meta:
+        model = Abonnement
+        fields = ['institution', 'plan', 'date_debut', 'mode_paiement', 'duree_mois']
+        widgets = {
+            'institution': forms.Select(attrs={'class': 'form-select'}),
+            'plan': forms.Select(attrs={'class': 'form-select'}),
+            'date_debut': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'mode_paiement': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        date_debut = cleaned_data.get('date_debut')
+        duree_mois = cleaned_data.get('duree_mois')
+        if date_debut and duree_mois:
+            # Logique de validation personnalisée ici
+            pass
+        return cleaned_data
+
+class EmployeForm(forms.ModelForm):
+    class Meta:
+        model = Employe
+        fields = [
+            'prenom', 'nom', 'sexe', 'date_naissance', 'lieu_naissance', 'nationalite',
+            'situation_familiale', 'adresse', 'email', 'telephone', 'numero_cni', 'photo',
+            'date_embauche', 'date_fin_contrat', 'type_contrat', 'periode_essai',
+            'agence', 'role', 'statut', 'horaire_travail', 'salaire_base', 'rib_banque'
+        ]
+        widgets = {
+            'prenom': forms.TextInput(attrs={'class': 'form-control'}),
+            'nom': forms.TextInput(attrs={'class': 'form-control'}),
+            'sexe': forms.Select(attrs={'class': 'form-select'}),
+            'date_naissance': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'lieu_naissance': forms.TextInput(attrs={'class': 'form-control'}),
+            'nationalite': forms.TextInput(attrs={'class': 'form-control'}),
+            'situation_familiale': forms.Select(attrs={'class': 'form-select'}),
+            'adresse': forms.Textarea(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'telephone': forms.TextInput(attrs={'class': 'form-control'}),
+            'numero_cni': forms.TextInput(attrs={'class': 'form-control'}),
+            'photo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'date_embauche': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'date_fin_contrat': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'type_contrat': forms.Select(attrs={'class': 'form-select'}),
+            'periode_essai': forms.TextInput(attrs={'class': 'form-control'}),
+            'agence': forms.Select(attrs={'class': 'form-select'}),
+            'role': forms.Select(attrs={'class': 'form-select'}),
+            'statut': forms.Select(attrs={'class': 'form-select'}),
+            'horaire_travail': forms.TextInput(attrs={'class': 'form-control'}),
+            'salaire_base': forms.NumberInput(attrs={'class': 'form-control'}),
+            'rib_banque': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+    class Meta:
+        model = Employe
+        fields = [
+            'prenom', 'nom', 'sexe', 'date_naissance', 'lieu_naissance', 'nationalite',
+            'situation_familiale', 'adresse', 'email', 'telephone', 'numero_cni', 'photo',
+            'date_embauche', 'date_fin_contrat', 'type_contrat', 'periode_essai',
+            'agence', 'role', 'statut', 'horaire_travail', 'salaire_base', 'rib_banque'
+        ]
+        widgets = {
+            'prenom': forms.TextInput(attrs={'class': 'form-control'}),
+            'nom': forms.TextInput(attrs={'class': 'form-control'}),
+            'sexe': forms.Select(attrs={'class': 'form-select'}),
+            'date_naissance': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'lieu_naissance': forms.TextInput(attrs={'class': 'form-control'}),
+            'nationalite': forms.TextInput(attrs={'class': 'form-control'}),
+            'situation_familiale': forms.Select(attrs={'class': 'form-select'}),
+            'adresse': forms.Textarea(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'telephone': forms.TextInput(attrs={'class': 'form-control'}),
+            'numero_cni': forms.TextInput(attrs={'class': 'form-control'}),
+            'photo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'date_embauche': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'date_fin_contrat': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'type_contrat': forms.Select(attrs={'class': 'form-select'}),
+            'periode_essai': forms.TextInput(attrs={'class': 'form-control'}),
+            'agence': forms.Select(attrs={'class': 'form-select'}),
+            'role': forms.Select(attrs={'class': 'form-select'}),
+            'statut': forms.Select(attrs={'class': 'form-select'}),
+            'horaire_travail': forms.TextInput(attrs={'class': 'form-control'}),
+            'salaire_base': forms.NumberInput(attrs={'class': 'form-control'}),
+            'rib_banque': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+    class Meta:
+        model = Employe
+        fields = ['prenom', 'nom', 'email', 'telephone', 'agence', 'role', 'date_embauche', 'statut']
+        widgets = {
+            'prenom': forms.TextInput(attrs={'class': 'form-control'}),
+            'nom': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'telephone': forms.TextInput(attrs={'class': 'form-control'}),
+            'agence': forms.Select(attrs={'class': 'form-select'}),
+            'role': forms.Select(attrs={'class': 'form-select'}),
+            'date_embauche': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'statut': forms.Select(attrs={'class': 'form-select'}),
+        }
+
     duree_mois = forms.IntegerField(min_value=1, initial=1, label="Durée (mois)", widget=forms.NumberInput(attrs={'class': 'form-control'}))
     class Meta:
         model = Abonnement

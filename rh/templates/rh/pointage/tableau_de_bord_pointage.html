@@ -32,6 +32,7 @@
             <option value="{{ e.id }}" {% if request.GET.employe == e.id|stringformat:'s' %}selected{% endif %}>{{ e }}</option>
           {% endfor %}
         </select>
+        <input class="form-control" type="text" name="telephone" placeholder="Téléphone" value="{{ request.GET.telephone }}" style="min-width: 140px;">
         <select class="form-select" name="fonction" style="min-width: 140px;">
           <option value="">Fonction</option>
           {% for f in fonctions %}

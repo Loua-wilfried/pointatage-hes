@@ -5,6 +5,7 @@ from .models import (
     TypeAbsence, AbsenceEmploye, DemandeConge, Pointage, Sanction,
     Formation, SessionFormation, Evaluation, CertificationEmploye
 )
+from institutions.models import Employe
 
 class DocumentRhForm(forms.ModelForm):
     class Meta:
@@ -90,3 +91,38 @@ class CertificationEmployeForm(forms.ModelForm):
     class Meta:
         model = CertificationEmploye
         fields = ['employe', 'session', 'certification', 'date_obtention', 'validee']
+
+class EmployeForm(forms.ModelForm):
+    class Meta:
+        model = Employe
+        fields = [
+            'prenom', 'nom', 'sexe', 'date_naissance', 'lieu_naissance', 'nationalite',
+            'situation_familiale', 'adresse', 'email', 'telephone', 'numero_cni', 'photo',
+            'date_embauche', 'date_fin_contrat', 'type_contrat', 'periode_essai', 'agence',
+            'role', 'statut', 'horaire_travail', 'salaire_base', 'rib_banque'
+        ]
+        widgets = {
+            'prenom': forms.TextInput(attrs={'class': 'form-control'}),
+            'nom': forms.TextInput(attrs={'class': 'form-control'}),
+            'sexe': forms.Select(attrs={'class': 'form-select'}),
+            'date_naissance': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'lieu_naissance': forms.TextInput(attrs={'class': 'form-control'}),
+            'nationalite': forms.TextInput(attrs={'class': 'form-control'}),
+            'situation_familiale': forms.Select(attrs={'class': 'form-select'}),
+            'adresse': forms.Textarea(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'telephone': forms.TextInput(attrs={'class': 'form-control'}),
+            'numero_cni': forms.TextInput(attrs={'class': 'form-control'}),
+            'photo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'date_embauche': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'date_fin_contrat': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'type_contrat': forms.Select(attrs={'class': 'form-select'}),
+            'periode_essai': forms.TextInput(attrs={'class': 'form-control'}),
+            'agence': forms.Select(attrs={'class': 'form-select'}),
+            'role': forms.Select(attrs={'class': 'form-select'}),
+            'statut': forms.Select(attrs={'class': 'form-select'}),
+            'horaire_travail': forms.TextInput(attrs={'class': 'form-control'}),
+            'salaire_base': forms.NumberInput(attrs={'class': 'form-control'}),
+            'rib_banque': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+

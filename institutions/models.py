@@ -116,7 +116,7 @@ class Employe(models.Model):
     situation_familiale = models.CharField(max_length=20, choices=SITUATION_CHOICES)
     adresse = models.TextField()
     email = models.EmailField(unique=True)
-    telephone = models.CharField(max_length=20)
+    telephone = models.CharField(max_length=20, unique=True)
     numero_cni = models.CharField(max_length=50)
     photo = models.ImageField(upload_to='photos_employes/', blank=True, null=True)
     date_embauche = models.DateField()

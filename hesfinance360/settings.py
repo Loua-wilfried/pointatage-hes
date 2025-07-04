@@ -1,11 +1,11 @@
-import os
+from decouple import config
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-1234567890abcdefg!'
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+SECRET_KEY = config('DJANGO_SECRET_KEY', default='django-insecure-change-me!')
+DEBUG = config('DJANGO_DEBUG', default=True, cast=bool)
+ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='*').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',

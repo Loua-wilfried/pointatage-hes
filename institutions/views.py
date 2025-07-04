@@ -161,7 +161,7 @@ class EmployeListView(LoginRequiredMixin, ListView):
         context['statuts'] = Employe.STATUT_CHOICES
         return context
 
-@csrf_exempt
+
 @user_passes_test(superadmin_required)
 def calculer_facture(request):
     if request.method == 'POST':
