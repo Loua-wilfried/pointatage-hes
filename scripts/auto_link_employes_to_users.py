@@ -16,27 +16,29 @@ from institutions.models import Employe
 
 User = get_user_model()
 
-for employe in Employe.objects.all():
-    if not employe.user:
-        try:
-            user = User.objects.get(email=employe.email)
-            employe.user = user
-            employe.save()
-            print(f"Employé {employe.nom} lié à l'utilisateur {user.username}")
-        except User.DoesNotExist:
-            username = employe.email.split('@')[0]
-            if employe.nom.lower() == 'roland':
-                password = os.environ.get('ROLAND_PASSWORD', '12334')
-            else:
-                password = os.environ.get('DEFAULT_USER_PASSWORD', 'changeme123')
-            user = User.objects.create_user(
-                username=username,
-                email=employe.email,
-                password=password
-            )
-            employe.user = user
-            employe.save()
-            print(f"Utilisateur créé et lié pour {employe.nom} ({employe.email})")
-
-print("\nTous les employés sont maintenant liés à un utilisateur. Mot de passe initial: 'changeme123' (ou '12334' pour Roland)")
-print("Pense à demander à chaque utilisateur de changer son mot de passe après la première connexion!")
+try:
+    for employe in Employe.objects.all():
+        if not employe.user:
+            try:
+                user = User.objects.get(email=employe.email)
+                employe.user = user
+                employe.save()
+                print(f"Employé {employe.nom} lié à l'utilisateur {user.username}")
+            except User.DoesNotExist:
+                username = employe.email.split('@')[0]
+                if employe.nom.lower() == 'roland':
+                    password = os.environ.get('ROLAND_PASSWORD', '12334')
+                else:
+                    password = os.environ.get('DEFAULT_USER_PASSWORD', 'changeme123')
+                user = User.objects.create_user(
+                    username=username,
+                    email=employe.email,
+                    password=password
+                )
+                employe.user = user
+                employe.save()
+                print(f"Utilisateur créé et lié pour {employe.nom} ({employe.email})")
+    print("\nTous les employés sont maintenant liés à un utilisateur. Mot de passe initial: 'changeme123' (ou '12334' pour Roland)")
+    print("Pense à demander à chaque utilisateur de changer son mot de passe après la première connexion!")
+except Exception as e:
+    print("Erreur réseau, veuillez réessayer")

@@ -41,7 +41,15 @@ export default function LoginScreen() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       });
-      const data = await response.json();
+      const text = await response.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        setError("Erreur inattendue côté serveur : " + text.slice(0, 100));
+        setLoading(false);
+        return;
+      }
       if (response.ok && data.access) {
         // Ici tu peux stocker le token si besoin
         // Récupérer l'employe_id de l'utilisateur connecté
@@ -74,7 +82,11 @@ export default function LoginScreen() {
         setError(data?.detail || data?.non_field_errors?.[0] || 'Identifiants invalides');
       }
     } catch (e) {
-      setError('Erreur réseau, veuillez réessayer.');
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError('Erreur réseau inconnue.');
+      }
     } finally {
       setLoading(false);
     }
@@ -86,6 +98,10 @@ export default function LoginScreen() {
       style={styles.container}
     >
       <View style={styles.container2}> 
+        {/* Affichage de l'URL d'API utilisée pour diagnostic */}
+        <Text style={{ color: 'blue', fontSize: 12, marginBottom: 8 }}>
+          API: {API_BASE_URL}
+        </Text>
         <Image 
           source={require('../assets/images/font2.png')} 
           style={styles.logo} 
