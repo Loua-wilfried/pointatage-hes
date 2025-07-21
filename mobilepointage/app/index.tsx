@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     justifyContent: 'flex-end',
+    //position: 'relative'
   },
   container2: {
     backgroundColor: '#fff',
