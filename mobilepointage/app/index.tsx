@@ -179,9 +179,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     textAlign: 'center',
     zIndex: 1000,
-    position: 'relative',
     top: -40,
     right: 100,
+
   },
   container1: {
     width: '100%',
