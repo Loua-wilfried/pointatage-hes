@@ -69,29 +69,32 @@ def pointages_list(request):
         pointages = pointages.filter(heure__lte=heure_max)
     # On n'applique plus le filtre source ici, mais après la normalisation plus bas
 
-    # Calcul du statut pour chaque pointage réel
+    # Calcul du statut pour chaque employé (filtré ou non)
+    from types import SimpleNamespace
+    from datetime import time, datetime
     pointages_list = []
-    employe_ids_pointes = set()
-    for p in pointages:
-        statut_val = 'present'
-        if p.type == 'entree' and p.heure > p.heure.__class__.fromisoformat('08:00:00'):
-            statut_val = 'retard'
-        elif not Pointage.objects.filter(employe=p.employe, date=p.date, type='entree').exists():
-            statut_val = 'absent'
-        elif p.type in ['depart', 'sortie']:
-            if p.heure < p.heure.__class__.fromisoformat('17:00:00'):
-                statut_val = 'depart_anticipe'
-            else:
-                statut_val = 'sortie_respectee'
-        p.statut = statut_val
-        pointages_list.append(p)
-        employe_ids_pointes.add(p.employe.id)
-
-    # Ajouter les absents virtuels (employés sans pointage ce jour-là)
     for emp in employes:
-        if emp.id not in employe_ids_pointes:
-            from types import SimpleNamespace
-            from datetime import datetime, date as date_cls
+        entrees = Pointage.objects.filter(employe=emp, date=date_cible, type='entree').order_by('heure')
+        sorties = Pointage.objects.filter(employe=emp, date=date_cible, type__in=['depart', 'sortie']).order_by('heure')
+        if entrees.exists():
+            premier_entree = entrees.first()
+            if premier_entree.heure <= time(8, 0, 0):
+                statut_entree = 'a_lheure'
+            else:
+                statut_entree = 'retard'
+            premier_entree.statut = statut_entree
+            pointages_list.append(premier_entree)
+            if sorties.exists():
+                derniere_sortie = sorties.last()
+                if derniere_sortie.heure < time(17, 0, 0):
+                    statut_sortie = 'depart_anticipe'
+                elif time(17, 0, 0) <= derniere_sortie.heure <= time(18, 0, 0):
+                    statut_sortie = 'sortie_respectee'
+                else:
+                    statut_sortie = 'depart_supplementaire'
+                derniere_sortie.statut = statut_sortie
+                pointages_list.append(derniere_sortie)
+        else:
             absent_virtual = SimpleNamespace()
             absent_virtual.employe = emp
             # date_cible est soit str soit date, on force date
@@ -410,8 +413,17 @@ def tableau_de_bord_pointage(request):
         pointages_list = [p for p in pointages_list if p.statut == statut]
 
     # Statistiques temps réel
+    # 'present' = tous ceux qui ont pointé entrée dans la journée (heure indifférente)
+    nb_present = Pointage.objects.filter(date=date_cible, type='entree').values('employe').distinct().count()
+    # 'ontime' = présents dont le premier pointage entrée est <= 08:00:00
+    emps_ontime = set()
+    for emp in filtered_employes:
+        entrees = Pointage.objects.filter(employe=emp, date=date_cible, type='entree').order_by('heure')
+        if entrees.exists() and entrees.first().heure <= entrees.first().heure.__class__.fromisoformat('08:00:00'):
+            emps_ontime.add(emp.id)
     stats = {
-        'present': sum(1 for p in pointages_list if p.statut == 'present'),
+        'present': nb_present,
+        'ontime': len(emps_ontime),
         'retard': sum(1 for p in pointages_list if p.statut == 'retard'),
         'absent': sum(1 for p in pointages_list if p.statut == 'absent'),
         'depart_anticipe': sum(1 for p in pointages_list if p.statut == 'depart_anticipe'),
@@ -562,7 +574,7 @@ def tableau_de_bord_pointage(request):
     return render(request, 'rh/pointage/tableau_de_bord_pointage.html', {
         'pointages': pointages_list,
         'employes': employes,
-        'fonctions': fonctions,
+        'fonctions': fonctions, 
         'agences': agences,
         'stats': stats,
         'request': request,

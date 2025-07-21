@@ -73,21 +73,29 @@
     </div>
   </nav>
 
-  <!-- Bloc des 5 indicateurs RH dynamiques -->
+  <!-- Bloc des 6 indicateurs RH dynamiques sur une seule ligne -->
   <div class="row text-center mb-4" id="indicateurs-stats">
-    <div class="col-6 col-md-2 mb-3 offset-md-1">
+    <div class="col-6 col-md-2 mb-3">
       <div class="card shadow-sm border-0 fade-in" style="background: #e6fff7;">
         <div class="card-body">
-          <span class="badge rounded-pill bg-success mb-2"><i class="bi bi-person-fill"></i> Présents</span>
-          <div class="display-5 fw-bold">{{ stats.present }}</div>
+          <span class="badge rounded-pill bg-success mb-2"><i class="bi bi-person-fill"></i>Présents</span>
+          <div class="display-5 fw-bold">{{ stats.present|default:0 }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-2 mb-3">
+      <div class="card shadow-sm border-0 fade-in" style="background: #e6fff7;">
+        <div class="card-body">
+          <span class="badge rounded-pill bg-success mb-2"><i class="bi bi-person-fill"></i>A l'heure</span>
+          <div class="display-5 fw-bold">{{ stats.ontime|default:0 }}</div>
         </div>
       </div>
     </div>
     <div class="col-6 col-md-2 mb-3">
       <div class="card shadow-sm border-0 fade-in" style="background: #fffbe6;">
         <div class="card-body">
-          <span class="badge rounded-pill bg-warning text-dark mb-2"><i class="bi bi-clock-history"></i> Retards</span>
-          <div class="display-5 fw-bold">{{ stats.retard }}</div>
+          <span class="badge rounded-pill bg-warning mb-2"><i class="bi bi-clock-history"></i> Retards</span>
+          <div class="display-5 fw-bold">{{ stats.retard|default:0 }}</div>
         </div>
       </div>
     </div>
@@ -95,23 +103,23 @@
       <div class="card shadow-sm border-0 fade-in" style="background: #ffe6e6;">
         <div class="card-body">
           <span class="badge rounded-pill bg-danger mb-2"><i class="bi bi-person-x"></i> Absents</span>
-          <div class="display-5 fw-bold">{{ stats.absent }}</div>
+          <div class="display-5 fw-bold">{{ stats.absent|default:0 }}</div>
         </div>
       </div>
     </div>
     <div class="col-6 col-md-2 mb-3">
-      <div class="card shadow-sm border-0 fade-in" style="background: #fff3e6;">
+      <div class="card shadow-sm border-0 fade-in" style="background: #fffbe6;">
         <div class="card-body">
-          <span class="badge rounded-pill bg-warning text-dark mb-2"><i class="bi bi-arrow-bar-left"></i> Départs anticipés</span>
-          <div class="display-5 fw-bold">{{ stats.depart_anticipe }}</div>
+          <span class="badge rounded-pill bg-warning mb-2"><i class="bi bi-box-arrow-left"></i> Départs anticipés</span>
+          <div class="display-5 fw-bold">{{ stats.depart_anticipe|default:0 }}</div>
         </div>
       </div>
     </div>
     <div class="col-6 col-md-2 mb-3">
-      <div class="card shadow-sm border-0 fade-in" style="background: #f0e6ff;">
+      <div class="card shadow-sm border-0 fade-in" style="background: #ede6ff;">
         <div class="card-body">
-          <span class="badge rounded-pill bg-primary mb-2"><i class="bi bi-check2-circle"></i> Sorties respectées</span>
-          <div class="display-5 fw-bold">{{ stats.sortie_respectee }}</div>
+          <span class="badge rounded-pill bg-primary mb-2"><i class="bi bi-box-arrow-right"></i> Sorties respectées</span>
+          <div class="display-5 fw-bold">{{ stats.sortie_respectee|default:0 }}</div>
         </div>
       </div>
     </div>
