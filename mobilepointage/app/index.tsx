@@ -10,10 +10,11 @@ import {
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  ScrollView,
 } from 'react-native';
 
-const API_BASE_URL = Constants.expoConfig.extra.API_BASE_URL;
+const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || '';
 
 async function logout(router: any) {
   await SecureStore.deleteItemAsync('employe_id');
@@ -41,6 +42,7 @@ export default function LoginScreen() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       });
+
       const text = await response.text();
       let data;
       try {
@@ -50,104 +52,105 @@ export default function LoginScreen() {
         setLoading(false);
         return;
       }
+
       if (response.ok && data.access) {
-        // Ici tu peux stocker le token si besoin
-        // Récupérer l'employe_id de l'utilisateur connecté
-        try {
-          if (data.access) {
-            // Toujours stocker le token JWT sous la clé 'token'
-            await SecureStore.setItemAsync('token', data.access);
-          }
-          const token = data.access;
-          const meResponse = await fetch(`${API_BASE_URL}/api/pointages/employe/me/`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          const meData = await meResponse.json();
-          if (meResponse.ok && meData.id) {
-            await SecureStore.setItemAsync('employe_id', String(meData.id));
-            router.push('/marquepresence');
-          } else {
-            setError("Impossible de récupérer l'identifiant employé. Contactez l'administrateur.");
-            await SecureStore.deleteItemAsync('employe_id');
-            await SecureStore.deleteItemAsync('token');
-            return;
-          }
-        } catch (e) {
-          setError("Erreur lors de la récupération de l'identifiant employé. Veuillez réessayer.");
-          await SecureStore.deleteItemAsync('employe_id');
-          await SecureStore.deleteItemAsync('token');
-          return;
+        await SecureStore.setItemAsync('token', data.access);
+        const token = data.access;
+        const meResponse = await fetch(`${API_BASE_URL}/api/pointages/employe/me/`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const meData = await meResponse.json();
+
+        if (meResponse.ok && meData.id) {
+          await SecureStore.setItemAsync('employe_id', String(meData.id));
+          router.push('/marquepresence');
+        } else {
+          setError("Impossible de récupérer l'identifiant employé.");
+          await logout(router);
         }
       } else {
         setError(data?.detail || data?.non_field_errors?.[0] || 'Identifiants invalides');
       }
     } catch (e) {
-      if (e instanceof Error) {
-        setError(e.message);
-      } else {
-        setError('Erreur réseau inconnue.');
-      }
+      setError(e instanceof Error ? e.message : 'Erreur réseau inconnue.');
     } finally {
       setLoading(false);
     }
   };
 
-  return (              
+  return (
     <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-      style={styles.container}
+      style={styles.container} 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
     >
-      <View style={styles.container2}> 
-        {/* Affichage de l'URL d'API utilisée pour diagnostic */}
-        <Text style={{ color: 'blue', fontSize: 12, marginBottom: 8 }}>
-          API: {API_BASE_URL}
-        </Text>
-        <Image 
-          source={require('../assets/images/font2.png')} 
-          style={styles.logo} 
-        />
-      </View>
-      <View style={styles.container1}>    
-        <View style={styles.formContainer}>
-          <Text style={styles.title}>
-            Bienvenue 👋 sur notre application de pointage
-          </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Nom d'utilisateur"
-            placeholderTextColor="#888"
-            value={username}
-            onChangeText={setUsername}
-            autoCapitalize="none"
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.container2}>
+          {/* Affichage de l'URL d'API pour debug */}
+          <Text style={styles.apiText}>API: {API_BASE_URL}</Text>
+
+          {/* Image en pleine largeur */}
+          <Image 
+            source={require('../assets/images/font2.png')} 
+            style={styles.logo} 
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Mot de passe"
-            placeholderTextColor="#888"
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-          />
-
-          {error ? <Text style={{color: 'red', marginBottom: 8, textAlign: 'center'}}>{error}</Text> : null}
-
-          <TouchableOpacity
-            style={[styles.button, (!username.trim() || !password.trim() || loading) && {opacity: 0.5}]}
-            onPress={handleLogin}
-            disabled={!username.trim() || !password.trim() || loading}
-          >
-            <Text style={styles.buttonText}>{loading ? 'Connexion...' : 'Connexion'}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={[styles.button, {backgroundColor:'#f87171', marginTop:12}]} onPress={() => logout(router)}>
-            <Text style={styles.buttonText}>Déconnexion</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => router.push('/creationcompte')}>
-            <Text style={styles.link}>Créer un compte</Text>
-          </TouchableOpacity>
         </View>
-      </View>
+
+        <View style={styles.container1}>
+          <View style={styles.formContainer}>
+            <Text style={styles.title}>
+              Bienvenue 👋 sur notre application de pointage
+            </Text>
+
+            {/* Champ Nom d'utilisateur */}
+            <TextInput
+              style={styles.input}
+              placeholder="Nom d'utilisateur"
+              placeholderTextColor="#888"
+              value={username}
+              onChangeText={setUsername}
+              autoCapitalize="none"
+            />
+
+            {/* Champ Mot de passe */}
+            <TextInput
+              style={styles.input}
+              placeholder="Mot de passe"
+              placeholderTextColor="#888"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+            />
+
+            {/* Message d'erreur */}
+            {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+            {/* Bouton Connexion */}
+            <TouchableOpacity
+              style={[styles.button, (!username.trim() || !password.trim() || loading) && {opacity: 0.5}]}
+              onPress={handleLogin}
+              disabled={!username.trim() || !password.trim() || loading}
+            >
+              <Text style={styles.buttonText}>
+                {loading ? 'Connexion...' : 'Connexion'}
+              </Text>
+            </TouchableOpacity>
+
+            {/* Bouton Déconnexion caché mais fonctionnel */}
+            <TouchableOpacity
+              style={[styles.button, styles.hiddenButton]}
+              onPress={() => logout(router)}
+            >
+              <Text style={styles.buttonText}>Déconnexion</Text>
+            </TouchableOpacity>
+
+            {/* Lien Création de compte */}
+            <TouchableOpacity onPress={() => router.push('/creationcompte')}>
+              <Text style={styles.link}>Créer un compte</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
@@ -155,23 +158,38 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+  },
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: 'flex-end',
+    //position: 'relative'
   },
   container2: {
     backgroundColor: '#fff',
   },
   logo: {
-    width: '100%',
+    width: '100%',       // ➤ prend toute la largeur
+    height: 350,
+    resizeMode: 'cover', // ➤ couvre la largeur sans déformation
+    bottom: 70,
+  },
+  apiText: {
+    color: 'black',
+    fontSize: 12,
+    marginBottom: 8,
+    textAlign: 'center',
+    zIndex: 1000,
+    position: 'relative',
+    top: -40,
+    right: 100,
     
-    
-    height: 300,
-    resizeMode: 'contain',
-    marginTop: 60,
   },
   container1: {
-    flex: 1,
     width: '100%',
     backgroundColor: '#fff',
+    position: 'relative',
+    top: -70,
   },
   formContainer: {
     padding: 24,
@@ -190,12 +208,23 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     fontSize: 16,
   },
+  errorText: {
+    color: 'red',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
   button: {
     backgroundColor: '#F0874E',
     borderRadius: 10,
     paddingVertical: 14,
     alignItems: 'center',
     marginBottom: 16,
+  },
+  hiddenButton: {
+    opacity: 0,
+    height: 0,
+    marginBottom: 0,
+    paddingVertical: 0,
   },
   buttonText: {
     color: '#fff',
