@@ -4,7 +4,6 @@
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <div class="container py-4">
-  <h2 class="mb-4">Tableau de bord pointage</h2>
   <nav class="navbar navbar-expand-lg" style="background-color: #ff6600; color: #fff;">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold" style="color: #fff;" href="#">Pointages</a>
@@ -351,46 +350,7 @@
   </div>
 </div>
 
-<!-- SECTION : 📊 Évolution & Analyse RH -->
-<div class="container mx-auto px-2 md:px-8 mb-10">
-  <div class="bg-white dark:bg-gray-900 rounded-xl shadow-xl p-6 md:p-10 mt-8 flex flex-col gap-10">
-    <h2 class="text-2xl md:text-3xl font-bold mb-2 flex items-center gap-2"><span>📊</span> Évolution & Analyse</h2>
-    <!-- 1. Graphiques dynamiques -->
-    <div class="flex flex-col gap-4">
-      <h3 class="text-lg font-semibold mb-2">Évolution des taux (7/30 jours)</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 flex flex-col items-center">
-          <canvas id="presenceChart30" height="100"></canvas>
-          <span class="mt-2 text-sm text-gray-600">Présence (30 jours)</span>
-        </div>
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 flex flex-col items-center">
-          <canvas id="retardChart30" height="100"></canvas>
-          <span class="mt-2 text-sm text-gray-600">Retard (30 jours)</span>
-        </div>
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 flex flex-col items-center">
-          <canvas id="departAnticipeChart30" height="100"></canvas>
-          <span class="mt-2 text-sm text-gray-600">Départ anticipé (30 jours)</span>
-        </div>
-      </div>
-      <script>
-        // Placeholders pour les graphes 30 jours (à remplacer par vraies données)
-        new Chart(document.getElementById('presenceChart30'), {
-          type: 'line',
-          data: { labels: Array.from({length: 30}, (_,i)=>i+1), datasets: [{ label: 'Présence', data: Array(30).fill(0).map(()=>Math.random()*100), borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)', tension: 0.4, fill: true }] },
-          options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100 } } }
-        });
-        new Chart(document.getElementById('retardChart30'), {
-          type: 'bar',
-          data: { labels: Array.from({length: 30}, (_,i)=>i+1), datasets: [{ label: 'Retard', data: Array(30).fill(0).map(()=>Math.random()*40), backgroundColor: '#f59e42', borderRadius: 8 }] },
-          options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 50 } } }
-        });
-        new Chart(document.getElementById('departAnticipeChart30'), {
-          type: 'bar',
-          data: { labels: Array.from({length: 30}, (_,i)=>i+1), datasets: [{ label: 'Départ anticipé', data: Array(30).fill(0).map(()=>Math.random()*30), backgroundColor: '#3b82f6', borderRadius: 8 }] },
-          options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 40 } } }
-        });
-      </script>
-    </div>
+
     <!-- 2. Prévisions IA -->
     <div class="flex flex-col md:flex-row gap-6">
       <div class="flex-1 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 flex flex-col items-center justify-center">
@@ -399,73 +359,12 @@
         <span class="text-2xl font-bold text-red-500">{{ proba_absence|default:'-- %' }}</span>
         <span class="text-xs text-gray-500 mt-1">(Prédiction IA)</span>
       </div>
-      <div class="flex-1 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-        <h4 class="font-semibold mb-1">Employés à risque</h4>
-        <ul class="space-y-1">
-          {% for emp in employes_risque %}
-          <li class="flex items-center gap-2"><span class="inline-block w-2 h-2 rounded-full" style="background: {% if emp.score < 60 %}#ef4444{% elif emp.score < 75 %}#f59e42{% else %}#22c55e{% endif %};"></span> {{ emp.nom }} <span class="text-xs text-gray-400">({{ emp.retards }} retards)</span></li>
-          {% endfor %}
-        </ul>
-      </div>
+     
     </div>
-    <!-- 3. Temps de travail moyen -->
-    <div class="flex flex-col md:flex-row gap-6">
-      <div class="flex-1 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 flex flex-col items-center">
-        <span class="text-2xl">⏰</span>
-        <h4 class="font-semibold mt-2 mb-1">Temps de présence moyen</h4>
-        <span class="text-2xl font-bold">{{ temps_presence_moyen|default:'-- h' }}</span>
-      </div>
-      <div class="flex-1 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 flex flex-col items-center">
-        <span class="text-2xl">⏳</span>
-        <h4 class="font-semibold mt-2 mb-1">Retard moyen par jour</h4>
-        <span class="text-2xl font-bold">{{ retard_moyen|default:'-- min' }}</span>
-      </div>
-    </div>
-    <!-- 4. Classement des employés -->
-    <div class="flex flex-col md:flex-row gap-6">
-      <div class="flex-1 bg-green-50 dark:bg-green-900 rounded-lg p-4">
-        <h4 class="font-semibold mb-2 flex items-center gap-1">🏆 Top 3 ponctuels</h4>
-        <ul class="space-y-1">
-          {% for emp in top_ponctuels %}
-          <li class="flex items-center gap-2"><img src="{{ emp.photo_url|default:'/static/img/avatar.png' }}" alt="avatar" class="w-6 h-6 rounded-full"> {{ emp.nom }}</li>
-          {% empty %}<li class="text-gray-400">Aucun</li>{% endfor %}
-        </ul>
-      </div>
-      <div class="flex-1 bg-red-50 dark:bg-red-900 rounded-lg p-4">
-        <h4 class="font-semibold mb-2 flex items-center gap-1">🚨 Top 3 retardataires / absents</h4>
-        <ul class="space-y-1">
-          {% for emp in top_retardataires %}
-          <li class="flex items-center gap-2"><img src="{{ emp.photo_url|default:'/static/img/avatar.png' }}" alt="avatar" class="w-6 h-6 rounded-full"> {{ emp.nom }}</li>
-          {% empty %}<li class="text-gray-400">Aucun</li>{% endfor %}
-        </ul>
-      </div>
-    </div>
+
+    
     <!-- 5. Comparaison par agence / service -->
-    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-      <h4 class="font-semibold mb-2 flex items-center gap-1">🎯 Taux de présence par agence (%)</h4>
-      <canvas id="comparaisonAgenceChart" height="80"></canvas>
-      <script>
-        const agencesLabels = {{ comparaison_agences_labels|safe }};
-        const agencesData = {{ comparaison_agences_data|safe }};
-        const agencesColors = agencesLabels.map((_, i) => ['#22c55e', '#f59e42', '#3b82f6', '#a855f7', '#f43f5e', '#0ea5e9', '#facc15'][i % 7]);
-        new Chart(document.getElementById('comparaisonAgenceChart'), {
-          type: 'bar',
-          data: {
-            labels: agencesLabels,
-            datasets: [{
-              label: 'Taux de présence (%)',
-              data: agencesData,
-              backgroundColor: agencesColors
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: { legend: { display: false } },
-            scales: { y: { beginAtZero: true, max: 100 } }
-          }
-        });
-      </script>
-    </div>
+  
     <!-- 6. Alertes dynamiques -->
     <div class="flex flex-col md:flex-row gap-6">
       {% if alerte_absents %}
@@ -481,51 +380,12 @@
       </div>
       {% endif %}
     </div>
-    <!-- 7. Rafraîchissement automatique -->
-    <div class="flex flex-col md:flex-row gap-6 items-center">
-      <div class="flex-1 flex items-center gap-3 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-        <span class="text-2xl">🔄</span>
-        <span class="font-semibold">Prochaine actualisation dans :</span>
-        <span id="refresh-timer" class="font-mono text-lg">03:00</span>
-        <button onclick="location.reload()" class="ml-4 px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition">Rafraîchir</button>
-      </div>
-      <script>
-        // Minuteur 3 min
-        let t = 180;
-        const timer = document.getElementById('refresh-timer');
-        setInterval(()=>{ t--; let m=Math.floor(t/60),s=t%60; timer.textContent=`${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; if(t<=0) location.reload(); }, 1000);
-      </script>
-      <!-- 8. Thème personnalisable -->
-      <div class="flex-1 flex items-center justify-center gap-3">
-        <span class="text-2xl">🎨</span>
-        <span>Thème :</span>
-        <button id="theme-toggle" class="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">Basculer mode</button>
-      </div>
-      <script>
-        // Switch dark/light mode
-        document.getElementById('theme-toggle').onclick = function() {
-          document.documentElement.classList.toggle('dark');
-        };
-      </script>
+ 
     </div>
     <!-- 9. Export des données -->
-    <div class="flex flex-col md:flex-row gap-6 items-center">
-      <div class="flex-1 flex items-center gap-3 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-        <span class="text-2xl">🗂️</span>
-        <span class="font-semibold">Exporter les données :</span>
-        <a href="?export=pdf" class="px-3 py-1 rounded bg-red-500 text-white hover:bg-red-600 transition">PDF</a>
-        <a href="?export=excel" class="px-3 py-1 rounded bg-green-500 text-white hover:bg-green-600 transition">Excel</a>
-      </div>
-    </div>
+   
     <!-- 10. Calendrier interactif -->
-    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 flex flex-col items-center">
-      <h4 class="font-semibold mb-2 flex items-center gap-1">📅 Calendrier interactif</h4>
-      <div class="w-full max-w-lg">
-        <!-- Placeholder calendrier -->
-        <div class="bg-white dark:bg-gray-900 rounded-lg shadow p-4 flex flex-col items-center">
-          <span class="text-gray-400">(Calendrier interactif à venir ici...)</span>
-        </div>
-      </div>
+  
     </div>
   </div>
 </div>

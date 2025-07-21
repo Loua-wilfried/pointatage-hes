@@ -370,6 +370,13 @@ def tableau_de_bord_pointage(request):
         pointages_list.append(p)
         employe_ids_pointes.add(p.employe.id)
 
+    # Calcul du nombre de présents (employés ayant scanné une entrée par QR code)
+    nb_presents = Pointage.objects.filter(
+        date=date_cible,
+        type__in=['arrivee', 'entree'],
+        source__icontains='qr'
+    ).values('employe').distinct().count()
+
     # Ajouter les absents virtuels (employés sans pointage ce jour-là)
     for emp in filtered_employes:
         if emp.id not in employe_ids_pointes:
@@ -577,6 +584,7 @@ def tableau_de_bord_pointage(request):
         'top_present': top_present,
         'comparaison_agences_labels': comparaison_agences_labels,
         'comparaison_agences_data': comparaison_agences_data,
+        'nb_presents': nb_presents,
     })
 
 

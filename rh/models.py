@@ -207,6 +207,11 @@ class Pointage(models.Model):
     commentaire = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['employe', 'date', 'type'], name='unique_pointage_employe_date_type')
+        ]
+
     def __str__(self):
         return f"{self.employe} - {self.type} {self.date} {self.heure} ({self.source})"
 
