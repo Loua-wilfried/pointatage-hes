@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import Constants from 'expo-constants';
 import {
@@ -16,7 +16,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-const API_BASE_URL = Constants.expoConfig.extra.API_BASE_URL;
+const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || 'http://10.0.2.2:8000';
 
 export default function CreationCompte() {
   const [nom, setNom] = useState('');
@@ -34,27 +34,108 @@ export default function CreationCompte() {
   });
   const router = useRouter();
 
+  // Types pour les dropdowns
+  type DropdownItem = { label: string; value: string };
+
   // Picker pour la fonction
   const [openFonction, setOpenFonction] = useState(false);
   const [fonction, setFonction] = useState(null);
-  const [itemsFonction, setItemsFonction] = useState([
-    { label: 'Directeur Général', value: 'Directeur Général' },
-    { label: 'Responsable Informatique', value: 'Responsable Informatique' },
-    { label: 'Secrétaire', value: 'Secrétaire' },
-    { label: 'Comptable', value: 'Comptable' },
-    { label: 'Agent Guichet', value: 'Agent Guichet' },
-  ]);
+  const [itemsFonction, setItemsFonction] = useState<DropdownItem[]>([]);
+  const [loadingRoles, setLoadingRoles] = useState(true);
 
   // Picker pour l'agence
   const [openAgence, setOpenAgence] = useState(false);
   const [agence, setAgence] = useState(null);
-  const [itemsAgence, setItemsAgence] = useState([
-    { label: 'Agence1', value: 'Agence Principale' },
-    { label: 'Agence2', value: 'Agence Secondaire' },
-    { label: 'Agence3', value: 'Agence Régionale Nord' },
-    { label: 'Agence4', value: 'Agence Régionale Sud' },
-    { label: 'Agence5', value: 'Agence Mobile' },
-  ]);
+  const [itemsAgence, setItemsAgence] = useState<DropdownItem[]>([]);
+  const [loadingAgences, setLoadingAgences] = useState(true);
+
+  // Récupération dynamique des rôles depuis l'API
+  const fetchRoles = async () => {
+    try {
+      setLoadingRoles(true);
+      console.log('🔍 Tentative de récupération des rôles depuis:', `${API_BASE_URL}/api/roles/`);
+      const response = await fetch(`${API_BASE_URL}/api/roles/`);
+      console.log('📡 Réponse API rôles:', response.status, response.statusText);
+      if (response.ok) {
+        const roles = await response.json();
+        console.log('✅ Rôles récupérés:', roles.length, 'rôles');
+        const formattedRoles = roles.map((role: any) => ({
+          label: role.label,
+          value: role.value
+        }));
+        setItemsFonction(formattedRoles);
+        console.log('📝 Rôles formatés pour dropdown:', formattedRoles);
+      } else {
+        console.error('Erreur lors de la récupération des rôles:', response.status);
+        // Fallback vers les données statiques en cas d'erreur
+        setItemsFonction([
+          { label: 'Directeur Général', value: 'Directeur Général' },
+          { label: 'Responsable Informatique', value: 'Responsable Informatique' },
+          { label: 'Secrétaire', value: 'Secrétaire' },
+          { label: 'Comptable', value: 'Comptable' },
+          { label: 'Agent Guichet', value: 'Agent Guichet' },
+        ]);
+      }
+    } catch (error) {
+      console.error('Erreur réseau lors de la récupération des rôles:', error);
+      // Fallback vers les données statiques
+      setItemsFonction([
+        { label: 'Directeur Général', value: 'Directeur Général' },
+        { label: 'Responsable Informatique', value: 'Responsable Informatique' },
+        { label: 'Secrétaire', value: 'Secrétaire' },
+        { label: 'Comptable', value: 'Comptable' },
+        { label: 'Agent Guichet', value: 'Agent Guichet' },
+      ]);
+    } finally {
+      setLoadingRoles(false);
+    }
+  };
+
+  // Récupération dynamique des agences depuis l'API
+  const fetchAgences = async () => {
+    try {
+      setLoadingAgences(true);
+      console.log('🔍 Tentative de récupération des agences depuis:', `${API_BASE_URL}/api/agences/`);
+      const response = await fetch(`${API_BASE_URL}/api/agences/`);
+      console.log('📡 Réponse API agences:', response.status, response.statusText);
+      if (response.ok) {
+        const agences = await response.json();
+        const formattedAgences = agences.map((agence: any) => ({
+          label: agence.label,
+          value: agence.value
+        }));
+        setItemsAgence(formattedAgences);
+      } else {
+        console.error('Erreur lors de la récupération des agences:', response.status);
+        // Fallback vers les données statiques en cas d'erreur
+        setItemsAgence([
+          { label: 'Agence Principale', value: 'Agence Principale' },
+          { label: 'Agence Secondaire', value: 'Agence Secondaire' },
+          { label: 'Agence Régionale Nord', value: 'Agence Régionale Nord' },
+          { label: 'Agence Régionale Sud', value: 'Agence Régionale Sud' },
+          { label: 'Agence Mobile', value: 'Agence Mobile' },
+        ]);
+      }
+    } catch (error) {
+      console.error('Erreur réseau lors de la récupération des agences:', error);
+      // Fallback vers les données statiques
+      setItemsAgence([
+        { label: 'Agence Principale', value: 'Agence Principale' },
+        { label: 'Agence Secondaire', value: 'Agence Secondaire' },
+        { label: 'Agence Régionale Nord', value: 'Agence Régionale Nord' },
+        { label: 'Agence Régionale Sud', value: 'Agence Régionale Sud' },
+        { label: 'Agence Mobile', value: 'Agence Mobile' },
+      ]);
+    } finally {
+      setLoadingAgences(false);
+    }
+  };
+
+  // useEffect pour charger les données au montage du composant
+  useEffect(() => {
+    fetchRoles();
+    fetchAgences();
+  }, []);
 
   const validateNom = (nom: string) => {
     return nom.trim().split(' ').length >= 2;

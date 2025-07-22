@@ -14,7 +14,7 @@ import {
   ScrollView,
 } from 'react-native';
 
-const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || '';
+const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || 'http://10.0.2.2:8000';
 
 async function logout(router: any) {
   await SecureStore.deleteItemAsync('employe_id');

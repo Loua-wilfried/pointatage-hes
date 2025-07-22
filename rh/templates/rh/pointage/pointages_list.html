@@ -53,7 +53,7 @@
         {% endfor %}
       </select>
       <input class="form-control" type="date" name="date" value="{{ request.GET.date }}" style="min-width: 140px;" placeholder="Date début">
-      <input class="form-control" type="date" name="date_fin" value="{{ request.GET.date_fin }}" style="min-width: 140px; display: {% if request.GET.periode == 'personnalise' %}block{% else %}none{% endif %};" placeholder="Date fin" id="date_fin">
+      <input class="form-control{% if request.GET.periode == 'personnalise' %} d-block{% else %} d-none{% endif %}" type="date" name="date_fin" value="{{ request.GET.date_fin }}" style="min-width: 140px;" placeholder="Date fin" id="date_fin">
       <input class="form-control" type="time" name="heure_min" value="{{ request.GET.heure_min }}" style="min-width: 110px;" placeholder="Début" title="Heure début">
 <input class="form-control" type="time" name="heure_max" value="{{ request.GET.heure_max }}" style="min-width: 110px;" placeholder="Fin" title="Heure fin">
       <select class="form-select" name="type" style="min-width: 120px;">

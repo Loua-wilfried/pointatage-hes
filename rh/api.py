@@ -1,20 +1,16 @@
 from rest_framework import serializers, viewsets, permissions, authentication, routers
-from rest_framework.permissions import BasePermission
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rh.models import Pointage
+from rest_framework.permissions import BasePermission
+from django.shortcuts import get_object_or_404
+from .models import Pointage
+from .serializers import PointageSerializer, AgenceSerializer, RoleSerializer
 from agences.models import Agence
+from roles_permissions.models import Role
 from django_filters.rest_framework import DjangoFilterBackend
 from django.urls import path
 from .api_reporting import ReportingRHAPIView
 from institutions.models import Employe
-from roles_permissions.models import Role
-
-class PointageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Pointage
-        # Ajout du champ 'agence' pour exposer l'agence liée au pointage
-        fields = ['id', 'employe', 'agence', 'date', 'heure', 'type', 'source', 'commentaire', 'created_at']
 
 class RoleBasedPointagePermission(BasePermission):
     """
@@ -217,10 +213,27 @@ class PointageViewSet(viewsets.ModelViewSet):
             date=request.data.get('date') or None,
             heure=request.data.get('heure') or None,
             type=type_pointage,
-            source='automatique',
             commentaire=f'Pointage géolocalisé ({latitude}, {longitude})'
         )
         return Response(PointageSerializer(pointage).data, status=201)
+
+# ViewSets pour les données de référence mobile
+class AgenceViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet pour les agences - utilisé par l'app mobile pour les listes déroulantes
+    """
+    serializer_class = AgenceSerializer
+    
+    def get_queryset(self):
+        # Retourner seulement les agences actives
+        return Agence.objects.filter(statut='active').order_by('nom')
+
+class RoleViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet pour les rôles/fonctions - utilisé par l'app mobile pour les listes déroulantes
+    """
+    serializer_class = RoleSerializer
+    queryset = Role.objects.all().order_by('nom_role')
 
 urlpatterns = [
     path('reporting/', ReportingRHAPIView.as_view(), name='api_reporting_rh'),
