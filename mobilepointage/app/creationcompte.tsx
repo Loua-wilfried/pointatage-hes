@@ -15,6 +15,8 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { useNavigation } from 'expo-router';
+import { useLayoutEffect } from 'react';
 
 const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || 'http://10.0.2.2:8000';
 
@@ -24,6 +26,7 @@ export default function CreationCompte() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [numero, setNumero] = useState('');
   const [errors, setErrors] = useState({
     nom: '',
     email: '',
@@ -31,8 +34,30 @@ export default function CreationCompte() {
     confirmPassword: '',
     fonction: '',
     agence: '',
+    numero: '',
+    nomUtilisateur: '', // Ajouté
   });
   const router = useRouter();
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      title: "",
+      headerStyle: {
+        backgroundColor: '#F0874E',      // Couleur de fond du header
+        shadowColor: '#fff',             // Couleur de l'ombre (iOS)
+        shadowOffset: { height: 4 },     // Décalage vertical de l'ombre (iOS)
+        shadowOpacity: 1,                // Opacité de l'ombre (iOS)
+        shadowRadius: 8,                 // Flou de l'ombre (iOS)
+        elevation: 10,                   // Ombre portée (Android)
+        borderBottomWidth: 0,            // Masque la bordure du bas (iOS)
+        borderBottomColor: "transparent", // Bordure du bas invisible
+      },
+      headerTitleStyle: { color: '#fff', fontWeight: 'bold', fontSize: 22 },
+      headerTintColor: '#fff',
+      headerTitleAlign: 'center',
+    });
+  }, [navigation]);
 
   // Types pour les dropdowns
   type DropdownItem = { label: string; value: string };
@@ -151,6 +176,8 @@ export default function CreationCompte() {
     return passwordRegex.test(password);
   };
 
+  const [nomUtilisateur, setNomUtilisateur] = useState('');
+
   const validateForm = () => {
     let isValid = true;
     const newErrors = {
@@ -160,6 +187,8 @@ export default function CreationCompte() {
       confirmPassword: '',
       fonction: '',
       agence: '',
+      numero: '',
+      nomUtilisateur: '', // Ajouté
     };
 
     if (!nom.trim()) {
@@ -169,6 +198,7 @@ export default function CreationCompte() {
       newErrors.nom = 'Veuillez entrer votre nom et prénom (au moins 2 mots)';
       isValid = false;
     }
+    
 
     if (!email.trim()) {
       newErrors.email = "L'email est requis";
@@ -201,6 +231,16 @@ export default function CreationCompte() {
 
     if (!agence) {
       newErrors.agence = 'Veuillez sélectionner une agence';
+      isValid = false;
+    }
+
+    if (!numero || numero.length !== 10) {
+      newErrors.numero = 'Le numéro doit contenir exactement 10 chiffres';
+      isValid = false;
+    }
+
+    if (!nomUtilisateur.trim()) {
+      newErrors.nomUtilisateur = "Le nom d'utilisateur est requis";
       isValid = false;
     }
 
@@ -268,6 +308,22 @@ export default function CreationCompte() {
             />
             {errors.nom ? (
               <Text style={styles.errorText}>{errors.nom}</Text>
+            ) : null}
+
+            <TextInput
+              style={[styles.input, errors.nomUtilisateur ? styles.inputError : null]}
+              placeholder="Nom d'utilisateur"
+              placeholderTextColor="#888"
+              value={nomUtilisateur}
+              onChangeText={text => {
+                setNomUtilisateur(text);
+                setErrors({ ...errors, nomUtilisateur: '' });
+              }}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+            {errors.nomUtilisateur ? (
+              <Text style={styles.errorText}>{errors.nomUtilisateur}</Text>
             ) : null}
 
             <TextInput
@@ -347,6 +403,24 @@ export default function CreationCompte() {
             </View>
             {errors.confirmPassword ? (
               <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+            ) : null}
+
+            <TextInput
+              style={[styles.input, errors.numero ? styles.inputError : null]}
+              placeholder="numéro"
+              placeholderTextColor="#888"
+              autoCapitalize="none"
+              keyboardType="numeric"
+              maxLength={10}
+              value={numero}
+              onChangeText={text => {
+                const onlyNums = text.replace(/[^0-9]/g, '');
+                setNumero(onlyNums);
+                setErrors({ ...errors, numero: '' });
+              }}
+            />
+            {errors.numero ? (
+              <Text style={styles.errorText}>{errors.numero}</Text>
             ) : null}
 
             {/* Picker pour la fonction */}
