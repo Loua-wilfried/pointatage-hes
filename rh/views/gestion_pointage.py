@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse
 from django.conf import settings
+from datetime import datetime, date, timedelta, time
 import qrcode
 import io
 import base64
@@ -41,12 +42,57 @@ def pointages_list(request):
     source = request.GET.get('source')
     statut = request.GET.get('statut')
 
-    # Préparer la date cible (aujourd'hui par défaut)
-    from datetime import date as date_cls
+    # Gestion des périodes
+    import calendar
+    
+    periode = request.GET.get('periode', 'jour')
+    date_fin_selected = request.GET.get('date_fin')
+    
     if date_selected:
-        date_cible = date_selected
+        date_debut = datetime.strptime(date_selected, "%Y-%m-%d").date()
     else:
-        date_cible = date_cls.today().isoformat()
+        date_debut = datetime.now().date()
+    # Calculer la plage de dates selon la période
+    if periode == 'jour':
+        date_fin = date_debut
+    elif periode == 'semaine':
+        # Début de semaine (lundi)
+        jours_depuis_lundi = date_debut.weekday()
+        date_debut = date_debut - timedelta(days=jours_depuis_lundi)
+        date_fin = date_debut + timedelta(days=6)
+    elif periode == 'mois':
+        # Début et fin du mois
+        date_debut = date_debut.replace(day=1)
+        if date_debut.month == 12:
+            date_fin = date_debut.replace(year=date_debut.year + 1, month=1) - timedelta(days=1)
+        else:
+            date_fin = date_debut.replace(month=date_debut.month + 1) - timedelta(days=1)
+    elif periode == 'trimestre':
+        # Début et fin du trimestre
+        mois_actuel = date_debut.month
+        if mois_actuel <= 3:  # Q1: Jan-Mar
+            date_debut = date_debut.replace(month=1, day=1)
+            date_fin = date_debut.replace(month=3, day=31)
+        elif mois_actuel <= 6:  # Q2: Apr-Jun
+            date_debut = date_debut.replace(month=4, day=1)
+            date_fin = date_debut.replace(month=6, day=30)
+        elif mois_actuel <= 9:  # Q3: Jul-Sep
+            date_debut = date_debut.replace(month=7, day=1)
+            date_fin = date_debut.replace(month=9, day=30)
+        else:  # Q4: Oct-Dec
+            date_debut = date_debut.replace(month=10, day=1)
+            date_fin = date_debut.replace(month=12, day=31)
+    elif periode == 'annee':
+        # Début et fin de l'année
+        date_debut = date_debut.replace(month=1, day=1)
+        date_fin = date_debut.replace(month=12, day=31)
+    elif periode == 'personnalise' and date_fin_selected:
+        date_fin = datetime.strptime(date_fin_selected, "%Y-%m-%d").date()
+    else:
+        date_fin = date_debut
+    
+    # Pour compatibilité avec le code existant
+    date_cible = date_debut.isoformat()
 
     # Appliquer les filtres employés/fonction/agence
     employes = Employe.objects.all()
@@ -69,45 +115,53 @@ def pointages_list(request):
         pointages = pointages.filter(heure__lte=heure_max)
     # On n'applique plus le filtre source ici, mais après la normalisation plus bas
 
-    # Calcul du statut pour chaque employé (filtré ou non)
+    # Calcul du statut pour chaque employé sur la période
     from types import SimpleNamespace
-    from datetime import time, datetime
     pointages_list = []
-    for emp in employes:
-        entrees = Pointage.objects.filter(employe=emp, date=date_cible, type='entree').order_by('heure')
-        sorties = Pointage.objects.filter(employe=emp, date=date_cible, type__in=['depart', 'sortie']).order_by('heure')
-        if entrees.exists():
-            premier_entree = entrees.first()
-            if premier_entree.heure <= time(8, 0, 0):
-                statut_entree = 'a_lheure'
-            else:
-                statut_entree = 'retard'
-            premier_entree.statut = statut_entree
-            pointages_list.append(premier_entree)
-            if sorties.exists():
-                derniere_sortie = sorties.last()
-                if derniere_sortie.heure < time(17, 0, 0):
-                    statut_sortie = 'depart_anticipe'
-                elif time(17, 0, 0) <= derniere_sortie.heure <= time(18, 0, 0):
-                    statut_sortie = 'sortie_respectee'
+    statistiques_data = {'presences': 0, 'a_lheure': 0, 'retards': 0, 'absences': 0, 'departs_anticipes': 0, 'sorties_respectees': 0}
+    
+    # Pour chaque employé, analyser chaque jour de la période
+    current_date = date_debut
+    while current_date <= date_fin:
+        for emp in employes:
+            entrees = Pointage.objects.filter(employe=emp, date=current_date, type='entree').order_by('heure')
+            sorties = Pointage.objects.filter(employe=emp, date=current_date, type__in=['depart', 'sortie']).order_by('heure')
+            if entrees.exists():
+                premier_entree = entrees.first()
+                if premier_entree.heure <= time(8, 0, 0):
+                    statut_entree = 'a_lheure'
+                    statistiques_data['a_lheure'] += 1
                 else:
-                    statut_sortie = 'depart_supplementaire'
-                derniere_sortie.statut = statut_sortie
-                pointages_list.append(derniere_sortie)
-        else:
-            absent_virtual = SimpleNamespace()
-            absent_virtual.employe = emp
-            # date_cible est soit str soit date, on force date
-            if isinstance(date_cible, str):
-                absent_virtual.date = datetime.strptime(date_cible, "%Y-%m-%d").date()
+                    statut_entree = 'retard'
+                    statistiques_data['retards'] += 1
+                premier_entree.statut = statut_entree
+                pointages_list.append(premier_entree)
+                statistiques_data['presences'] += 1
+                
+                if sorties.exists():
+                    derniere_sortie = sorties.last()
+                    if derniere_sortie.heure < time(17, 0, 0):
+                        statut_sortie = 'depart_anticipe'
+                        statistiques_data['departs_anticipes'] += 1
+                    elif time(17, 0, 0) <= derniere_sortie.heure <= time(18, 0, 0):
+                        statut_sortie = 'sortie_respectee'
+                        statistiques_data['sorties_respectees'] += 1
+                    else:
+                        statut_sortie = 'depart_supplementaire'
+                    derniere_sortie.statut = statut_sortie
+                    pointages_list.append(derniere_sortie)
             else:
-                absent_virtual.date = date_cible
-            absent_virtual.heure = None
-            absent_virtual.type = ''
-            absent_virtual.source = ''
-            absent_virtual.agence = getattr(emp, 'agence', None)
-            absent_virtual.statut = 'absent'
-            pointages_list.append(absent_virtual)
+                absent_virtual = SimpleNamespace()
+                absent_virtual.employe = emp
+                absent_virtual.date = current_date
+                absent_virtual.heure = None
+                absent_virtual.type = ''
+                absent_virtual.source = ''
+                absent_virtual.agence = getattr(emp, 'agence', None)
+                absent_virtual.statut = 'absent'
+                pointages_list.append(absent_virtual)
+                statistiques_data['absences'] += 1
+        current_date += timedelta(days=1)
 
     # Mapping des variantes de source vers la valeur canonique
     def normalize_source(val):
@@ -223,6 +277,12 @@ def pointages_list(request):
         'employes': employes,
         'fonctions': fonctions,
         'agences': agences,
+        'statistiques': statistiques_data,
+        'periode_info': {
+            'periode': periode,
+            'date_debut': date_debut,
+            'date_fin': date_fin,
+        }
     })
 
 @login_required

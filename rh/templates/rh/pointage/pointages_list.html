@@ -37,13 +37,23 @@
           <option value="{{ f.id }}" {% if request.GET.fonction == f.id|stringformat:'s' %}selected{% endif %}>{{ f.nom_role }}</option>
         {% endfor %}
       </select>
+      <!-- Filtre Période - Ajouté entre Fonction et Agence -->
+      <select class="form-select" name="periode" style="min-width: 140px; background-color: #f8f9fa;">
+        <option value="jour" {% if request.GET.periode == 'jour' or not request.GET.periode %}selected{% endif %}>Jour</option>
+        <option value="semaine" {% if request.GET.periode == 'semaine' %}selected{% endif %}>Semaine</option>
+        <option value="mois" {% if request.GET.periode == 'mois' %}selected{% endif %}>Mois</option>
+        <option value="trimestre" {% if request.GET.periode == 'trimestre' %}selected{% endif %}>Trimestre</option>
+        <option value="annee" {% if request.GET.periode == 'annee' %}selected{% endif %}>Année</option>
+        <option value="personnalise" {% if request.GET.periode == 'personnalise' %}selected{% endif %}>Personnalisé</option>
+      </select>
       <select class="form-select" name="agence" style="min-width: 140px;">
         <option value="">Agence</option>
         {% for a in agences %}
           <option value="{{ a.id }}" {% if request.GET.agence == a.id|stringformat:'s' %}selected{% endif %}>{{ a.nom }}</option>
         {% endfor %}
       </select>
-      <input class="form-control" type="date" name="date" value="{{ request.GET.date }}" style="min-width: 140px;">
+      <input class="form-control" type="date" name="date" value="{{ request.GET.date }}" style="min-width: 140px;" placeholder="Date début">
+      <input class="form-control" type="date" name="date_fin" value="{{ request.GET.date_fin }}" style="min-width: 140px; display: {% if request.GET.periode == 'personnalise' %}block{% else %}none{% endif %};" placeholder="Date fin" id="date_fin">
       <input class="form-control" type="time" name="heure_min" value="{{ request.GET.heure_min }}" style="min-width: 110px;" placeholder="Début" title="Heure début">
 <input class="form-control" type="time" name="heure_max" value="{{ request.GET.heure_max }}" style="min-width: 110px;" placeholder="Fin" title="Heure fin">
       <select class="form-select" name="type" style="min-width: 120px;">
@@ -142,5 +152,75 @@
     }
   }
 </style>
+
+<!-- Section Statistiques Totales -->
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header" style="background-color: #ff6600; color: white;">
+        <h5 class="mb-0"><i class="fas fa-chart-bar"></i> Statistiques de la Période</h5>
+      </div>
+      <div class="card-body">
+        <div class="row text-center">
+          <div class="col-md-2 col-sm-4 col-6 mb-3">
+            <div class="bg-success text-white p-3 rounded">
+              <h4>{{ statistiques.presences|default:0 }}</h4>
+              <small>Présences</small>
+            </div>
+          </div>
+          <div class="col-md-2 col-sm-4 col-6 mb-3">
+            <div class="bg-primary text-white p-3 rounded">
+              <h4>{{ statistiques.a_lheure|default:0 }}</h4>
+              <small>À l'heure</small>
+            </div>
+          </div>
+          <div class="col-md-2 col-sm-4 col-6 mb-3">
+            <div class="bg-warning text-white p-3 rounded">
+              <h4>{{ statistiques.retards|default:0 }}</h4>
+              <small>Retards</small>
+            </div>
+          </div>
+          <div class="col-md-2 col-sm-4 col-6 mb-3">
+            <div class="bg-danger text-white p-3 rounded">
+              <h4>{{ statistiques.absences|default:0 }}</h4>
+              <small>Absences</small>
+            </div>
+          </div>
+          <div class="col-md-2 col-sm-4 col-6 mb-3">
+            <div class="bg-info text-white p-3 rounded">
+              <h4>{{ statistiques.departs_anticipes|default:0 }}</h4>
+              <small>Départs anticipés</small>
+            </div>
+          </div>
+          <div class="col-md-2 col-sm-4 col-6 mb-3">
+            <div class="bg-secondary text-white p-3 rounded">
+              <h4>{{ statistiques.sorties_respectees|default:0 }}</h4>
+              <small>Sorties respectées</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Gestion de l'affichage du champ date_fin
+document.addEventListener('DOMContentLoaded', function() {
+    const periodeSelect = document.querySelector('select[name="periode"]');
+    const dateFinInput = document.getElementById('date_fin');
+    
+    if (periodeSelect && dateFinInput) {
+        periodeSelect.addEventListener('change', function() {
+            if (this.value === 'personnalise') {
+                dateFinInput.style.display = 'block';
+            } else {
+                dateFinInput.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
+
 </div>
 {% endblock %}
