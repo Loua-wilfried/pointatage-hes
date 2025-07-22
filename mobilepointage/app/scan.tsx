@@ -1,14 +1,35 @@
 import * as SecureStore from 'expo-secure-store';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { router } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 import { ArrowLeft, Camera, CircleAlert as AlertCircle } from 'lucide-react-native';
 import Constants from 'expo-constants';
 
-const API_BASE_URL = Constants.expoConfig.extra.API_BASE_URL;
+const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || '';
 
 export default function ScanScreen() {
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      title: "",
+      headerStyle: {
+        backgroundColor: '#fff',      // Couleur de fond du header
+        shadowColor: '#fff',             // Couleur de l'ombre (iOS)
+        shadowOffset: { height: 4 },     // Décalage vertical de l'ombre (iOS)
+        shadowOpacity: 1,                // Opacité de l'ombre (iOS)
+        shadowRadius: 8,                 // Flou de l'ombre (iOS)
+        elevation: 10,                   // Ombre portée (Android)
+        borderBottomWidth: 0,            // Masque la bordure du bas (iOS)
+        borderBottomColor: "transparent", // Bordure du bas invisible
+      },
+      headerTitleStyle: { color: '#fff', fontWeight: 'bold', fontSize: 22 },
+      headerTintColor: '#000',
+      headerTitleAlign: 'center',
+    });
+  }, [navigation]);
+
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
@@ -96,10 +117,6 @@ export default function ScanScreen() {
           >
             <Text style={styles.permissionButtonText}>Autoriser la caméra</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
-            <ArrowLeft size={20} color="#6366f1" />
-            <Text style={styles.backButtonText}>Retour</Text>
-          </TouchableOpacity>
         </View>
       </View>
     );
@@ -108,10 +125,6 @@ export default function ScanScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
-          <ArrowLeft size={20} color="#6366f1" />
-          <Text style={styles.backButtonText}>Retour</Text>
-        </TouchableOpacity>
         <Text style={styles.headerTitle}>Scan QR Code</Text>
         <View style={styles.placeholder} />
       </View>
@@ -207,21 +220,13 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     backgroundColor: '#fff',
   },
-  backButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 8,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: '#6366f1',
-    marginLeft: 8,
-    fontWeight: '600',
-  },
+
   headerTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000',
+    position: 'relative',
+    left: 120,
   },
   placeholder: {
     width: 60,

@@ -2,6 +2,8 @@ import * as SecureStore from 'expo-secure-store';
 import React, { useState } from 'react';
 import { useRouter } from 'expo-router';
 import Constants from 'expo-constants';
+import { useNavigation } from 'expo-router';
+import { useLayoutEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -24,10 +26,31 @@ async function logout(router: any) {
 
 export default function LoginScreen() {
   const router = useRouter();
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      title: "",
+      headerStyle: {
+        backgroundColor: '#F0874E',      // Couleur de fond du header
+        shadowColor: '#fff',             // Couleur de l'ombre (iOS)
+        shadowOffset: { height: 4 },     // Décalage vertical de l'ombre (iOS)
+        shadowOpacity: 1,                // Opacité de l'ombre (iOS)
+        shadowRadius: 8,                 // Flou de l'ombre (iOS)
+        elevation: 10,                   // Ombre portée (Android)
+        borderBottomWidth: 0,  
+        borderBottomColor: "transparent",          // Masque la bordure du bas (iOS)
+      },
+      headerTitleStyle: { color: '#fff', fontWeight: 'bold', fontSize: 22 },
+      headerTintColor: '#fff',
+      headerTitleAlign: 'center',
+    });
+  }, [navigation]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
 
   const handleLogin = async () => {
     setError('');
@@ -112,6 +135,7 @@ export default function LoginScreen() {
               autoCapitalize="none"
             />
 
+
             {/* Champ Mot de passe */}
             <TextInput
               style={styles.input}
@@ -181,7 +205,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     zIndex: 1000,
     position: 'relative',
-    top: -40,
+    bottom: -650,
     right: 100,
     
   },
