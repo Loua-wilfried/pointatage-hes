@@ -58,19 +58,30 @@ export default function CreationCompte() {
       headerTitleAlign: 'center',
     });
   }, [navigation]);
+<<<<<<< HEAD
 
   // Types pour les dropdowns
   type DropdownItem = { label: string; value: string };
+=======
+>>>>>>> 2f70393cb21189d47d861262170a95f3b80d2e9d
 
   // Picker pour la fonction
   const [openFonction, setOpenFonction] = useState(false);
   const [fonction, setFonction] = useState(null);
+<<<<<<< HEAD
   const [itemsFonction, setItemsFonction] = useState<DropdownItem[]>([]);
   const [loadingRoles, setLoadingRoles] = useState(true);
+=======
+  const [itemsFonction, setItemsFonction] = useState([
+    { label: 'Directeur Général', value: 'Directeur Général' },
+    { label: 'Responsable Informatique', value: 'Responsable Informatique' },
+  ]);
+>>>>>>> 2f70393cb21189d47d861262170a95f3b80d2e9d
 
   // Picker pour l'agence
   const [openAgence, setOpenAgence] = useState(false);
   const [agence, setAgence] = useState(null);
+<<<<<<< HEAD
   const [itemsAgence, setItemsAgence] = useState<DropdownItem[]>([]);
   const [loadingAgences, setLoadingAgences] = useState(true);
 
@@ -161,6 +172,11 @@ export default function CreationCompte() {
     fetchRoles();
     fetchAgences();
   }, []);
+=======
+  const [itemsAgence, setItemsAgence] = useState([
+    { label: 'Agence1', value: 'Agence Principale' },
+  ]);
+>>>>>>> 2f70393cb21189d47d861262170a95f3b80d2e9d
 
   const validateNom = (nom: string) => {
     return nom.trim().split(' ').length >= 2;
