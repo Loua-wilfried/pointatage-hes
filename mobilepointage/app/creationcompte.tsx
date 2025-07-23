@@ -15,22 +15,30 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
+import * as SecureStore from 'expo-secure-store';
 
 const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || 'http://10.0.2.2:8000';
 
 export default function CreationCompte() {
   const [nom, setNom] = useState('');
+  const [username, setUsername] = useState('');
+  const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
+  const [checkingUsername, setCheckingUsername] = useState(false);
+  const [telephone, setTelephone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({
+    agence: '',
     nom: '',
+    username: '',
+    telephone: '',
     email: '',
     password: '',
     confirmPassword: '',
     fonction: '',
-    agence: '',
   });
   const router = useRouter();
 
@@ -151,22 +159,113 @@ export default function CreationCompte() {
     return passwordRegex.test(password);
   };
 
+  const validateUsername = (username: string) => {
+    const usernameRegex = /^[a-zA-Z0-9_]{3,30}$/;
+    return usernameRegex.test(username);
+  };
+
+  const validateTelephone = (telephone: string) => {
+    const phoneRegex = /^[+]?[0-9]{8,15}$/;
+    return phoneRegex.test(telephone.replace(/\s/g, ''));
+  };
+
+  // Auto-suggestion du nom d'utilisateur basé sur le nom complet
+  const suggestUsername = (nomComplet: string) => {
+    const parts = nomComplet.toLowerCase().trim().split(' ');
+    if (parts.length >= 2) {
+      return parts[0][0] + parts[1]; // "jean dupont" → "jdupont"
+    }
+    return parts[0] || ''; // "jean" → "jean"
+  };
+
+  // Vérification de la disponibilité du nom d'utilisateur
+  const checkUsernameAvailability = async (username: string) => {
+    if (!username || username.length < 3) {
+      setUsernameAvailable(null);
+      return;
+    }
+
+    setCheckingUsername(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/check-username/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username.toLowerCase() }),
+      });
+      const data = await response.json();
+      setUsernameAvailable(data.available);
+    } catch (error) {
+      console.error('Erreur lors de la vérification du nom d\'utilisateur:', error);
+      setUsernameAvailable(null);
+    } finally {
+      setCheckingUsername(false);
+    }
+  };
+
+  // Auto-suggestion quand le nom change
+  useEffect(() => {
+    if (nom.trim() && !username) {
+      const suggested = suggestUsername(nom);
+      setUsername(suggested);
+      if (suggested) {
+        checkUsernameAvailability(suggested);
+      }
+    }
+  }, [nom]);
+
+  // Vérification du nom d'utilisateur avec délai
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (username) {
+        checkUsernameAvailability(username);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [username]);
+
   const validateForm = () => {
     let isValid = true;
     const newErrors = {
+      agence: '',
       nom: '',
+      username: '',
+      telephone: '',
       email: '',
       password: '',
       confirmPassword: '',
       fonction: '',
-      agence: '',
     };
 
+    if (!agence) {
+      newErrors.agence = 'Veuillez sélectionner une agence';
+      isValid = false;
+    }
+
     if (!nom.trim()) {
-      newErrors.nom = 'Le nom est requis';
+      newErrors.nom = 'Le nom complet est requis';
       isValid = false;
     } else if (!validateNom(nom)) {
       newErrors.nom = 'Veuillez entrer votre nom et prénom (au moins 2 mots)';
+      isValid = false;
+    }
+
+    if (!username.trim()) {
+      newErrors.username = 'Le nom d\'utilisateur est requis';
+      isValid = false;
+    } else if (!validateUsername(username)) {
+      newErrors.username = 'Le nom d\'utilisateur doit contenir 3-30 caractères (lettres, chiffres, _)';
+      isValid = false;
+    } else if (usernameAvailable === false) {
+      newErrors.username = 'Ce nom d\'utilisateur est déjà pris';
+      isValid = false;
+    }
+
+    if (!telephone.trim()) {
+      newErrors.telephone = 'Le numéro de téléphone est requis';
+      isValid = false;
+    } else if (!validateTelephone(telephone)) {
+      newErrors.telephone = 'Format de téléphone invalide (8-15 chiffres)';
       isValid = false;
     }
 
@@ -196,11 +295,6 @@ export default function CreationCompte() {
 
     if (!fonction) {
       newErrors.fonction = 'Veuillez sélectionner une fonction';
-      isValid = false;
-    }
-
-    if (!agence) {
-      newErrors.agence = 'Veuillez sélectionner une agence';
       isValid = false;
     }
 
@@ -268,6 +362,43 @@ export default function CreationCompte() {
             />
             {errors.nom ? (
               <Text style={styles.errorText}>{errors.nom}</Text>
+            ) : null}
+
+            <TextInput
+              style={[styles.input, errors.username ? styles.inputError : null]}
+              placeholder="Nom d'utilisateur"
+              placeholderTextColor="#888"
+              value={username}
+              onChangeText={(text) => {
+                setUsername(text);
+                setErrors({ ...errors, username: '' });
+              }}
+              autoCorrect={false}
+            />
+            {errors.username ? (
+              <Text style={styles.errorText}>{errors.username}</Text>
+            ) : null}
+            {usernameAvailable === true ? (
+              <Text style={styles.successText}>✓ Nom d'utilisateur disponible</Text>
+            ) : null}
+            {checkingUsername ? (
+              <Text style={styles.infoText}>Vérification...</Text>
+            ) : null}
+
+            <TextInput
+              style={[styles.input, errors.telephone ? styles.inputError : null]}
+              placeholder="Numéro de téléphone"
+              placeholderTextColor="#888"
+              value={telephone}
+              onChangeText={(text) => {
+                setTelephone(text);
+                setErrors({ ...errors, telephone: '' });
+              }}
+              keyboardType="phone-pad"
+              autoCorrect={false}
+            />
+            {errors.telephone ? (
+              <Text style={styles.errorText}>{errors.telephone}</Text>
             ) : null}
 
             <TextInput
@@ -374,17 +505,71 @@ export default function CreationCompte() {
               onPress={async () => {
                 if (await validateForm()) {
                   try {
-                    // Envoi vers API ici si nécessaire
-                    Alert.alert('Succès', 'Compte créé avec succès', [
-                      {
-                        text: 'OK',
-                        onPress: () => router.push('/marquepresence'),
+                    console.log('🚀 Envoi des données d\'enregistrement vers l\'API...');
+                    
+                    const registrationData = {
+                      agence: agence,
+                      nom: nom.trim(),
+                      username: username.trim(),
+                      telephone: telephone.trim(),
+                      email: email.trim(),
+                      password: password,
+                      confirmPassword: confirmPassword,
+                      fonction: fonction
+                    };
+                    
+                    console.log('📤 Données envoyées:', { ...registrationData, password: '***', confirmPassword: '***' });
+                    
+                    const response = await fetch(`${API_BASE_URL}/api/register/`, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
                       },
-                    ]);
+                      body: JSON.stringify(registrationData),
+                    });
+                    
+                    const data = await response.json();
+                    console.log('📡 Réponse API enregistrement:', response.status, data);
+                    
+                    if (response.ok) {
+                      // Stockage sécurisé du token pour connexion automatique
+                      if (data.tokens) {
+                        await SecureStore.setItemAsync('access_token', data.tokens.access);
+                        await SecureStore.setItemAsync('refresh_token', data.tokens.refresh);
+                        console.log('🔐 Tokens stockés avec succès');
+                      }
+                      
+                      Alert.alert(
+                        'Compte créé avec succès !',
+                        `Bienvenue ${data.user.nom_complet}\n\nMatricule: ${data.employe.matricule}\nAgence: ${data.employe.agence}\nFonction: ${data.employe.fonction}\n\n${data.info}`,
+                        [
+                          {
+                            text: 'Continuer',
+                            onPress: () => {
+                              console.log('✅ Redirection vers l\'écran de pointage');
+                              router.push('/marquepresence');
+                            },
+                          },
+                        ]
+                      );
+                    } else {
+                      // Gestion des erreurs de validation
+                      if (data.errors) {
+                        console.log('❌ Erreurs de validation:', data.errors);
+                        setErrors(prevErrors => ({ ...prevErrors, ...data.errors }));
+                        
+                        // Afficher la première erreur dans une alerte
+                        const firstError = Object.values(data.errors)[0] as string;
+                        Alert.alert('Erreur de validation', firstError);
+                      } else {
+                        Alert.alert('Erreur', data.error || 'Une erreur est survenue lors de la création du compte');
+                      }
+                    }
                   } catch (error) {
+                    console.error('💥 Erreur réseau lors de l\'enregistrement:', error);
                     Alert.alert(
-                      'Erreur',
-                      'Une erreur est survenue lors de la création du compte. Veuillez réessayer.'
+                      'Erreur de connexion',
+                      'Impossible de se connecter au serveur. Vérifiez votre connexion internet et réessayez.'
                     );
                   }
                 }
@@ -450,6 +635,18 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: '#ff0000',
+    fontSize: 12,
+    marginBottom: 8,
+    marginLeft: 4,
+  },
+  successText: {
+    color: '#28a745',
+    fontSize: 12,
+    marginBottom: 8,
+    marginLeft: 4,
+  },
+  infoText: {
+    color: '#6c757d',
     fontSize: 12,
     marginBottom: 8,
     marginLeft: 4,
