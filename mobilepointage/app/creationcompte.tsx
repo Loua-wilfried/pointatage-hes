@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useRouter } from 'expo-router';
 import Constants from 'expo-constants';
 import {
@@ -16,6 +16,8 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as SecureStore from 'expo-secure-store';
+import { useNavigation } from 'expo-router';
+import { NavigationProp } from '@react-navigation/native';
 
 const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || 'http://10.0.2.2:8000';
 
@@ -41,6 +43,26 @@ export default function CreationCompte() {
     fonction: '',
   });
   const router = useRouter();
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      title: "",
+      headerStyle: {
+        backgroundColor: '#F0874E',      // Couleur de fond du header
+        shadowColor: '#fff',             // Couleur de l'ombre (iOS)
+        shadowOffset: { height: 4 },     // Décalage vertical de l'ombre (iOS)
+        shadowOpacity: 1,                // Opacité de l'ombre (iOS)
+        shadowRadius: 8,                 // Flou de l'ombre (iOS)
+        elevation: 10,                   // Ombre portée (Android)
+        borderBottomWidth: 0,            // Masque la bordure du bas (iOS)
+        borderBottomColor: "transparent", // Bordure du bas invisible
+      },
+      headerTitleStyle: { color: '#fff', fontWeight: 'bold', fontSize: 22 },
+      headerTintColor: '#fff',
+      headerTitleAlign: 'center',
+    });
+  }, [navigation]);
 
   // Types pour les dropdowns
   type DropdownItem = { label: string; value: string };
@@ -159,6 +181,7 @@ export default function CreationCompte() {
     return passwordRegex.test(password);
   };
 
+<<<<<<< HEAD
   const validateUsername = (username: string) => {
     const usernameRegex = /^[a-zA-Z0-9_]{3,30}$/;
     return usernameRegex.test(username);
@@ -249,6 +272,7 @@ export default function CreationCompte() {
       newErrors.nom = 'Veuillez entrer votre nom et prénom (au moins 2 mots)';
       isValid = false;
     }
+    
 
     if (!username.trim()) {
       newErrors.username = 'Le nom d\'utilisateur est requis';
@@ -297,7 +321,6 @@ export default function CreationCompte() {
       newErrors.fonction = 'Veuillez sélectionner une fonction';
       isValid = false;
     }
-
     setErrors(newErrors);
     return isValid;
   };
@@ -479,6 +502,8 @@ export default function CreationCompte() {
             {errors.confirmPassword ? (
               <Text style={styles.errorText}>{errors.confirmPassword}</Text>
             ) : null}
+
+
 
             {/* Picker pour la fonction */}
             <View style={{ zIndex: 2000, marginBottom: 16 }}>
