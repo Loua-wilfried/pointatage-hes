@@ -88,10 +88,22 @@ def generate_username_suggestions(base_username, max_suggestions=5):
 
 def generate_matricule():
     """Génère un matricule unique pour l'employé"""
-    year = timezone.now().year
-    # Compter les employés créés cette année
-    count = Employe.objects.filter(date_creation__year=year).count() + 1
-    return f"EMP{year}{str(count).zfill(4)}"
+    try:
+        year = timezone.now().year
+        # Compter les employés créés cette année
+        count = Employe.objects.filter(date_creation__year=year).count() + 1
+        matricule = f"EMP{year}{str(count).zfill(4)}"
+        
+        # Vérifier l'unicité du matricule
+        while Employe.objects.filter(matricule_interne=matricule).exists():
+            count += 1
+            matricule = f"EMP{year}{str(count).zfill(4)}"
+        
+        return matricule
+    except Exception as e:
+        # Fallback en cas d'erreur
+        import uuid
+        return f"EMP{year}{str(uuid.uuid4().hex[:4]).upper()}"
 
 
 # =============================================
@@ -189,9 +201,13 @@ def register_user(request):
             errors['fonction'] = 'Veuillez sélectionner une fonction'
         else:
             try:
-                role = Role.objects.get(id=fonction_id)
+                # Essayer d'abord par ID (si c'est un nombre), sinon par nom_role
+                if str(fonction_id).isdigit():
+                    role = Role.objects.get(id=int(fonction_id))
+                else:
+                    role = Role.objects.get(nom_role=fonction_id)
             except Role.DoesNotExist:
-                errors['fonction'] = 'Fonction sélectionnée invalide'
+                errors['fonction'] = f'Fonction "{fonction_id}" non trouvée dans le système'
         
         if errors:
             return Response({
@@ -200,72 +216,104 @@ def register_user(request):
             }, status=status.HTTP_400_BAD_REQUEST)
         
         # Création de l'utilisateur et de l'employé dans une transaction
-        with transaction.atomic():
-            # Création du User Django
-            user = User.objects.create_user(
-                username=username,
-                email=email,
-                password=password,
-                first_name=nom_complet.split()[0],
-                last_name=' '.join(nom_complet.split()[1:]) if len(nom_complet.split()) > 1 else ''
-            )
-            
-            # Séparation du nom complet
-            nom_parts = nom_complet.split()
-            prenom = nom_parts[0]
-            nom_famille = ' '.join(nom_parts[1:]) if len(nom_parts) > 1 else prenom
-            
-            # Création de l'Employé
-            employe = Employe.objects.create(
-                user=user,
-                nom=nom_famille,
-                prenom=prenom,
-                email=email,
-                telephone=telephone,
-                agence=agence,
-                role=role,
-                matricule_interne=generate_matricule(),
-                # Valeurs par défaut pour les champs obligatoires
-                sexe='M',  # À compléter par le DRH
-                date_naissance=date(1990, 1, 1),  # À compléter par le DRH
-                lieu_naissance='À compléter',  # À compléter par le DRH
-                nationalite='À compléter',  # À compléter par le DRH
-                situation_familiale='celibataire',  # À compléter par le DRH
-                adresse='À compléter',  # À compléter par le DRH
-                numero_cni='À compléter',  # À compléter par le DRH
-                date_embauche=date.today(),
-                type_contrat='CDI',  # À compléter par le DRH
-                horaire_travail='08h00-17h00',  # À compléter par le DRH
-                salaire_base=0,  # À compléter par le DRH
-                rib_banque='À compléter',  # À compléter par le DRH
-                statut='actif'
-            )
-            
-            # Génération du token JWT pour connexion automatique
-            refresh = RefreshToken.for_user(user)
-            access_token = str(refresh.access_token)
-            refresh_token = str(refresh)
+        try:
+            with transaction.atomic():
+                # Création du User Django
+                user = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    password=password,
+                    first_name=nom_complet.split()[0],
+                    last_name=' '.join(nom_complet.split()[1:]) if len(nom_complet.split()) > 1 else ''
+                )
+                
+                # Séparation du nom complet
+                nom_parts = nom_complet.split()
+                prenom = nom_parts[0]
+                nom_famille = ' '.join(nom_parts[1:]) if len(nom_parts) > 1 else prenom
+                
+                # Génération du matricule
+                matricule = generate_matricule()
+                
+                # Création de l'Employé
+                employe = Employe.objects.create(
+                    user=user,
+                    nom=nom_famille,
+                    prenom=prenom,
+                    email=email,
+                    telephone=telephone,
+                    agence=agence,
+                    role=role,
+                    matricule_interne=matricule,
+                    # Valeurs par défaut pour les champs obligatoires
+                    sexe='M',  # À compléter par le DRH
+                    date_naissance=date(1990, 1, 1),  # À compléter par le DRH
+                    lieu_naissance='À compléter',  # À compléter par le DRH
+                    nationalite='À compléter',  # À compléter par le DRH
+                    situation_familiale='celibataire',  # À compléter par le DRH
+                    adresse='À compléter',  # À compléter par le DRH
+                    numero_cni='À compléter',  # À compléter par le DRH
+                    date_embauche=date.today(),
+                    type_contrat='CDI',  # À compléter par le DRH
+                    horaire_travail='08h00-17h00',  # À compléter par le DRH
+                    salaire_base=0,  # À compléter par le DRH
+                    rib_banque='À compléter',  # À compléter par le DRH
+                    statut='actif'
+                )
+        except Exception as e:
+            # Log détaillé de l'erreur pour diagnostic
+            import traceback
+            error_details = {
+                'error_type': type(e).__name__,
+                'error_message': str(e),
+                'traceback': traceback.format_exc(),
+                'data_received': {
+                    'agence': agence,
+                    'nom_complet': nom_complet,
+                    'username': username,
+                    'telephone': telephone,
+                    'email': email,
+                    'fonction': fonction_id
+                }
+            }
+            print(f"\n=== ERREUR CREATION COMPTE ===")
+            print(f"Type: {error_details['error_type']}")
+            print(f"Message: {error_details['error_message']}")
+            print(f"Données: {error_details['data_received']}")
+            print(f"Traceback: {error_details['traceback']}")
+            print(f"==============================\n")
             
             return Response({
-                'message': 'Compte créé avec succès',
-                'user': {
-                    'id': user.id,
-                    'username': user.username,
-                    'email': user.email,
-                    'nom_complet': nom_complet
-                },
-                'employe': {
-                    'id': employe.id,
-                    'matricule': employe.matricule_interne,
-                    'agence': agence.nom,
-                    'fonction': role.nom
-                },
-                'tokens': {
-                    'access': access_token,
-                    'refresh': refresh_token
-                },
-                'info': 'Votre compte a été créé. Le DRH complètera vos informations personnelles ultérieurement.'
-            }, status=status.HTTP_201_CREATED)
+                'error': 'Erreur lors de la création du compte',
+                'details': f'{type(e).__name__}: {str(e)}',
+                'debug_info': error_details if settings.DEBUG else None
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        # Génération du token JWT pour connexion automatique
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        refresh_token = str(refresh)
+        
+        return Response({
+            'message': 'Compte créé avec succès',
+            'user': {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'nom_complet': nom_complet
+            },
+            'employe': {
+                'id': employe.id,
+                'matricule': employe.matricule_interne,
+                'agence': agence.nom,
+                'fonction': role.nom_role
+            },
+            'tokens': {
+                'access': access_token,
+                'refresh': refresh_token
+            },
+            'info': 'Votre compte a été créé. Le DRH complètera vos informations personnelles ultérieurement.'
+        }, status=status.HTTP_201_CREATED)
             
     except Exception as e:
         return Response({

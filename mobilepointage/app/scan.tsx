@@ -61,7 +61,20 @@ export default function ScanScreen() {
         setScanned(false);
         return;
       }
+      
       const token = await SecureStore.getItemAsync('token');
+      if (!token) {
+        Alert.alert("Erreur", "Token d'authentification manquant. Veuillez vous reconnecter.", [
+          { text: 'OK', onPress: () => router.replace('/') }
+        ]);
+        setScanned(false);
+        return;
+      }
+
+      console.log('Token récupéré:', token.substring(0, 20) + '...');
+      console.log('Données QR:', qrData);
+      console.log('Employe ID:', employe_id);
+
       const response = await fetch(`${API_BASE_URL}/api/pointages/scan_qr_code/`, {
         method: "POST",
         headers: {
@@ -75,13 +88,40 @@ export default function ScanScreen() {
         }),
       });
 
+      console.log('Statut de la réponse:', response.status);
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.detail || "Erreur lors de l'enregistrement");
+        const errorText = await response.text();
+        console.log('Erreur de réponse:', errorText);
+        
+        let errorMessage = "Erreur lors de l'enregistrement";
+        try {
+          const errorJson = JSON.parse(errorText);
+          errorMessage = errorJson.detail || errorJson.message || errorMessage;
+        } catch (e) {
+          errorMessage = errorText || errorMessage;
+        }
+        
+        // Si c'est une erreur de token, rediriger vers la connexion
+        if (response.status === 401 || errorMessage.includes('token')) {
+          Alert.alert("Session expirée", "Votre session a expiré. Veuillez vous reconnecter.", [
+            { text: 'OK', onPress: () => router.replace('/') }
+          ]);
+          return;
+        }
+        
+        throw new Error(errorMessage);
       }
 
-      router.replace('/marquepresence');
+      const result = await response.json();
+      console.log('Résultat du scan:', result);
+      
+      Alert.alert("Succès", "Pointage enregistré avec succès!", [
+        { text: 'OK', onPress: () => router.replace('/marquepresence') }
+      ]);
+      
     } catch (err: any) {
+      console.error('Erreur lors du scan:', err);
       Alert.alert("Erreur", err.message || "Impossible d'enregistrer le pointage.");
       setScanned(false);
     }

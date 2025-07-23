@@ -328,10 +328,23 @@ export default function CreationCompte() {
     if (!validateForm()) return;
 
     try {
-      // Envoi vers API ici si nécessaire
-      Alert.alert('Succès', 'Compte créé avec succès', [
-        { text: 'OK', onPress: () => router.push('/') },
-      ]);
+      // TODO: Implémenter l'appel API pour créer le compte
+      // const response = await fetch(`${API_BASE_URL}/api/register/`, { ... });
+      
+      // Afficher un message de succès puis rediriger automatiquement
+      Alert.alert(
+        'Compte créé avec succès', 
+        'Votre compte a été créé. Vous allez être redirigé vers la page de connexion.',
+        [
+          { 
+            text: 'OK', 
+            onPress: () => {
+              // Redirection automatique vers la page de connexion
+              router.replace('/');
+            }
+          }
+        ]
+      );
     } catch (error) {
       Alert.alert('Erreur', 'Une erreur est survenue lors de la création du compte. Veuillez réessayer.');
     }
