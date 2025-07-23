@@ -181,7 +181,6 @@ export default function CreationCompte() {
     return passwordRegex.test(password);
   };
 
-<<<<<<< HEAD
   const validateUsername = (username: string) => {
     const usernameRegex = /^[a-zA-Z0-9_]{3,30}$/;
     return usernameRegex.test(username);
