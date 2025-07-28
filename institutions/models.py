@@ -127,7 +127,7 @@ class Employe(models.Model):
     role = models.ForeignKey(Role, on_delete=models.PROTECT, related_name='employes')
     statut = models.CharField(max_length=20, choices=STATUT_CHOICES, default='actif')
     horaire_travail = models.CharField(max_length=100)
-    matricule_interne = models.CharField(max_length=10, unique=True, editable=False)
+    matricule_interne = models.CharField(max_length=20, unique=True, editable=False)
     salaire_base = models.DecimalField(max_digits=12, decimal_places=2)  # SENSIBLE
     primes = models.JSONField(default=dict, blank=True)
     retenues = models.JSONField(default=dict, blank=True)

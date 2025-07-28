@@ -10,6 +10,7 @@ from institutions.models import Employe
 from agences.models import Agence
 from roles_permissions.models import Role
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.conf import settings
 import re
 from django.utils import timezone
 from datetime import date
@@ -22,6 +23,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         password = attrs.get('password')
         if not username or not password or username.strip() == '' or password.strip() == '':
             raise serializers.ValidationError('Nom d’utilisateur et mot de passe obligatoires.')
+        # Conversion automatique du nom d'utilisateur en majuscules
+        attrs['username'] = username.strip().upper()
+        
         return super().validate(attrs)
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -150,6 +154,8 @@ def register_user(request):
     try:
         # Récupération des données
         data = request.data
+        
+        # Extraction des champs avec validation basique
         agence_id = data.get('agence')
         nom_complet = data.get('nom', '').strip()
         username = data.get('username', '').strip().lower()
@@ -159,137 +165,88 @@ def register_user(request):
         confirm_password = data.get('confirmPassword', '')
         fonction_id = data.get('fonction')
         
-        # Validation des champs requis
-        errors = {}
-        
-        if not agence_id:
-            errors['agence'] = 'Veuillez sélectionner une agence'
-        else:
-            try:
-                agence = Agence.objects.get(id=agence_id)
-            except Agence.DoesNotExist:
-                errors['agence'] = 'Agence sélectionnée invalide'
-        
-        if not nom_complet or not validate_nom_complet(nom_complet):
-            errors['nom'] = 'Veuillez entrer votre nom et prénom (au moins 2 mots)'
-        
-        if not username or not validate_username(username):
-            errors['username'] = 'Format de nom d\'utilisateur invalide (3-30 caractères, lettres, chiffres, ., -, _ autorisés)'
-        elif User.objects.filter(username=username).exists():
-            suggestions = generate_username_suggestions(username)
-            errors['username'] = f'Ce nom d\'utilisateur est déjà pris. Suggestions: {", ".join(suggestions[:3])}'
-        
-        if not telephone or not validate_telephone(telephone):
-            errors['telephone'] = 'Format de téléphone invalide (8-15 chiffres)'
-        elif Employe.objects.filter(telephone=telephone).exists():
-            errors['telephone'] = 'Ce numéro de téléphone est déjà utilisé'
-        
-        if not email or not validate_email(email):
-            errors['email'] = 'Format d\'email invalide'
-        elif User.objects.filter(email=email).exists() or Employe.objects.filter(email=email).exists():
-            errors['email'] = 'Cette adresse email est déjà utilisée'
-        
-        if not password or len(password) < 8:
-            errors['password'] = 'Le mot de passe doit contenir au moins 8 caractères'
-        elif not re.search(r'[A-Z]', password) or not re.search(r'[a-z]', password) or not re.search(r'[0-9]', password):
-            errors['password'] = 'Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre'
-        
-        if password != confirm_password:
-            errors['confirmPassword'] = 'Les mots de passe ne correspondent pas'
-        
-        if not fonction_id:
-            errors['fonction'] = 'Veuillez sélectionner une fonction'
-        else:
-            try:
-                # Essayer d'abord par ID (si c'est un nombre), sinon par nom_role
-                if str(fonction_id).isdigit():
-                    role = Role.objects.get(id=int(fonction_id))
-                else:
-                    role = Role.objects.get(nom_role=fonction_id)
-            except Role.DoesNotExist:
-                errors['fonction'] = f'Fonction "{fonction_id}" non trouvée dans le système'
-        
-        if errors:
+        # Validations essentielles seulement
+        if not all([agence_id, nom_complet, username, telephone, email, password, fonction_id]):
             return Response({
-                'error': 'Données invalides',
-                'errors': errors
+                'error': 'Tous les champs sont requis'
             }, status=status.HTTP_400_BAD_REQUEST)
         
-        # Création de l'utilisateur et de l'employé dans une transaction
-        try:
-            with transaction.atomic():
-                # Création du User Django
-                user = User.objects.create_user(
-                    username=username,
-                    email=email,
-                    password=password,
-                    first_name=nom_complet.split()[0],
-                    last_name=' '.join(nom_complet.split()[1:]) if len(nom_complet.split()) > 1 else ''
-                )
-                
-                # Séparation du nom complet
-                nom_parts = nom_complet.split()
-                prenom = nom_parts[0]
-                nom_famille = ' '.join(nom_parts[1:]) if len(nom_parts) > 1 else prenom
-                
-                # Génération du matricule
-                matricule = generate_matricule()
-                
-                # Création de l'Employé
-                employe = Employe.objects.create(
-                    user=user,
-                    nom=nom_famille,
-                    prenom=prenom,
-                    email=email,
-                    telephone=telephone,
-                    agence=agence,
-                    role=role,
-                    matricule_interne=matricule,
-                    # Valeurs par défaut pour les champs obligatoires
-                    sexe='M',  # À compléter par le DRH
-                    date_naissance=date(1990, 1, 1),  # À compléter par le DRH
-                    lieu_naissance='À compléter',  # À compléter par le DRH
-                    nationalite='À compléter',  # À compléter par le DRH
-                    situation_familiale='celibataire',  # À compléter par le DRH
-                    adresse='À compléter',  # À compléter par le DRH
-                    numero_cni='À compléter',  # À compléter par le DRH
-                    date_embauche=date.today(),
-                    type_contrat='CDI',  # À compléter par le DRH
-                    horaire_travail='08h00-17h00',  # À compléter par le DRH
-                    salaire_base=0,  # À compléter par le DRH
-                    rib_banque='À compléter',  # À compléter par le DRH
-                    statut='actif'
-                )
-        except Exception as e:
-            # Log détaillé de l'erreur pour diagnostic
-            import traceback
-            error_details = {
-                'error_type': type(e).__name__,
-                'error_message': str(e),
-                'traceback': traceback.format_exc(),
-                'data_received': {
-                    'agence': agence,
-                    'nom_complet': nom_complet,
-                    'username': username,
-                    'telephone': telephone,
-                    'email': email,
-                    'fonction': fonction_id
-                }
-            }
-            print(f"\n=== ERREUR CREATION COMPTE ===")
-            print(f"Type: {error_details['error_type']}")
-            print(f"Message: {error_details['error_message']}")
-            print(f"Données: {error_details['data_received']}")
-            print(f"Traceback: {error_details['traceback']}")
-            print(f"==============================\n")
-            
+        if password != confirm_password:
             return Response({
-                'error': 'Erreur lors de la création du compte',
-                'details': f'{type(e).__name__}: {str(e)}',
-                'debug_info': error_details if settings.DEBUG else None
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                'error': 'Les mots de passe ne correspondent pas'
+            }, status=status.HTTP_400_BAD_REQUEST)
         
-        # Génération du token JWT pour connexion automatique
+        # Vérifications d'unicité
+        if User.objects.filter(username=username).exists():
+            return Response({
+                'error': 'Ce nom d\'utilisateur est déjà pris'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if User.objects.filter(email=email).exists():
+            return Response({
+                'error': 'Cette adresse email est déjà utilisée'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Récupération des objets de référence
+        try:
+            agence = Agence.objects.get(id=agence_id)
+        except Agence.DoesNotExist:
+            return Response({
+                'error': 'Agence non trouvée'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            role = Role.objects.get(id=int(fonction_id))
+        except (Role.DoesNotExist, ValueError):
+            return Response({
+                'error': 'Rôle non trouvé'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Création dans une transaction
+        with transaction.atomic():
+            # Création du User
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password,
+                first_name=nom_complet.split()[0],
+                last_name=' '.join(nom_complet.split()[1:]) if len(nom_complet.split()) > 1 else ''
+            )
+            
+            # Séparation du nom
+            nom_parts = nom_complet.split()
+            prenom = nom_parts[0]
+            nom_famille = ' '.join(nom_parts[1:]) if len(nom_parts) > 1 else prenom
+            
+            # Génération du matricule
+            matricule = generate_matricule()
+            
+            # Création de l'Employé
+            employe = Employe.objects.create(
+                user=user,
+                nom=nom_famille,
+                prenom=prenom,
+                email=email,
+                telephone=telephone,
+                agence=agence,
+                role=role,
+                matricule_interne=matricule,
+                sexe='M',
+                date_naissance=date(1990, 1, 1),
+                lieu_naissance='À compléter',
+                nationalite='Ivoirienne',
+                situation_familiale='celibataire',
+                adresse='À compléter par le DRH',
+                numero_cni='À compléter',
+                date_embauche=date.today(),
+                type_contrat='CDI',
+                horaire_travail='08h00-17h00',
+                salaire_base=0.00,
+                rib_banque='À compléter',
+                statut='actif'
+            )
+        
+        # Génération du token JWT
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
         refresh_token = str(refresh)
@@ -312,10 +269,16 @@ def register_user(request):
                 'access': access_token,
                 'refresh': refresh_token
             },
-            'info': 'Votre compte a été créé. Le DRH complètera vos informations personnelles ultérieurement.'
+            'info': 'Votre compte a été créé. Le DRH complétera vos informations personnelles ultérieurement.'
         }, status=status.HTTP_201_CREATED)
             
     except Exception as e:
+        import traceback
+        print(f"\n=== ERREUR REGISTER_USER ===")
+        print(f"Erreur: {type(e).__name__}: {str(e)}")
+        print(f"Traceback: {traceback.format_exc()}")
+        print(f"=============================\n")
+        
         return Response({
             'error': 'Erreur lors de la création du compte',
             'details': str(e)

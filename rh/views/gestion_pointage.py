@@ -190,6 +190,24 @@ def pointages_list(request):
     elif statut == 'sortie_respectee':
         pointages_list = [p for p in pointages_list if p.statut == 'sortie_respectee']
 
+    # CORRECTION : Recalculer les statistiques après filtrage avec la logique correcte
+    # Absences = Total employés × Nombre de jours - Présences
+    nb_jours = (date_fin - date_debut).days + 1
+    nb_employes_filtres = employes.count()
+    total_employe_jours = nb_employes_filtres * nb_jours
+    
+    # Recalculer les statistiques basées sur pointages_list filtrés
+    statistiques_data = {
+        'presences': sum(1 for p in pointages_list if hasattr(p, 'statut') and p.statut in ['a_lheure', 'retard']),
+        'a_lheure': sum(1 for p in pointages_list if hasattr(p, 'statut') and p.statut == 'a_lheure'),
+        'retards': sum(1 for p in pointages_list if hasattr(p, 'statut') and p.statut == 'retard'),
+        'departs_anticipes': sum(1 for p in pointages_list if hasattr(p, 'statut') and p.statut == 'depart_anticipe'),
+        'sorties_respectees': sum(1 for p in pointages_list if hasattr(p, 'statut') and p.statut == 'sortie_respectee'),
+    }
+    
+    # CORRECTION : Calcul correct des absences = Total employé-jours - Présences
+    statistiques_data['absences'] = total_employe_jours - statistiques_data['presences']
+    
     # Tri robuste : heure None en dernier
     def tri_pointage(p):
         from datetime import time
@@ -385,15 +403,61 @@ def tableau_de_bord_pointage(request):
     source = GET.get('source')
     statut = GET.get('statut')
 
-    # Date cible (par défaut aujourd'hui)
+    # CORRECTION : Gestion des périodes dynamiques (comme dans pointages_list)
     from django.utils import timezone
+    from datetime import timedelta
+    import calendar
+    
+    # Gestion des périodes
+    periode = GET.get('periode', 'jour')
+    date_fin_selected = GET.get('date_fin')
+    
     if date_selected:
-        try:
-            date_cible = datetime.strptime(date_selected, "%Y-%m-%d").date()
-        except Exception:
-            date_cible = timezone.localdate()
+        date_debut = datetime.strptime(date_selected, "%Y-%m-%d").date()
     else:
-        date_cible = timezone.localdate()
+        date_debut = timezone.localdate()
+        
+    # Calculer la plage de dates selon la période
+    if periode == 'jour':
+        date_fin = date_debut
+    elif periode == 'semaine':
+        # Début de semaine (lundi)
+        jours_depuis_lundi = date_debut.weekday()
+        date_debut = date_debut - timedelta(days=jours_depuis_lundi)
+        date_fin = date_debut + timedelta(days=6)
+    elif periode == 'mois':
+        # Début et fin du mois
+        date_debut = date_debut.replace(day=1)
+        if date_debut.month == 12:
+            date_fin = date_debut.replace(year=date_debut.year + 1, month=1) - timedelta(days=1)
+        else:
+            date_fin = date_debut.replace(month=date_debut.month + 1) - timedelta(days=1)
+    elif periode == 'trimestre':
+        # Début et fin du trimestre
+        mois_actuel = date_debut.month
+        if mois_actuel <= 3:  # Q1: Jan-Mar
+            date_debut = date_debut.replace(month=1, day=1)
+            date_fin = date_debut.replace(month=3, day=31)
+        elif mois_actuel <= 6:  # Q2: Apr-Jun
+            date_debut = date_debut.replace(month=4, day=1)
+            date_fin = date_debut.replace(month=6, day=30)
+        elif mois_actuel <= 9:  # Q3: Jul-Sep
+            date_debut = date_debut.replace(month=7, day=1)
+            date_fin = date_debut.replace(month=9, day=30)
+        else:  # Q4: Oct-Dec
+            date_debut = date_debut.replace(month=10, day=1)
+            date_fin = date_debut.replace(month=12, day=31)
+    elif periode == 'annee':
+        # Début et fin de l'année
+        date_debut = date_debut.replace(month=1, day=1)
+        date_fin = date_debut.replace(month=12, day=31)
+    elif periode == 'personnalise' and date_fin_selected:
+        date_fin = datetime.strptime(date_fin_selected, "%Y-%m-%d").date()
+    else:
+        date_fin = date_debut
+    
+    # Pour compatibilité avec le code existant
+    date_cible = date_debut
 
     # Filtres employés
     filtered_employes = employes
@@ -434,10 +498,12 @@ def tableau_de_bord_pointage(request):
         employe_ids_pointes.add(p.employe.id)
 
     # Calcul du nombre de présents (employés ayant scanné une entrée par QR code)
+    # CORRECTION : Prendre en compte les filtres appliqués (agence, fonction, etc.)
     nb_presents = Pointage.objects.filter(
         date=date_cible,
         type__in=['arrivee', 'entree'],
-        source__icontains='qr'
+        source__icontains='qr',
+        employe__in=filtered_employes
     ).values('employe').distinct().count()
 
     # Ajouter les absents virtuels (employés sans pointage ce jour-là)
@@ -472,28 +538,68 @@ def tableau_de_bord_pointage(request):
     if statut:
         pointages_list = [p for p in pointages_list if p.statut == statut]
 
-    # Statistiques temps réel
-    # 'present' = tous ceux qui ont pointé entrée dans la journée (heure indifférente)
-    nb_present = Pointage.objects.filter(date=date_cible, type='entree').values('employe').distinct().count()
-    # 'ontime' = présents dont le premier pointage entrée est <= 08:00:00
+    # SOLUTION DÉFINITIVE : Calcul dynamique selon la période sélectionnée
+    # Étape 1 : Compter le nombre total d'employés filtrés
+    nb_employes = filtered_employes.count() if hasattr(filtered_employes, 'count') else len(filtered_employes)
+    
+    # Étape 2 : Calculer le nombre de jours dans la période
+    nb_jours = (date_fin - date_debut).days + 1
+    total_employe_jours = nb_employes * nb_jours
+    
+    # Étape 3 : Compter les présences sur toute la période
+    presences_periode = Pointage.objects.filter(
+        date__range=[date_debut, date_fin],
+        type='entree', 
+        employe__in=filtered_employes
+    ).count()  # Compte chaque présence (employé x jour)
+    
+    # Étape 4 : Calculer les absences = Total employé-jours - Présences
+    nb_absent = total_employe_jours - presences_periode
+    
+    # Pour compatibilité avec l'affichage (présents uniques sur la période)
+    employes_presents_uniques = Pointage.objects.filter(
+        date__range=[date_debut, date_fin],
+        type='entree', 
+        employe__in=filtered_employes
+    ).values('employe').distinct()
+    nb_present = employes_presents_uniques.count()
+    
+    # Étape 4 : Calculer les autres statistiques
     emps_ontime = set()
     for emp in filtered_employes:
         entrees = Pointage.objects.filter(employe=emp, date=date_cible, type='entree').order_by('heure')
         if entrees.exists() and entrees.first().heure <= entrees.first().heure.__class__.fromisoformat('08:00:00'):
             emps_ontime.add(emp.id)
+    
+    nb_retard = sum(1 for p in pointages_list if p.statut == 'retard')
+    nb_depart_anticipe = sum(1 for p in pointages_list if p.statut == 'depart_anticipe')
+    nb_sortie_respectee = sum(1 for p in pointages_list if p.statut == 'sortie_respectee')
+    
+    # DEBUG : Vérification des calculs dynamiques - FORCÉ
+    import sys
+    debug_msg = f"\n{'='*50}\n"
+    debug_msg += f"DEBUG CALCUL ABSENCES DYNAMIQUE - TABLEAU DE BORD\n"
+    debug_msg += f"Période: {periode} ({date_debut} à {date_fin})\n"
+    debug_msg += f"Nombre de jours: {nb_jours}\n"
+    debug_msg += f"Total employés filtrés: {nb_employes}\n"
+    debug_msg += f"Total employé-jours: {total_employe_jours}\n"
+    debug_msg += f"Présences sur la période: {presences_periode}\n"
+    debug_msg += f"Absences calculées: {nb_absent}\n"
+    debug_msg += f"Vérification: {total_employe_jours} - {presences_periode} = {nb_absent}\n"
+    debug_msg += f"Employés présents uniques: {nb_present}\n"
+    debug_msg += f"Filtres: agence={agence_id}, fonction={fonction_id}\n"
+    debug_msg += f"{'='*50}\n"
+    print(debug_msg)
+    sys.stdout.flush()  # Force l'affichage immédiat
+    
     stats = {
         'present': nb_present,
         'ontime': len(emps_ontime),
-        'retard': sum(1 for p in pointages_list if p.statut == 'retard'),
-        'absent': sum(1 for p in pointages_list if p.statut == 'absent'),
-        'depart_anticipe': sum(1 for p in pointages_list if p.statut == 'depart_anticipe'),
-        'sortie_respectee': sum(1 for p in pointages_list if p.statut == 'sortie_respectee'),
+        'retard': nb_retard,
+        'absent': nb_absent,  # Utilise le calcul corrigé
+        'depart_anticipe': nb_depart_anticipe,
+        'sortie_respectee': nb_sortie_respectee,
     }
-    # Ajout des taux pour le dashboard
-    nb_employes = filtered_employes.count() if hasattr(filtered_employes, 'count') else len(filtered_employes)
-    nb_present = stats['present']
-    nb_retard = stats['retard']
-    nb_absent = stats['absent']
     stats['taux_presence'] = round((nb_present / nb_employes) * 100, 2) if nb_employes else 0
     stats['taux_retard'] = round((nb_retard / nb_employes) * 100, 2) if nb_employes else 0
     stats['absents_sans_justif'] = nb_absent  # À adapter si besoin

@@ -1,0 +1,3128 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2025-06-16T17:35:30.501Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "1",
+    "object_repr": "+225AB0001 - MasterFinance",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2025-06-16T17:38:19.210Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "0001",
+    "object_repr": "hesfinanceSA (0001)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2025-06-16T17:39:56.097Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "0002",
+    "object_repr": "hesfinanceB (0002)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2025-06-16T17:42:54.973Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "2",
+    "object_repr": "NgierNI0001 - MasterNiger",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2025-06-16T17:44:36.556Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "0003",
+    "object_repr": "finance360 (0003)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2025-06-16T17:54:29.416Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "1",
+    "object_repr": "Freemium",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2025-06-16T17:55:31.988Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "2",
+    "object_repr": "Monthly Plan",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2025-06-16T17:56:32.193Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "3",
+    "object_repr": "prenium",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2025-06-16T17:59:59.949Z",
+    "user": 1,
+    "content_type": 15,
+    "object_id": "1",
+    "object_repr": "+225AB0001 - MasterFinance - Freemium (actif)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2025-06-16T21:33:17.430Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Administrateur système",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2025-06-16T21:33:52.117Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Responsable RH",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2025-06-16T21:34:27.602Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "Chef d’agence",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2025-06-16T21:34:59.254Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "4",
+    "object_repr": "Caissier",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2025-06-16T21:35:31.510Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "5",
+    "object_repr": "Agent de crédit",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2025-06-16T21:36:33.269Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "6",
+    "object_repr": "Chef crédit",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2025-06-16T21:37:08.943Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "7",
+    "object_repr": "Agent de recouvrement",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2025-06-16T21:37:47.163Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "8",
+    "object_repr": "Agent de collecte",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2025-06-16T21:38:33.552Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "9",
+    "object_repr": "Comptable",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2025-06-16T21:39:12.541Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "10",
+    "object_repr": "Client",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2025-06-16T21:39:53.539Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "11",
+    "object_repr": "Système automatisé (moteur interne)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2025-06-16T21:40:30.884Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "12",
+    "object_repr": "Auditeur",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2025-06-16T21:41:03.828Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "13",
+    "object_repr": "Chargé de clientèle",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2025-06-16T21:41:28.722Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "14",
+    "object_repr": "Responsable IT",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2025-06-16T21:42:00.809Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "15",
+    "object_repr": "Administrateur base de données (DBA)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2025-06-16T21:42:39.915Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "16",
+    "object_repr": "Contrôleur de gestion",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2025-06-16T21:43:08.271Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "17",
+    "object_repr": "Juridique / Contentieux",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2025-06-16T21:43:38.261Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "18",
+    "object_repr": "Contrôle interne",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2025-06-16T21:44:14.291Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "19",
+    "object_repr": "Agent mobile (terrain)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2025-06-16T22:15:40.600Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "1",
+    "object_repr": "koffi roland (EMP0001)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2025-06-16T22:16:37.000Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "UserRole object (1)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2025-06-16T22:24:26.837Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "1",
+    "object_repr": "voir_utilisateurs",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2025-06-16T22:26:43.488Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "creer_utilisateurs",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2025-06-16T22:27:26.766Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "3",
+    "object_repr": "modifier_utilisateurs",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2025-06-16T22:28:08.470Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "4",
+    "object_repr": "supprimer_utilisateurs",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 35,
+  "fields": {
+    "action_time": "2025-06-16T22:29:24.117Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "5",
+    "object_repr": "voir_rapports",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 36,
+  "fields": {
+    "action_time": "2025-06-17T01:30:35.956Z",
+    "user": 1,
+    "content_type": 30,
+    "object_id": "1",
+    "object_repr": "2e32090aee028ae8549e6318ed557fcf52bf3ab5",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 37,
+  "fields": {
+    "action_time": "2025-06-17T01:31:18.029Z",
+    "user": 1,
+    "content_type": 30,
+    "object_id": "1",
+    "object_repr": "2e32090aee028ae8549e6318ed557fcf52bf3ab5",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 38,
+  "fields": {
+    "action_time": "2025-06-17T02:55:23.243Z",
+    "user": 1,
+    "content_type": 32,
+    "object_id": "1",
+    "object_repr": "koffi roland (EMP0001) - IA (2025-06-10)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 39,
+  "fields": {
+    "action_time": "2025-06-17T07:42:35.800Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "5",
+    "object_repr": "voir_rapports",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 40,
+  "fields": {
+    "action_time": "2025-06-18T08:19:44.836Z",
+    "user": 1,
+    "content_type": 28,
+    "object_id": "1",
+    "object_repr": "koffi roland (EMP0001) - entree 2025-02-12 08:19:40 (manuel)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 41,
+  "fields": {
+    "action_time": "2025-06-22T21:55:52.724Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "2",
+    "object_repr": "testuser",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 42,
+  "fields": {
+    "action_time": "2025-06-22T21:56:49.768Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "2",
+    "object_repr": "testuser",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email address\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 43,
+  "fields": {
+    "action_time": "2025-06-22T22:01:38.184Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "2",
+    "object_repr": "testemployer testemployer (EMP0002)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 44,
+  "fields": {
+    "action_time": "2025-06-22T22:53:57.789Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "2",
+    "object_repr": "UserRole object (2)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 45,
+  "fields": {
+    "action_time": "2025-06-22T22:57:18.362Z",
+    "user": 1,
+    "content_type": 30,
+    "object_id": "2",
+    "object_repr": "cda0c528dc367ca9e9253c106935137d9b4b6f30",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 46,
+  "fields": {
+    "action_time": "2025-06-25T09:38:28.698Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "1",
+    "object_repr": "Roland",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Username\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 47,
+  "fields": {
+    "action_time": "2025-06-25T09:40:03.877Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "2",
+    "object_repr": "Testuser",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Username\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 48,
+  "fields": {
+    "action_time": "2025-06-26T02:49:16.333Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "3",
+    "object_repr": "roland roland (EMP0003)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 49,
+  "fields": {
+    "action_time": "2025-06-26T04:20:53.776Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "5",
+    "object_repr": "Arafate",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 50,
+  "fields": {
+    "action_time": "2025-06-26T04:27:40.980Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "4",
+    "object_repr": "Originale arafate (EMP0004)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 51,
+  "fields": {
+    "action_time": "2025-06-26T04:33:58.720Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "5",
+    "object_repr": "Arafate",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email address\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 52,
+  "fields": {
+    "action_time": "2025-06-26T04:35:03.556Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "5",
+    "object_repr": "Arafate",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 53,
+  "fields": {
+    "action_time": "2025-06-26T04:35:23.593Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "4",
+    "object_repr": "Originale arafate (EMP0004)",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 54,
+  "fields": {
+    "action_time": "2025-06-26T08:42:36.025Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "6",
+    "object_repr": "Wilfried",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 55,
+  "fields": {
+    "action_time": "2025-06-26T08:58:42.721Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "5",
+    "object_repr": "Loua Wilfried (EMP0005)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 56,
+  "fields": {
+    "action_time": "2025-06-26T09:02:45.152Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "7",
+    "object_repr": "Zama",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 57,
+  "fields": {
+    "action_time": "2025-06-26T09:07:29.039Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "7",
+    "object_repr": "Zama",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"password\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 58,
+  "fields": {
+    "action_time": "2025-06-26T09:08:57.095Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "7",
+    "object_repr": "Zama",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 59,
+  "fields": {
+    "action_time": "2025-06-26T09:55:59.452Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "6",
+    "object_repr": "Wilfried",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email address\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 60,
+  "fields": {
+    "action_time": "2025-07-01T10:34:42.787Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "6",
+    "object_repr": "Wilfried",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 61,
+  "fields": {
+    "action_time": "2025-07-01T10:35:51.625Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "6",
+    "object_repr": "Wilfried",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Active\", \"Staff status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 62,
+  "fields": {
+    "action_time": "2025-07-01T10:41:54.720Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "6",
+    "object_repr": "Wilfried",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 63,
+  "fields": {
+    "action_time": "2025-07-03T10:51:35.107Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "5",
+    "object_repr": "Loua Wilfried (EMP0005)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Telephone\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 64,
+  "fields": {
+    "action_time": "2025-07-03T10:53:46.299Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "5",
+    "object_repr": "Arafat",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Username\", \"First name\", \"Last name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 65,
+  "fields": {
+    "action_time": "2025-07-03T10:56:00.883Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "4",
+    "object_repr": "Koné Arafat (EMP0004)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Nom\", \"Prenom\", \"Telephone\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 66,
+  "fields": {
+    "action_time": "2025-07-03T10:56:39.258Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "1",
+    "object_repr": "Roland",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 67,
+  "fields": {
+    "action_time": "2025-07-03T10:57:02.343Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "3",
+    "object_repr": "lobognon roland (EMP0003)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Nom\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 68,
+  "fields": {
+    "action_time": "2025-07-03T10:57:46.205Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "2",
+    "object_repr": "testemployer testemployer (EMP0002)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Telephone\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 69,
+  "fields": {
+    "action_time": "2025-07-03T10:59:23.403Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "1",
+    "object_repr": "koffi roland (EMP0001)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Telephone\"]}}]"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": 1,
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 2,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 2,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 2,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can view permission",
+    "content_type": 2,
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 3,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 3,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 3,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can view group",
+    "content_type": 3,
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 4,
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 4,
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 4,
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can view user",
+    "content_type": 4,
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 5,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 5,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 5,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can view content type",
+    "content_type": 5,
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 6,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 6,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 6,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can view session",
+    "content_type": 6,
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 7,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 7,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 7,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can view permission",
+    "content_type": 7,
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can add role",
+    "content_type": 8,
+    "codename": "add_role"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can change role",
+    "content_type": 8,
+    "codename": "change_role"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can delete role",
+    "content_type": 8,
+    "codename": "delete_role"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can view role",
+    "content_type": 8,
+    "codename": "view_role"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can add user role",
+    "content_type": 9,
+    "codename": "add_userrole"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 34,
+  "fields": {
+    "name": "Can change user role",
+    "content_type": 9,
+    "codename": "change_userrole"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 35,
+  "fields": {
+    "name": "Can delete user role",
+    "content_type": 9,
+    "codename": "delete_userrole"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 36,
+  "fields": {
+    "name": "Can view user role",
+    "content_type": 9,
+    "codename": "view_userrole"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add role permission",
+    "content_type": 10,
+    "codename": "add_rolepermission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change role permission",
+    "content_type": 10,
+    "codename": "change_rolepermission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete role permission",
+    "content_type": 10,
+    "codename": "delete_rolepermission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can view role permission",
+    "content_type": 10,
+    "codename": "view_rolepermission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 41,
+  "fields": {
+    "name": "Can add agence",
+    "content_type": 11,
+    "codename": "add_agence"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 42,
+  "fields": {
+    "name": "Can change agence",
+    "content_type": 11,
+    "codename": "change_agence"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 43,
+  "fields": {
+    "name": "Can delete agence",
+    "content_type": 11,
+    "codename": "delete_agence"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 44,
+  "fields": {
+    "name": "Can view agence",
+    "content_type": 11,
+    "codename": "view_agence"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 45,
+  "fields": {
+    "name": "Can add institution",
+    "content_type": 12,
+    "codename": "add_institution"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 46,
+  "fields": {
+    "name": "Can change institution",
+    "content_type": 12,
+    "codename": "change_institution"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 47,
+  "fields": {
+    "name": "Can delete institution",
+    "content_type": 12,
+    "codename": "delete_institution"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 48,
+  "fields": {
+    "name": "Can view institution",
+    "content_type": 12,
+    "codename": "view_institution"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 49,
+  "fields": {
+    "name": "Can add plan saa s",
+    "content_type": 13,
+    "codename": "add_plansaas"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 50,
+  "fields": {
+    "name": "Can change plan saa s",
+    "content_type": 13,
+    "codename": "change_plansaas"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 51,
+  "fields": {
+    "name": "Can delete plan saa s",
+    "content_type": 13,
+    "codename": "delete_plansaas"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 52,
+  "fields": {
+    "name": "Can view plan saa s",
+    "content_type": 13,
+    "codename": "view_plansaas"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 53,
+  "fields": {
+    "name": "Can add Employé",
+    "content_type": 14,
+    "codename": "add_employe"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 54,
+  "fields": {
+    "name": "Can change Employé",
+    "content_type": 14,
+    "codename": "change_employe"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 55,
+  "fields": {
+    "name": "Can delete Employé",
+    "content_type": 14,
+    "codename": "delete_employe"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 56,
+  "fields": {
+    "name": "Can view Employé",
+    "content_type": 14,
+    "codename": "view_employe"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 57,
+  "fields": {
+    "name": "Can add abonnement",
+    "content_type": 15,
+    "codename": "add_abonnement"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 58,
+  "fields": {
+    "name": "Can change abonnement",
+    "content_type": 15,
+    "codename": "change_abonnement"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 59,
+  "fields": {
+    "name": "Can delete abonnement",
+    "content_type": 15,
+    "codename": "delete_abonnement"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 60,
+  "fields": {
+    "name": "Can view abonnement",
+    "content_type": 15,
+    "codename": "view_abonnement"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 61,
+  "fields": {
+    "name": "Can add utilisateur",
+    "content_type": 16,
+    "codename": "add_utilisateur"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 62,
+  "fields": {
+    "name": "Can change utilisateur",
+    "content_type": 16,
+    "codename": "change_utilisateur"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 63,
+  "fields": {
+    "name": "Can delete utilisateur",
+    "content_type": 16,
+    "codename": "delete_utilisateur"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 64,
+  "fields": {
+    "name": "Can view utilisateur",
+    "content_type": 16,
+    "codename": "view_utilisateur"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 65,
+  "fields": {
+    "name": "Can add document rh",
+    "content_type": 17,
+    "codename": "add_documentrh"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 66,
+  "fields": {
+    "name": "Can change document rh",
+    "content_type": 17,
+    "codename": "change_documentrh"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 67,
+  "fields": {
+    "name": "Can delete document rh",
+    "content_type": 17,
+    "codename": "delete_documentrh"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 68,
+  "fields": {
+    "name": "Can view document rh",
+    "content_type": 17,
+    "codename": "view_documentrh"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 69,
+  "fields": {
+    "name": "Can add contrat travail",
+    "content_type": 18,
+    "codename": "add_contrattravail"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 70,
+  "fields": {
+    "name": "Can change contrat travail",
+    "content_type": 18,
+    "codename": "change_contrattravail"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 71,
+  "fields": {
+    "name": "Can delete contrat travail",
+    "content_type": 18,
+    "codename": "delete_contrattravail"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 72,
+  "fields": {
+    "name": "Can view contrat travail",
+    "content_type": 18,
+    "codename": "view_contrattravail"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 73,
+  "fields": {
+    "name": "Can add historique poste",
+    "content_type": 19,
+    "codename": "add_historiqueposte"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 74,
+  "fields": {
+    "name": "Can change historique poste",
+    "content_type": 19,
+    "codename": "change_historiqueposte"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 75,
+  "fields": {
+    "name": "Can delete historique poste",
+    "content_type": 19,
+    "codename": "delete_historiqueposte"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 76,
+  "fields": {
+    "name": "Can view historique poste",
+    "content_type": 19,
+    "codename": "view_historiqueposte"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 77,
+  "fields": {
+    "name": "Can add donnee rh employe",
+    "content_type": 20,
+    "codename": "add_donneerhemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 78,
+  "fields": {
+    "name": "Can change donnee rh employe",
+    "content_type": 20,
+    "codename": "change_donneerhemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 79,
+  "fields": {
+    "name": "Can delete donnee rh employe",
+    "content_type": 20,
+    "codename": "delete_donneerhemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 80,
+  "fields": {
+    "name": "Can view donnee rh employe",
+    "content_type": 20,
+    "codename": "view_donneerhemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 81,
+  "fields": {
+    "name": "Can add jour ferie",
+    "content_type": 21,
+    "codename": "add_jourferie"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 82,
+  "fields": {
+    "name": "Can change jour ferie",
+    "content_type": 21,
+    "codename": "change_jourferie"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 83,
+  "fields": {
+    "name": "Can delete jour ferie",
+    "content_type": 21,
+    "codename": "delete_jourferie"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 84,
+  "fields": {
+    "name": "Can view jour ferie",
+    "content_type": 21,
+    "codename": "view_jourferie"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 85,
+  "fields": {
+    "name": "Can add affectation employe",
+    "content_type": 22,
+    "codename": "add_affectationemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 86,
+  "fields": {
+    "name": "Can change affectation employe",
+    "content_type": 22,
+    "codename": "change_affectationemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 87,
+  "fields": {
+    "name": "Can delete affectation employe",
+    "content_type": 22,
+    "codename": "delete_affectationemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 88,
+  "fields": {
+    "name": "Can view affectation employe",
+    "content_type": 22,
+    "codename": "view_affectationemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 89,
+  "fields": {
+    "name": "Can add horaire employe",
+    "content_type": 23,
+    "codename": "add_horaireemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 90,
+  "fields": {
+    "name": "Can change horaire employe",
+    "content_type": 23,
+    "codename": "change_horaireemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 91,
+  "fields": {
+    "name": "Can delete horaire employe",
+    "content_type": 23,
+    "codename": "delete_horaireemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 92,
+  "fields": {
+    "name": "Can view horaire employe",
+    "content_type": 23,
+    "codename": "view_horaireemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 93,
+  "fields": {
+    "name": "Can add horaire standard",
+    "content_type": 24,
+    "codename": "add_horairestandard"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 94,
+  "fields": {
+    "name": "Can change horaire standard",
+    "content_type": 24,
+    "codename": "change_horairestandard"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 95,
+  "fields": {
+    "name": "Can delete horaire standard",
+    "content_type": 24,
+    "codename": "delete_horairestandard"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 96,
+  "fields": {
+    "name": "Can view horaire standard",
+    "content_type": 24,
+    "codename": "view_horairestandard"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 97,
+  "fields": {
+    "name": "Can add demande conge",
+    "content_type": 25,
+    "codename": "add_demandeconge"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 98,
+  "fields": {
+    "name": "Can change demande conge",
+    "content_type": 25,
+    "codename": "change_demandeconge"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 99,
+  "fields": {
+    "name": "Can delete demande conge",
+    "content_type": 25,
+    "codename": "delete_demandeconge"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 100,
+  "fields": {
+    "name": "Can view demande conge",
+    "content_type": 25,
+    "codename": "view_demandeconge"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 101,
+  "fields": {
+    "name": "Can add type absence",
+    "content_type": 26,
+    "codename": "add_typeabsence"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 102,
+  "fields": {
+    "name": "Can change type absence",
+    "content_type": 26,
+    "codename": "change_typeabsence"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 103,
+  "fields": {
+    "name": "Can delete type absence",
+    "content_type": 26,
+    "codename": "delete_typeabsence"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 104,
+  "fields": {
+    "name": "Can view type absence",
+    "content_type": 26,
+    "codename": "view_typeabsence"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 105,
+  "fields": {
+    "name": "Can add absence employe",
+    "content_type": 27,
+    "codename": "add_absenceemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 106,
+  "fields": {
+    "name": "Can change absence employe",
+    "content_type": 27,
+    "codename": "change_absenceemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 107,
+  "fields": {
+    "name": "Can delete absence employe",
+    "content_type": 27,
+    "codename": "delete_absenceemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 108,
+  "fields": {
+    "name": "Can view absence employe",
+    "content_type": 27,
+    "codename": "view_absenceemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 109,
+  "fields": {
+    "name": "Can add pointage",
+    "content_type": 28,
+    "codename": "add_pointage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 110,
+  "fields": {
+    "name": "Can change pointage",
+    "content_type": 28,
+    "codename": "change_pointage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 111,
+  "fields": {
+    "name": "Can delete pointage",
+    "content_type": 28,
+    "codename": "delete_pointage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 112,
+  "fields": {
+    "name": "Can view pointage",
+    "content_type": 28,
+    "codename": "view_pointage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 113,
+  "fields": {
+    "name": "Can add Token",
+    "content_type": 29,
+    "codename": "add_token"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 114,
+  "fields": {
+    "name": "Can change Token",
+    "content_type": 29,
+    "codename": "change_token"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 115,
+  "fields": {
+    "name": "Can delete Token",
+    "content_type": 29,
+    "codename": "delete_token"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 116,
+  "fields": {
+    "name": "Can view Token",
+    "content_type": 29,
+    "codename": "view_token"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 117,
+  "fields": {
+    "name": "Can add Token",
+    "content_type": 30,
+    "codename": "add_tokenproxy"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 118,
+  "fields": {
+    "name": "Can change Token",
+    "content_type": 30,
+    "codename": "change_tokenproxy"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 119,
+  "fields": {
+    "name": "Can delete Token",
+    "content_type": 30,
+    "codename": "delete_tokenproxy"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 120,
+  "fields": {
+    "name": "Can view Token",
+    "content_type": 30,
+    "codename": "view_tokenproxy"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 121,
+  "fields": {
+    "name": "Can add sanction",
+    "content_type": 31,
+    "codename": "add_sanction"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 122,
+  "fields": {
+    "name": "Can change sanction",
+    "content_type": 31,
+    "codename": "change_sanction"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 123,
+  "fields": {
+    "name": "Can delete sanction",
+    "content_type": 31,
+    "codename": "delete_sanction"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 124,
+  "fields": {
+    "name": "Can view sanction",
+    "content_type": 31,
+    "codename": "view_sanction"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 125,
+  "fields": {
+    "name": "Can add certification employe",
+    "content_type": 32,
+    "codename": "add_certificationemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 126,
+  "fields": {
+    "name": "Can change certification employe",
+    "content_type": 32,
+    "codename": "change_certificationemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 127,
+  "fields": {
+    "name": "Can delete certification employe",
+    "content_type": 32,
+    "codename": "delete_certificationemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 128,
+  "fields": {
+    "name": "Can view certification employe",
+    "content_type": 32,
+    "codename": "view_certificationemploye"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 129,
+  "fields": {
+    "name": "Can add session formation",
+    "content_type": 33,
+    "codename": "add_sessionformation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 130,
+  "fields": {
+    "name": "Can change session formation",
+    "content_type": 33,
+    "codename": "change_sessionformation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 131,
+  "fields": {
+    "name": "Can delete session formation",
+    "content_type": 33,
+    "codename": "delete_sessionformation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 132,
+  "fields": {
+    "name": "Can view session formation",
+    "content_type": 33,
+    "codename": "view_sessionformation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 133,
+  "fields": {
+    "name": "Can add evaluation",
+    "content_type": 34,
+    "codename": "add_evaluation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 134,
+  "fields": {
+    "name": "Can change evaluation",
+    "content_type": 34,
+    "codename": "change_evaluation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 135,
+  "fields": {
+    "name": "Can delete evaluation",
+    "content_type": 34,
+    "codename": "delete_evaluation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 136,
+  "fields": {
+    "name": "Can view evaluation",
+    "content_type": 34,
+    "codename": "view_evaluation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 137,
+  "fields": {
+    "name": "Can add formation",
+    "content_type": 35,
+    "codename": "add_formation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 138,
+  "fields": {
+    "name": "Can change formation",
+    "content_type": 35,
+    "codename": "change_formation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 139,
+  "fields": {
+    "name": "Can delete formation",
+    "content_type": 35,
+    "codename": "delete_formation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 140,
+  "fields": {
+    "name": "Can view formation",
+    "content_type": 35,
+    "codename": "view_formation"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$KBSWdpgR53bUfXUfQsc0qJ$fdCuxWimxcib1C4zh6Ei9E3EP6BsjKOBIjqUWcF//KU=",
+    "last_login": "2025-07-25T15:06:17.179Z",
+    "is_superuser": true,
+    "username": "Roland",
+    "first_name": "lobognon",
+    "last_name": "roland",
+    "email": "rolandcarmel01@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-06-16T16:54:41Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$f3jrMd3kKxpsammzCie4Pa$4Nu56w+uKHCxjZKXYR6Dqbs01NzBCwDoWxRPjOxA3Pg=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Testuser",
+    "first_name": "testnom",
+    "last_name": "testprenom",
+    "email": "test@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-06-22T21:55:51Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$Fr31WnZHIgw9sPh6QmiOno$ReMvU8/L2YhAyigy/f2rsG5XRoaZHVa/YbU2k40HssI=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "testemployer",
+    "first_name": "",
+    "last_name": "",
+    "email": "testemployer@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-06-26T02:42:04.828Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$b07VrEFg4fRBexNf1oqbpx$9lbFCob00FlJIqAAT8AF9k2l9Rb1bKboZKqHZj9jnCs=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "lkoffi",
+    "first_name": "",
+    "last_name": "",
+    "email": "lkoffi@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-06-26T02:42:05.996Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$dcC7MKRzU8Q9dBYxepoAsQ$/Fi9pNjN6Hkm3IudiCf0+CFEBeaOjgYT9ABTjMzItLI=",
+    "last_login": "2025-07-24T10:28:30.554Z",
+    "is_superuser": false,
+    "username": "Arafat",
+    "first_name": "Arafat",
+    "last_name": "Koné",
+    "email": "arafate@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-06-26T04:20:52Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$cXFjoKRiGVHeHzgQstpOzl$gO74aFtIoHX2cuwLNbkzATNJ2m3ZpO7JgNO7j8eoKrA=",
+    "last_login": "2025-07-24T09:49:17.527Z",
+    "is_superuser": false,
+    "username": "Wilfried",
+    "first_name": "Wilfried",
+    "last_name": "Loua",
+    "email": "loua@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-06-26T08:42:33Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$m2VuRsUpMoIppARBdaEfmj$vJKgaEckwIUR6j3IQDtxfiv9M8AyNh7psLMhDV9jMPA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "koffi",
+    "first_name": "Koffi",
+    "last_name": "robert",
+    "email": "cariscarmel38@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-07-23T13:22:54.347Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$1kSdxM8A6eQbZGN5ND8Evp$ataEJad2JHuwVKX1HIXB9tHVE4CblEZ0J/z4cXMrGZE=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "lea",
+    "first_name": "Koffi",
+    "last_name": "lea",
+    "email": "kofi@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-07-23T14:28:13.558Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 10,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$749Xb8eOKCbAVESRCzZico$n/COgkvkrtMoE1ZG7gRJyNthwLKMkS4CFum/XxTVGG0=",
+    "last_login": "2025-07-23T15:03:28.720Z",
+    "is_superuser": false,
+    "username": "leocadi",
+    "first_name": "Lobognon",
+    "last_name": "leocadi",
+    "email": "loacadi@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-07-23T14:59:56.732Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 11,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$qxSPqRkaa8H1ZV2z8jkdDN$hv7lPD/D9ZL/UDonalufTC/ABjjgjY78ptbydrRfxj8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "kouakou",
+    "first_name": "Kouakou",
+    "last_name": "olivier",
+    "email": "kouakou@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-07-23T15:16:42.125Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 12,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$Utc0da1WKFrngZuGjxEnlm$YtGlu+WON8Tp9QpAp0uuYClhOPNLnZOSVbZ2ur12J0s=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "yayous",
+    "first_name": "Arafat",
+    "last_name": "kone yahaya",
+    "email": "konedatoloyahayaarafat@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-07-23T15:16:48.857Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 13,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$y6qE2hB34oDG9zl87Ai9lY$c8AD695UGG6IabJMzAnaFy4j0mVTUYahRFhautx6eTc=",
+    "last_login": "2025-07-24T10:58:25.411Z",
+    "is_superuser": false,
+    "username": "ruth01",
+    "first_name": "Lobognon",
+    "last_name": "Ruth",
+    "email": "ruth@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-07-24T10:52:12.408Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 1,
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 2,
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 3,
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 4,
+  "fields": {
+    "app_label": "auth",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 5,
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 6,
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 7,
+  "fields": {
+    "app_label": "roles_permissions",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 8,
+  "fields": {
+    "app_label": "roles_permissions",
+    "model": "role"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 9,
+  "fields": {
+    "app_label": "roles_permissions",
+    "model": "userrole"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 10,
+  "fields": {
+    "app_label": "roles_permissions",
+    "model": "rolepermission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 11,
+  "fields": {
+    "app_label": "agences",
+    "model": "agence"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 12,
+  "fields": {
+    "app_label": "institutions",
+    "model": "institution"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 13,
+  "fields": {
+    "app_label": "institutions",
+    "model": "plansaas"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 14,
+  "fields": {
+    "app_label": "institutions",
+    "model": "employe"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 15,
+  "fields": {
+    "app_label": "institutions",
+    "model": "abonnement"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 16,
+  "fields": {
+    "app_label": "utilisateurs",
+    "model": "utilisateur"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 17,
+  "fields": {
+    "app_label": "rh",
+    "model": "documentrh"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 18,
+  "fields": {
+    "app_label": "rh",
+    "model": "contrattravail"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 19,
+  "fields": {
+    "app_label": "rh",
+    "model": "historiqueposte"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 20,
+  "fields": {
+    "app_label": "rh",
+    "model": "donneerhemploye"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 21,
+  "fields": {
+    "app_label": "rh",
+    "model": "jourferie"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 22,
+  "fields": {
+    "app_label": "rh",
+    "model": "affectationemploye"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 23,
+  "fields": {
+    "app_label": "rh",
+    "model": "horaireemploye"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 24,
+  "fields": {
+    "app_label": "rh",
+    "model": "horairestandard"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 25,
+  "fields": {
+    "app_label": "rh",
+    "model": "demandeconge"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 26,
+  "fields": {
+    "app_label": "rh",
+    "model": "typeabsence"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 27,
+  "fields": {
+    "app_label": "rh",
+    "model": "absenceemploye"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 28,
+  "fields": {
+    "app_label": "rh",
+    "model": "pointage"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 29,
+  "fields": {
+    "app_label": "authtoken",
+    "model": "token"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 30,
+  "fields": {
+    "app_label": "authtoken",
+    "model": "tokenproxy"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 31,
+  "fields": {
+    "app_label": "rh",
+    "model": "sanction"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 32,
+  "fields": {
+    "app_label": "rh",
+    "model": "certificationemploye"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 33,
+  "fields": {
+    "app_label": "rh",
+    "model": "sessionformation"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 34,
+  "fields": {
+    "app_label": "rh",
+    "model": "evaluation"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 35,
+  "fields": {
+    "app_label": "rh",
+    "model": "formation"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "0yjng5ibpkz67h98yeseybo3kzpvwr6l",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQBe9CHSE-AkzK9DkDWnZXwUkEkrErK3cPllwk7cy8t4sE21rS1nlJM4mr0OLyyzLgi-sh6An10SS2ui5zlkciT9vlvRG_b2f7d1Cgl7HO1puogZwmlR0G7dEzTDEMwjFmpbS1YNlMjhExe1SGnXcU9ECexOcL2vs3mQ:1uXi86:yIGJky_x5nf-DEzusCUrBeuhdENj52lu7Qj7lTOKSxE",
+    "expire_date": "2025-07-18T15:15:10.024Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "1ec0f13rba6dt3zcpynn8vksmdl67iy5",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyGFDQgevfsNZJdlpWpoUtqT8d9tkx40mdO8N_NWCdelprWXOY2sLsqo029HmJ-l7YAf2O6TzlNb5pH0ruiDdn2buLyuh_t3ULHXbe3BWS7sDSBIyDZiQCZPmWKxTiKHKGzQueGM4E0gCQLZeCAYZIv6fAH7Mjhk:1ubEhf:8Q9NDjJ5SlmgZHRdIMguCaPGGnIW5knpne1vxZyukLU",
+    "expire_date": "2025-07-28T08:38:27.271Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "1nw64i8i8ib8mmpxgrp9vftedzmswvdn",
+  "fields": {
+    "session_data": ".eJxVjEsOwjAMBe-SNYriNFUMS_acIbJjhxRQKvWzqrg7VOoCtm9m3mYSrUtN66xTGsRcDJjT78aUn9p2IA9q99HmsS3TwHZX7EFnextFX9fD_TuoNNdvjSF2EdmB90IO9QwZCyBjhNhnCep87pW4L0yEJfsi3LmAghA1gDPvD9fQN_o:1uUd1O:iBQLk3Ir6QzgCjbYyI_l4rqHvF0jmzZBqrCSnYFmQLs",
+    "expire_date": "2025-07-10T03:11:30.346Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "2v8i39e1wla0lwsmaa4ho73wpjlnje33",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyGFDQgevfsNZJdlpWpoUtqT8d9tkx40mdO8N_NWCdelprWXOY2sLsqo029HmJ-l7YAf2O6TzlNb5pH0ruiDdn2buLyuh_t3ULHXbe3BWS7sDSBIyDZiQCZPmWKxTiKHKGzQueGM4E0gCQLZeCAYZIv6fAH7Mjhk:1ufK01:7wEbgxRy1hlr3NX9gNbpg7Nqipcygau_N02FWGmneTA",
+    "expire_date": "2025-08-08T15:06:17.209Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "6b2q6y1r1l3yiih2awrgeqtmpzevglnz",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQBe9CHSE-AkzK9DkDWnZXwUkEkrErK3cPllwk7cy8t4sE21rS1nlJM4mr0OLyyzLgi-sh6An10SS2ui5zlkciT9vlvRG_b2f7d1Cgl7HO1puogZwmlR0G7dEzTDEMwjFmpbS1YNlMjhExe1SGnXcU9ECexOcL2vs3mQ:1uYnT9:NHu9cgMThoftoOAcXbRJMbYsPgFqJUD9Wr8VYbWfMIw",
+    "expire_date": "2025-07-21T15:09:23.515Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "fvsqq9pl9fb3g8rpptuahwysxrmzsovu",
+  "fields": {
+    "session_data": ".eJxVjEsOwjAMBe-SNYriNFUMS_acIbJjhxRQKvWzqrg7VOoCtm9m3mYSrUtN66xTGsRcDJjT78aUn9p2IA9q99HmsS3TwHZX7EFnextFX9fD_TuoNNdvjSF2EdmB90IO9QwZCyBjhNhnCep87pW4L0yEJfsi3LmAghA1gDPvD9fQN_o:1uVA0S:FPL8Z7fRFJHPFbiDiKzcxGGxYzwGUDfpsoRfmBAWNyA",
+    "expire_date": "2025-07-11T14:24:44.282Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "h384va2sp3yhnzvmxvsblej2qjuljrdc",
+  "fields": {
+    "session_data": ".eJxVjEsOwjAMBe-SNYriNFUMS_acIbJjhxRQKvWzqrg7VOoCtm9m3mYSrUtN66xTGsRcDJjT78aUn9p2IA9q99HmsS3TwHZX7EFnextFX9fD_TuoNNdvjSF2EdmB90IO9QwZCyBjhNhnCep87pW4L0yEJfsi3LmAghA1gDPvD9fQN_o:1uVADx:UPdyjkPId7jsVDu-xRlGNYqzwaIkrgKjUvfGZibmV2o",
+    "expire_date": "2025-07-11T14:38:41.435Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "h7ofdzqwks3erk0tyewyvsmjii9cvc37",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlnx31DS5wyW17uLA8iR4qRC3B0ipYD2zcx7iZS3taat05ImFBehxOl3g1we1HaA99xusyxzW5cJ5K7Ig3Y5zkjP6-H-HdTc67e2gR1p5TxF58iZc0YNDDbgMHjjCxrLPjBEheCZmIrRhDFkDpECePH-AOruOLA:1uRDzU:veW6kYu_OSZDWverkOLYtFN0BZ9SWB0kvaey2BTipSw",
+    "expire_date": "2025-06-30T17:51:28.074Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "hpmc2fhwb4j98mnyczwzd2ak8hxhevcg",
+  "fields": {
+    "session_data": ".eJxVjEsOwjAMBe-SNYriNFUMS_acIbJjhxRQKvWzqrg7VOoCtm9m3mYSrUtN66xTGsRcDJjT78aUn9p2IA9q99HmsS3TwHZX7EFnextFX9fD_TuoNNdvjSF2EdmB90IO9QwZCyBjhNhnCep87pW4L0yEJfsi3LmAghA1gDPvD9fQN_o:1uUcot:pzU-hetDsxqFQAFoQHSloBdIRfJqnJ2gtyPRf0FqSkw",
+    "expire_date": "2025-07-10T02:58:35.897Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "i6mmkh7u5qsg6xggg3plokxwv4pm3iay",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyGFDQgevfsNZJdlpWpoUtqT8d9tkx40mdO8N_NWCdelprWXOY2sLsqo029HmJ-l7YAf2O6TzlNb5pH0ruiDdn2buLyuh_t3ULHXbe3BWS7sDSBIyDZiQCZPmWKxTiKHKGzQueGM4E0gCQLZeCAYZIv6fAH7Mjhk:1udn53:dR9zuAtbPyK9rLT7zuhKwgxR34F9WPDOg9whCLJw5lM",
+    "expire_date": "2025-08-04T09:45:09.693Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ig52yqnb11m52gol8wcgo6crcd5r9ign",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSHQ8igu3fsNZGYYpGogKe3K-O_apAvd3nPOfYkI21ri1nmJcxJnocXpd0OgB9cdpDvUW5PU6rrMKHdFHrTLa0v8vBzu30GBXr418WiHAHoKqAIQTN6SA0zKkMKBrBp1sNZnTCE4ZRRkrwnYj4YdWcri_QHnczgq:1uWNCi:kp-Rg0wn0MLuzG-_C-h3GCwT1UcLayOput9jIipdWLE",
+    "expire_date": "2025-07-14T22:42:24.571Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "iovy7pe4j4tvbvcuxn7nynkudm426l8m",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlnx31DS5wyW17uLA8iR4qRC3B0ipYD2zcx7iZS3taat05ImFBehxOl3g1we1HaA99xusyxzW5cJ5K7Ig3Y5zkjP6-H-HdTc67e2gR1p5TxF58iZc0YNDDbgMHjjCxrLPjBEheCZmIrRhDFkDpECePH-AOruOLA:1uRDzT:QDOk0JQBb3HroIL4FM4d40pwuOr_O3HSGkzmJdWFKis",
+    "expire_date": "2025-06-30T17:51:27.264Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "m9uwhzcmcouknigqe7ukyhpgxiyt533r",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlnx31DS5wyW17uLA8iR4qRC3B0ipYD2zcx7iZS3taat05ImFBehxOl3g1we1HaA99xusyxzW5cJ5K7Ig3Y5zkjP6-H-HdTc67e2gR1p5TxF58iZc0YNDDbgMHjjCxrLPjBEheCZmIrRhDFkDpECePH-AOruOLA:1uRIPV:XC3hcrNKqHSKqk2Jt4FUZ-tXAIXab_B5ZlTnkw3Qt5g",
+    "expire_date": "2025-06-30T22:34:37.975Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "osrot95tzgq999vqls8grlaz1p8nhhye",
+  "fields": {
+    "session_data": ".eJxVjEsOwjAMBe-SNYriNFUMS_acIbJjhxRQKvWzqrg7VOoCtm9m3mYSrUtN66xTGsRcDJjT78aUn9p2IA9q99HmsS3TwHZX7EFnextFX9fD_TuoNNdvjSF2EdmB90IO9QwZCyBjhNhnCep87pW4L0yEJfsi3LmAghA1gDPvD9fQN_o:1uUj4A:SjtEC_1rLXd6ZoYGPIgTX5RwHQWZyM8JqO9E3tyG2V0",
+    "expire_date": "2025-07-10T09:38:46.176Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "qw6q39a2vwu0d7129sbo8ig8wmtdb74g",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyGFDQgevfsNZJdlpWpoUtqT8d9tkx40mdO8N_NWCdelprWXOY2sLsqo029HmJ-l7YAf2O6TzlNb5pH0ruiDdn2buLyuh_t3ULHXbe3BWS7sDSBIyDZiQCZPmWKxTiKHKGzQueGM4E0gCQLZeCAYZIv6fAH7Mjhk:1uecjf:tIdqWKaH3looVPbJ1MXvWtY3cJRt7aPZKSedgMJjgKE",
+    "expire_date": "2025-08-06T16:54:31.174Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ref0wcgxqrsilcronh4f56tdaa6yvug1",
+  "fields": {
+    "session_data": ".eJxVjEsOwjAMBe-SNYriNFUMS_acIbJjhxRQKvWzqrg7VOoCtm9m3mYSrUtN66xTGsRcDJjT78aUn9p2IA9q99HmsS3TwHZX7EFnextFX9fD_TuoNNdvjSF2EdmB90IO9QwZCyBjhNhnCep87pW4L0yEJfsi3LmAghA1gDPvD9fQN_o:1uUiZt:33WSZvqX-HBKcHaOxB_4LSenWsMRbUddBeXpVblxHMY",
+    "expire_date": "2025-07-10T09:07:29.097Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "t1p8zz6psutvhxpuujtdd79vyli54ou4",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlnx31DS5wyW17uLA8iR4qRC3B0ipYD2zcx7iZS3taat05ImFBehxOl3g1we1HaA99xusyxzW5cJ5K7Ig3Y5zkjP6-H-HdTc67e2gR1p5TxF58iZc0YNDDbgMHjjCxrLPjBEheCZmIrRhDFkDpECePH-AOruOLA:1uRD6n:PXdWXJdisqWQ56PTcJuuwWEyPZmuvYXDHky7Riw_w04",
+    "expire_date": "2025-06-30T16:54:57.604Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "tembc4fynhmvucw92laze0bx9gtxskn4",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlnx31DS5wyW17uLA8iR4qRC3B0ipYD2zcx7iZS3taat05ImFBehxOl3g1we1HaA99xusyxzW5cJ5K7Ig3Y5zkjP6-H-HdTc67e2gR1p5TxF58iZc0YNDDbgMHjjCxrLPjBEheCZmIrRhDFkDpECePH-AOruOLA:1uUMbU:THn95oGnuqzSIVImdX3dDR4Iw_3iWwvVMj-l4Kf75eE",
+    "expire_date": "2025-07-09T09:39:40.968Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "tudfl5381jemk63wuuzwmyfs93m1j3me",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQBe9CHSE-AkzK9DkDWnZXwUkEkrErK3cPllwk7cy8t4sE21rS1nlJM4mr0OLyyzLgi-sh6An10SS2ui5zlkciT9vlvRG_b2f7d1Cgl7HO1puogZwmlR0G7dEzTDEMwjFmpbS1YNlMjhExe1SGnXcU9ECexOcL2vs3mQ:1uXLBf:_KWySYu3cLMn7wHGsaP4h27SNPKho6fgn7wDHjfNQ1k",
+    "expire_date": "2025-07-17T14:45:19.154Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "uf1dc9zgdxatcblwnmnm382p555yg171",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQBe9CHSE-AkzK9DkDWnZXwUkEkrErK3cPllwk7cy8t4sE21rS1nlJM4mr0OLyyzLgi-sh6An10SS2ui5zlkciT9vlvRG_b2f7d1Cgl7HO1puogZwmlR0G7dEzTDEMwjFmpbS1YNlMjhExe1SGnXcU9ECexOcL2vs3mQ:1uYnWA:wTfFZa69aA21Vcabebe8A02kUfSjNIIx6kpELCQ8QcQ",
+    "expire_date": "2025-07-21T15:12:30.630Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "uz0nzmflozdklym9caozpj6tj2jxwn7u",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlnx31DS5wyW17uLA8iR4qRC3B0ipYD2zcx7iZS3taat05ImFBehxOl3g1we1HaA99xusyxzW5cJ5K7Ig3Y5zkjP6-H-HdTc67e2gR1p5TxF58iZc0YNDDbgMHjjCxrLPjBEheCZmIrRhDFkDpECePH-AOruOLA:1uUI0d:pCtNaj56yd60gFyPMuYLd0a8j9kdpO2ezzwMuAE0PNw",
+    "expire_date": "2025-07-09T04:45:19.958Z"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 1,
+  "fields": {
+    "nom_role": "Administrateur système",
+    "description": "Administrateur système",
+    "slug": "admin-systeme"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 2,
+  "fields": {
+    "nom_role": "Responsable RH",
+    "description": "Responsable RH",
+    "slug": "responsable-rh"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 3,
+  "fields": {
+    "nom_role": "Chef d’agence",
+    "description": "Chef d’agence",
+    "slug": "chef-agence"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 4,
+  "fields": {
+    "nom_role": "Caissier",
+    "description": "Caissier",
+    "slug": "caissier"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 5,
+  "fields": {
+    "nom_role": "Agent de crédit",
+    "description": "Agent de crédit",
+    "slug": "agent-credit"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 6,
+  "fields": {
+    "nom_role": "Chef crédit",
+    "description": "Chef crédit",
+    "slug": "chef-credit"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 7,
+  "fields": {
+    "nom_role": "Agent de recouvrement",
+    "description": "Agent de recouvrement",
+    "slug": "agent-recouvrement"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 8,
+  "fields": {
+    "nom_role": "Agent de collecte",
+    "description": "Agent de collecte",
+    "slug": "agent-collecte"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 9,
+  "fields": {
+    "nom_role": "Comptable",
+    "description": "Comptable",
+    "slug": "comptable"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 10,
+  "fields": {
+    "nom_role": "Client",
+    "description": "Client",
+    "slug": "client"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 11,
+  "fields": {
+    "nom_role": "Système automatisé (moteur interne)",
+    "description": "Système automatisé (moteur interne)",
+    "slug": "systeme-automatise"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 12,
+  "fields": {
+    "nom_role": "Auditeur",
+    "description": "Auditeur",
+    "slug": "auditeur"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 13,
+  "fields": {
+    "nom_role": "Chargé de clientèle",
+    "description": "Chargé de clientèle",
+    "slug": "charge-clientele"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 14,
+  "fields": {
+    "nom_role": "Responsable IT",
+    "description": "Responsable IT",
+    "slug": "responsable-it"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 15,
+  "fields": {
+    "nom_role": "Administrateur base de données (DBA)",
+    "description": "Administrateur base de données (DBA)",
+    "slug": "administrateur-bdd"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 16,
+  "fields": {
+    "nom_role": "Contrôleur de gestion",
+    "description": "Contrôleur de gestion",
+    "slug": "controleur-gestion"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 17,
+  "fields": {
+    "nom_role": "Juridique / Contentieux",
+    "description": "Juridique / Contentieux",
+    "slug": "juridique-contentieux"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 18,
+  "fields": {
+    "nom_role": "Contrôle interne",
+    "description": "Contrôle interne",
+    "slug": "controle-interne"
+  }
+},
+{
+  "model": "roles_permissions.role",
+  "pk": 19,
+  "fields": {
+    "nom_role": "Agent mobile (terrain)",
+    "description": "Agent mobile (terrain)",
+    "slug": "agent-mobile"
+  }
+},
+{
+  "model": "roles_permissions.permission",
+  "pk": 1,
+  "fields": {
+    "nom_permission": "voir_utilisateurs",
+    "description": "\"Permet de consulter la liste des utilisateurs.\"",
+    "module_associe": "Utilisateurs"
+  }
+},
+{
+  "model": "roles_permissions.permission",
+  "pk": 2,
+  "fields": {
+    "nom_permission": "creer_utilisateurs",
+    "description": "Permet d’ajouter de nouveaux utilisateurs.",
+    "module_associe": "Utilisateurs"
+  }
+},
+{
+  "model": "roles_permissions.permission",
+  "pk": 3,
+  "fields": {
+    "nom_permission": "modifier_utilisateurs",
+    "description": "Permet de modifier les informations utilisateurs.",
+    "module_associe": "Utilisateurs"
+  }
+},
+{
+  "model": "roles_permissions.permission",
+  "pk": 4,
+  "fields": {
+    "nom_permission": "supprimer_utilisateurs",
+    "description": "Permet de supprimer un utilisateur.",
+    "module_associe": "Utilisateurs"
+  }
+},
+{
+  "model": "roles_permissions.permission",
+  "pk": 5,
+  "fields": {
+    "nom_permission": "voir_rapports",
+    "description": "Permet de consulter les rapports.",
+    "module_associe": "Rapports"
+  }
+},
+{
+  "model": "roles_permissions.userrole",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "role": 4
+  }
+},
+{
+  "model": "roles_permissions.userrole",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "role": 9
+  }
+},
+{
+  "model": "agences.agence",
+  "pk": "0001",
+  "fields": {
+    "nom": "hesfinanceSA",
+    "adresse": "Abidjan treichville",
+    "telephone": "0555263892",
+    "email": "hesfinance@gmail.com",
+    "institution": 1,
+    "statut": "active"
+  }
+},
+{
+  "model": "agences.agence",
+  "pk": "0002",
+  "fields": {
+    "nom": "hesfinanceB",
+    "adresse": "bouake quartier france",
+    "telephone": "+225000000000",
+    "email": "hesfinanceb@gmail.com",
+    "institution": 1,
+    "statut": "active"
+  }
+},
+{
+  "model": "agences.agence",
+  "pk": "0003",
+  "fields": {
+    "nom": "finance360",
+    "adresse": "Niger miamey",
+    "telephone": "+224",
+    "email": "finance360@gmail.com",
+    "institution": 2,
+    "statut": "active"
+  }
+},
+{
+  "model": "institutions.institution",
+  "pk": 1,
+  "fields": {
+    "code_institution": "+225AB0001",
+    "nom": "MasterFinance",
+    "adresse": "Abidjan Treichville",
+    "telephone": "0777532248",
+    "email": "mastergroup@gmail.com",
+    "pays": "Côte d’Ivoire",
+    "ville": "abidjan",
+    "indicatif_pays": "+225",
+    "statut": "actif",
+    "date_creation": "2025-06-16T17:35:30.499Z"
+  }
+},
+{
+  "model": "institutions.institution",
+  "pk": 2,
+  "fields": {
+    "code_institution": "NgierNI0001",
+    "nom": "MasterNiger",
+    "adresse": "paris",
+    "telephone": "+227 000 000 000",
+    "email": "bnp@gmail.com",
+    "pays": "France",
+    "ville": "Niamey",
+    "indicatif_pays": "Ngier",
+    "statut": "actif",
+    "date_creation": "2025-06-16T17:42:54.971Z"
+  }
+},
+{
+  "model": "institutions.plansaas",
+  "pk": 1,
+  "fields": {
+    "nom_plan": "Freemium",
+    "description": 

@@ -1,13 +1,503 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block extra_css %}
+<style>
+    .header-gradient {
+        background: linear-gradient(135deg, #ff6600 0%, #ff8533 50%, #ffaa66 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+    }
+    
+    .card-modern {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        border: none;
+        transition: all 0.3s ease;
+        margin-bottom: 2rem;
+        overflow: hidden;
+    }
+    
+    .card-modern:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .section-header {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        padding: 1rem 1.5rem;
+        border-bottom: 3px solid #ff6600;
+        margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+    }
+    
+    .section-header h5 {
+        margin: 0;
+        color: #495057;
+        font-weight: 600;
+    }
+    
+    .section-header i {
+        color: #ff6600;
+        margin-right: 0.5rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+    
+    .form-control, .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        background-color: #fff;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #ff6600;
+        box-shadow: 0 0 0 0.2rem rgba(255, 102, 0, 0.25);
+        background-color: #fff;
+    }
+    
+    .form-control:hover, .form-select:hover {
+        border-color: #ff8533;
+    }
+    
+    .btn-orange {
+        background: linear-gradient(135deg, #ff6600, #ff8533);
+        border: none;
+        color: white;
+        padding: 0.75rem 2rem;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .btn-orange:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 102, 0, 0.4);
+        color: white;
+    }
+    
+    .btn-secondary-modern {
+        background: linear-gradient(135deg, #6c757d, #495057);
+        border: none;
+        color: white;
+        padding: 0.75rem 2rem;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .btn-secondary-modern:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        color: white;
+    }
+    
+    .info-card {
+        background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+        border: none;
+        border-left: 4px solid #ff6600;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .info-card h6 {
+        color: #ff6600;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+    }
+    
+    .info-card ul {
+        margin: 0;
+        padding-left: 1.5rem;
+    }
+    
+    .info-card li {
+        margin-bottom: 0.5rem;
+        color: #495057;
+    }
+    
+    .error-message {
+        background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+        border: 1px solid #f1aeb5;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        color: #721c24;
+    }
+    
+    .success-message {
+        background: linear-gradient(135deg, #d1edff, #c3e6cb);
+        border: 1px solid #b8daff;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        color: #155724;
+    }
+    
+    .form-text {
+        color: #6c757d;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    
+    .required-field::after {
+        content: " *";
+        color: #dc3545;
+        font-weight: bold;
+    }
+    
+    .button-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid #e9ecef;
+    }
+    
+    @media (max-width: 768px) {
+        .button-group {
+            flex-direction: column;
+        }
+        
+        .btn-orange, .btn-secondary-modern {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+    }
+    
+    .form-floating {
+        position: relative;
+    }
+    
+    .form-floating > .form-control {
+        padding: 1rem 0.75rem 0.5rem 0.75rem;
+    }
+    
+    .form-floating > label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        padding: 1rem 0.75rem;
+        pointer-events: none;
+        border: 1px solid transparent;
+        transform-origin: 0 0;
+        transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+        color: #6c757d;
+    }
+    
+    .form-floating > .form-control:focus ~ label,
+    .form-floating > .form-control:not(:placeholder-shown) ~ label {
+        opacity: 0.65;
+        transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+        color: #ff6600;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
-    <h2>{% if agence %}Modifier{% else %}Créer{% endif %} une agence</h2>
-    <form method="post" novalidate>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Enregistrer</button>
-        <a href="{% url 'liste_agences' %}" class="btn btn-secondary">Annuler</a>
-    </form>
+<!-- Header avec dégradé orange -->
+<div class="header-gradient">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-0">
+                    <i class="fas fa-{% if agence %}edit{% else %}plus{% endif %} me-3"></i>
+                    {% if agence %}Modifier l'Agence{% else %}Nouvelle Agence{% endif %}
+                </h1>
+                <p class="mb-0 mt-2 opacity-75">
+                    {% if agence %}
+                        Modifiez les informations de l'agence "{{ agence.nom }}"
+                    {% else %}
+                        Créez une nouvelle agence dans le système
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="{% url 'liste_agences' %}" class="btn btn-light btn-lg">
+                    <i class="fas fa-arrow-left me-2"></i>
+                    Retour à la liste
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="container">
+    <!-- Card d'information -->
+    <div class="info-card">
+        <h6>
+            <i class="fas fa-info-circle me-2"></i>
+            Informations importantes
+        </h6>
+        <ul>
+            <li>Tous les champs marqués d'un astérisque (*) sont obligatoires</li>
+            <li>Le nom de l'agence doit être unique dans le système</li>
+            <li>Une fois créée, l'agence pourra être associée à des employés</li>
+            <li>Le statut détermine si l'agence est active ou non dans le système</li>
+        </ul>
+    </div>
+
+    <!-- Messages d'erreur -->
+    {% if form.errors %}
+    <div class="error-message">
+        <h6><i class="fas fa-exclamation-triangle me-2"></i>Erreurs détectées</h6>
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <p class="mb-1"><strong>{{ field|title }}:</strong> {{ error }}</p>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Formulaire de création/modification d'agence -->
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card form-card">
+                <div class="card-body p-4">
+                    <form method="post" id="agenceForm">
+                        {% csrf_token %}
+                        
+                        <!-- Messages d'erreur globaux -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <!-- Section Informations générales -->
+                        <div class="form-section">
+                            <h6 class="mb-3">
+                                <i class="fas fa-building text-primary me-2"></i>
+                                Informations générales
+                            </h6>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    {{ form.nom.label_tag }}
+                                    {{ form.nom }}
+                                    {% if form.nom.errors %}
+                                        <div class="error-message">{{ form.nom.errors }}</div>
+                                    {% endif %}
+                                    <small class="form-text text-muted">
+                                        Nom complet de l'agence ou du bureau
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.institution.label_tag }}
+                                    {{ form.institution }}
+                                    {% if form.institution.errors %}
+                                        <div class="error-message">{{ form.institution.errors }}</div>
+                                    {% endif %}
+                                    <small class="form-text text-muted">
+                                        Institution de rattachement
+                                    </small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.statut.label_tag }}
+                                    {{ form.statut }}
+                                    {% if form.statut.errors %}
+                                        <div class="error-message">{{ form.statut.errors }}</div>
+                                    {% endif %}
+                                    <small class="form-text text-muted">
+                                        Statut de fonctionnement de l'agence
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section Configuration -->
+                        {% if form %}
+                        <div class="form-section">
+                            <h6 class="mb-3">
+                                <i class="fas fa-cogs text-primary me-2"></i>
+                                Configuration avancée
+                            </h6>
+                            {% for field in form %}
+                                {% if field.name not in "nom,institution,statut" %}
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        {{ field.label_tag }}
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="error-message">{{ field.errors }}</div>
+                                        {% endif %}
+                                        {% if field.help_text %}
+                                            <small class="form-text text-muted">
+                                                {{ field.help_text }}
+                                            </small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <!-- Section Actions -->
+                        <div class="form-section">
+                            <h6 class="mb-3">
+                                <i class="fas fa-check-circle text-primary me-2"></i>
+                                Finalisation
+                            </h6>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="{% url 'liste_agences' %}" class="btn btn-outline-secondary">
+                                            <i class="fas fa-arrow-left me-2"></i>
+                                            Retour à la liste
+                                        </a>
+                                        <button type="submit" class="btn btn-submit">
+                                            <i class="fas fa-save me-2"></i>
+                                            {% if agence %}Modifier l'agence{% else %}Créer l'agence{% endif %}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animation d'entrée pour la carte
+    const card = document.querySelector('.card-modern');
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+        card.style.transition = 'all 0.6s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+    }, 200);
+    
+    // Validation en temps réel
+    const form = document.getElementById('agenceForm');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    // Validation du nom
+    const nomField = document.getElementById('{{ form.nom.id_for_label }}');
+    if (nomField) {
+        nomField.addEventListener('input', function() {
+            const value = this.value.trim();
+            if (value.length < 2) {
+                this.style.borderColor = '#dc3545';
+                this.style.backgroundColor = '#fff5f5';
+            } else {
+                this.style.borderColor = '#28a745';
+                this.style.backgroundColor = '#f8fff8';
+            }
+        });
+    }
+    
+    // Validation du formulaire
+    form.addEventListener('submit', function(e) {
+        let isValid = true;
+        const requiredFields = form.querySelectorAll('[required]');
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                field.style.borderColor = '#dc3545';
+                field.style.backgroundColor = '#fff5f5';
+            }
+        });
+        
+        if (!isValid) {
+            e.preventDefault();
+            alert('Veuillez remplir tous les champs obligatoires.');
+            return false;
+        }
+        
+        // Animation du bouton de soumission
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Enregistrement...';
+        submitBtn.disabled = true;
+    });
+    
+    // Amélioration des selects
+    const selects = document.querySelectorAll('select');
+    selects.forEach(select => {
+        select.addEventListener('change', function() {
+            if (this.value) {
+                this.style.borderColor = '#28a745';
+                this.style.backgroundColor = '#f8fff8';
+            }
+        });
+    });
+    
+    // Gestion des floating labels
+    const floatingInputs = document.querySelectorAll('.form-floating input');
+    floatingInputs.forEach(input => {
+        // Vérifier si le champ a déjà une valeur
+        if (input.value) {
+            input.setAttribute('placeholder', ' ');
+        }
+        
+        input.addEventListener('focus', function() {
+            this.setAttribute('placeholder', ' ');
+        });
+        
+        input.addEventListener('blur', function() {
+            if (!this.value) {
+                this.removeAttribute('placeholder');
+            }
+        });
+    });
+});
+
+// Fonction de confirmation avant annulation
+function confirmCancel() {
+    const form = document.getElementById('agenceForm');
+    const formData = new FormData(form);
+    let hasData = false;
+    
+    for (let [key, value] of formData.entries()) {
+        if (value && key !== 'csrfmiddlewaretoken') {
+            hasData = true;
+            break;
+        }
+    }
+    
+    if (hasData) {
+        return confirm('Êtes-vous sûr de vouloir annuler ? Toutes les données saisies seront perdues.');
+    }
+    return true;
+}
+
+// Ajouter la confirmation au bouton annuler
+document.querySelector('.btn-secondary-modern').addEventListener('click', function(e) {
+    if (!confirmCancel()) {
+        e.preventDefault();
+    }
+});
+</script>
 {% endblock %}

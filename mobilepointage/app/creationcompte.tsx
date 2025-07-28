@@ -20,6 +20,8 @@ import { useNavigation } from 'expo-router';
 import { NavigationProp } from '@react-navigation/native';
 
 const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || 'http://10.0.2.2:8000';
+console.log('🔧 Configuration API_BASE_URL utilisée:', API_BASE_URL);
+console.log('🔧 Expo config disponible:', Constants.expoConfig?.extra?.API_BASE_URL);
 
 export default function CreationCompte() {
   const [nom, setNom] = useState('');
@@ -84,17 +86,40 @@ export default function CreationCompte() {
     try {
       setLoadingRoles(true);
       console.log('🔍 Tentative de récupération des rôles depuis:', `${API_BASE_URL}/api/roles/`);
+      console.log('🔍 Headers de la requête:', {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      });
       const response = await fetch(`${API_BASE_URL}/api/roles/`);
       console.log('📡 Réponse API rôles:', response.status, response.statusText);
+      console.log('📡 Content-Type reçu:', response.headers.get('content-type'));
+      
       if (response.ok) {
-        const roles = await response.json();
-        console.log('✅ Rôles récupérés:', roles.length, 'rôles');
-        const formattedRoles = roles.map((role: any) => ({
-          label: role.label,
-          value: role.value
-        }));
-        setItemsFonction(formattedRoles);
-        console.log('📝 Rôles formatés pour dropdown:', formattedRoles);
+        // Log du contenu de la réponse pour debug
+        const responseText = await response.text();
+        console.log('📡 Contenu de la réponse (premiers 200 chars):', responseText.substring(0, 200));
+        
+        try {
+          const roles = JSON.parse(responseText);
+          console.log('✅ Rôles récupérés:', roles.length, 'rôles');
+          const formattedRoles = roles.map((role: any) => ({
+            label: role.label,
+            value: role.value
+          }));
+          setItemsFonction(formattedRoles);
+          console.log('📝 Rôles formatés pour dropdown:', formattedRoles);
+        } catch (parseError) {
+          console.error('❌ Erreur de parsing JSON:', parseError);
+          console.error('❌ Contenu reçu n\'est pas du JSON valide');
+          // Fallback vers les données statiques
+          setItemsFonction([
+            { label: 'Directeur Général', value: 'Directeur Général' },
+            { label: 'Responsable Informatique', value: 'Responsable Informatique' },
+            { label: 'Secrétaire', value: 'Secrétaire' },
+            { label: 'Comptable', value: 'Comptable' },
+            { label: 'Agent Guichet', value: 'Agent Guichet' },
+          ]);
+        }
       } else {
         console.error('Erreur lors de la récupération des rôles:', response.status);
         // Fallback vers les données statiques en cas d'erreur
@@ -172,12 +197,20 @@ export default function CreationCompte() {
   };
 
   const validateEmail = (email: string) => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    return emailRegex.test(email);
+    // Validation d'email plus permissive pour Gmail et autres domaines
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const isValid = emailRegex.test(email);
+    console.log('📧 Test validation email:', {
+      email: email,
+      regex: emailRegex.toString(),
+      isValid: isValid
+    });
+    return isValid;
   };
 
   const validatePassword = (password: string) => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    // Validation pour exactement 4 chiffres
+    const passwordRegex = /^\d{4}$/;
     return passwordRegex.test(password);
   };
 
@@ -200,7 +233,31 @@ export default function CreationCompte() {
     return parts[0] || ''; // "jean" → "jean"
   };
 
-  // Vérification de la disponibilité du nom d'utilisateur
+  // Génération de suggestions alternatives pour nom d'utilisateur
+  const generateUsernameSuggestions = (baseUsername: string) => {
+    const suggestions = [];
+    const base = baseUsername.toUpperCase();
+    
+    // Suggestions avec numéros simples
+    for (let i = 1; i <= 5; i++) {
+      suggestions.push(`${base}${i}`);
+    }
+    
+    // Suggestions avec numéros à deux chiffres
+    for (let i = 1; i <= 3; i++) {
+      const num = i.toString().padStart(2, '0');
+      suggestions.push(`${base}${num}`);
+    }
+    
+    // Suggestions avec année courante
+    const currentYear = new Date().getFullYear();
+    suggestions.push(`${base}${currentYear}`);
+    suggestions.push(`${base}${currentYear.toString().slice(-2)}`);
+    
+    return suggestions;
+  };
+
+  // Vérification de la disponibilité du nom d'utilisateur avec suggestions
   const checkUsernameAvailability = async (username: string) => {
     if (!username || username.length < 3) {
       setUsernameAvailable(null);
@@ -212,10 +269,59 @@ export default function CreationCompte() {
       const response = await fetch(`${API_BASE_URL}/api/check-username/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username.toLowerCase() }),
+        body: JSON.stringify({ username: username.toUpperCase() }),
       });
       const data = await response.json();
-      setUsernameAvailable(data.available);
+      
+      if (data.available) {
+        setUsernameAvailable(true);
+      } else {
+        // Si le nom d'utilisateur n'est pas disponible, proposer des alternatives
+        setUsernameAvailable(false);
+        
+        if (data.suggestions && data.suggestions.length > 0) {
+          // Afficher les suggestions de l'API
+          const suggestionText = data.suggestions.slice(0, 3).join(', ');
+          Alert.alert(
+            'Nom d\'utilisateur déjà utilisé',
+            `Le nom "${username}" est déjà pris. Suggestions disponibles : ${suggestionText}`,
+            [
+              {
+                text: 'Choisir un autre',
+                style: 'cancel'
+              },
+              {
+                text: 'Utiliser ' + data.suggestions[0].toUpperCase(),
+                onPress: () => {
+                  setUsername(data.suggestions[0].toUpperCase());
+                  setUsernameAvailable(true);
+                }
+              }
+            ]
+          );
+        } else {
+          // Générer des suggestions localement si l'API n'en fournit pas
+          const suggestions = generateUsernameSuggestions(username);
+          const suggestionText = suggestions.slice(0, 3).join(', ');
+          Alert.alert(
+            'Nom d\'utilisateur déjà utilisé',
+            `Le nom "${username}" est déjà pris. Suggestions : ${suggestionText}`,
+            [
+              {
+                text: 'Choisir un autre',
+                style: 'cancel'
+              },
+              {
+                text: 'Utiliser ' + suggestions[0],
+                onPress: () => {
+                  setUsername(suggestions[0].toUpperCase());
+                  setUsernameAvailable(true);
+                }
+              }
+            ]
+          );
+        }
+      }
     } catch (error) {
       console.error('Erreur lors de la vérification du nom d\'utilisateur:', error);
       setUsernameAvailable(null);
@@ -224,16 +330,16 @@ export default function CreationCompte() {
     }
   };
 
-  // Auto-suggestion quand le nom change
-  useEffect(() => {
-    if (nom.trim() && !username) {
-      const suggested = suggestUsername(nom);
-      setUsername(suggested);
-      if (suggested) {
-        checkUsernameAvailability(suggested);
-      }
-    }
-  }, [nom]);
+  // Auto-suggestion désactivée - le champ nom d'utilisateur reste vide
+  // useEffect(() => {
+  //   if (nom.trim() && !username) {
+  //     const suggested = suggestUsername(nom);
+  //     setUsername(suggested);
+  //     if (suggested) {
+  //       checkUsernameAvailability(suggested);
+  //     }
+  //   }
+  // }, [nom]);
 
   // Vérification du nom d'utilisateur avec délai
   useEffect(() => {
@@ -247,6 +353,12 @@ export default function CreationCompte() {
   }, [username]);
 
   const validateForm = () => {
+    console.log('🔍 Début validation formulaire');
+    console.log('📊 État des champs:', {
+      agence, nom, username, telephone, email, password, confirmPassword, fonction,
+      usernameAvailable
+    });
+    
     let isValid = true;
     const newErrors = {
       agence: '',
@@ -264,24 +376,43 @@ export default function CreationCompte() {
       isValid = false;
     }
 
-    if (!nom.trim()) {
+    const trimmedNom = nom.trim();
+    if (!trimmedNom) {
       newErrors.nom = 'Le nom complet est requis';
       isValid = false;
-    } else if (!validateNom(nom)) {
+      console.log('❌ Nom complet vide');
+    } else if (!validateNom(trimmedNom)) {
       newErrors.nom = 'Veuillez entrer votre nom et prénom (au moins 2 mots)';
       isValid = false;
+      console.log('❌ Nom complet format invalide:', `"${nom}" -> "${trimmedNom}"`);
+      // Corriger automatiquement l'espace
+      setNom(trimmedNom);
+    } else {
+      console.log('✅ Nom complet valide:', trimmedNom);
     }
     
 
-    if (!username.trim()) {
+    const trimmedUsername = username.trim();
+    if (!trimmedUsername) {
       newErrors.username = 'Le nom d\'utilisateur est requis';
       isValid = false;
-    } else if (!validateUsername(username)) {
+      console.log('❌ Username vide');
+    } else if (!validateUsername(trimmedUsername)) {
       newErrors.username = 'Le nom d\'utilisateur doit contenir 3-30 caractères (lettres, chiffres, _)';
       isValid = false;
+      console.log('❌ Username format invalide:', `"${username}" -> "${trimmedUsername}"`);
+      // Corriger automatiquement l'espace
+      setUsername(trimmedUsername);
     } else if (usernameAvailable === false) {
       newErrors.username = 'Ce nom d\'utilisateur est déjà pris';
       isValid = false;
+      console.log('❌ Username déjà pris');
+    } else if (usernameAvailable === null) {
+      newErrors.username = 'Vérification du nom d\'utilisateur en cours...';
+      isValid = false;
+      console.log('⏳ Username en cours de vérification');
+    } else {
+      console.log('✅ Username valide:', username);
     }
 
     if (!telephone.trim()) {
@@ -292,19 +423,26 @@ export default function CreationCompte() {
       isValid = false;
     }
 
-    if (!email.trim()) {
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
       newErrors.email = "L'email est requis";
       isValid = false;
-    } else if (!validateEmail(email)) {
+      console.log('❌ Email vide');
+    } else if (!validateEmail(trimmedEmail)) {
       newErrors.email = "Format d'email invalide (exemple: nomprenom@domaine.com)";
       isValid = false;
+      console.log('❌ Email format invalide:', `"${email}" -> "${trimmedEmail}"`);
+      // Corriger automatiquement l'espace
+      setEmail(trimmedEmail);
+    } else {
+      console.log('✅ Email valide:', trimmedEmail);
     }
 
     if (!password) {
       newErrors.password = 'Le mot de passe est requis';
       isValid = false;
     } else if (!validatePassword(password)) {
-      newErrors.password = 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre';
+      newErrors.password = 'Le mot de passe doit contenir exactement 4 chiffres';
       isValid = false;
     }
 
@@ -319,7 +457,14 @@ export default function CreationCompte() {
     if (!fonction) {
       newErrors.fonction = 'Veuillez sélectionner une fonction';
       isValid = false;
+      console.log('❌ Fonction non sélectionnée');
+    } else {
+      console.log('✅ Fonction valide:', fonction);
     }
+    
+    console.log('🏁 Résultat validation:', isValid ? 'SUCCÈS' : 'ÉCHEC');
+    console.log('🚨 Erreurs détectées:', newErrors);
+    
     setErrors(newErrors);
     return isValid;
   };
@@ -328,25 +473,60 @@ export default function CreationCompte() {
     if (!validateForm()) return;
 
     try {
-      // TODO: Implémenter l'appel API pour créer le compte
-      // const response = await fetch(`${API_BASE_URL}/api/register/`, { ... });
+      console.log('🚀 Tentative de création de compte via API:', `${API_BASE_URL}/api/register/`);
       
-      // Afficher un message de succès puis rediriger automatiquement
-      Alert.alert(
-        'Compte créé avec succès', 
-        'Votre compte a été créé. Vous allez être redirigé vers la page de connexion.',
-        [
-          { 
-            text: 'OK', 
-            onPress: () => {
-              // Redirection automatique vers la page de connexion
-              router.replace('/');
+      const userData = {
+        username: username.trim(),
+        email: email.trim(),
+        password: password,
+        confirmPassword: confirmPassword,
+        nom: nom.trim(), // Backend attend 'nom' pas 'nom_complet'
+        telephone: telephone.trim(),
+        agence: agence,
+        fonction: fonction
+      };
+      
+      console.log('📊 Données envoyées:', userData);
+      
+      const response = await fetch(`${API_BASE_URL}/api/register/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData)
+      });
+      
+      console.log('📡 Réponse API:', response.status, response.statusText);
+      
+      if (response.ok) {
+        const result = await response.json();
+        console.log('✅ Compte créé avec succès:', result);
+        
+        // Afficher un message de succès puis rediriger automatiquement
+        Alert.alert(
+          'Compte créé avec succès', 
+          'Votre compte a été créé. Vous allez être redirigé vers la page de connexion.',
+          [
+            { 
+              text: 'OK', 
+              onPress: () => {
+                // Redirection automatique vers la page de connexion
+                router.replace('/');
+              }
             }
-          }
-        ]
-      );
+          ]
+        );
+      } else {
+        const errorData = await response.json();
+        console.error('❌ Erreur API:', errorData);
+        
+        // Afficher l'erreur spécifique de l'API
+        const errorMessage = errorData.error || errorData.message || 'Une erreur est survenue lors de la création du compte.';
+        Alert.alert('Erreur lors de la création du compte', errorMessage);
+      }
     } catch (error) {
-      Alert.alert('Erreur', 'Une erreur est survenue lors de la création du compte. Veuillez réessayer.');
+      console.error('❌ Erreur réseau:', error);
+      Alert.alert('Erreur', 'Impossible de se connecter au serveur. Vérifiez votre connexion internet.');
     }
   };
 
@@ -390,8 +570,10 @@ export default function CreationCompte() {
               placeholderTextColor="#888"
               value={nom}
               onChangeText={(text) => {
-                setNom(text);
+                const upperText = text.toUpperCase();
+                setNom(upperText);
                 setErrors({ ...errors, nom: '' });
+                // Note: Pas d'auto-suggestion du nom d'utilisateur
               }}
               autoCorrect={false}
             />
@@ -405,12 +587,13 @@ export default function CreationCompte() {
               placeholderTextColor="#888"
               value={username}
               onChangeText={(text) => {
-                setUsername(text);
+                const upperText = text.toUpperCase();
+                setUsername(upperText);
                 setErrors({ ...errors, username: '' });
               }}
               autoCorrect={false}
             />
-            {errors.username ? (
+            {errors.username && usernameAvailable !== true ? (
               <Text style={styles.errorText}>{errors.username}</Text>
             ) : null}
             {usernameAvailable === true ? (
@@ -539,77 +722,13 @@ export default function CreationCompte() {
 
             <TouchableOpacity
               style={styles.button}
-              onPress={async () => {
-                if (await validateForm()) {
-                  try {
-                    console.log('🚀 Envoi des données d\'enregistrement vers l\'API...');
-                    
-                    const registrationData = {
-                      agence: agence,
-                      nom: nom.trim(),
-                      username: username.trim(),
-                      telephone: telephone.trim(),
-                      email: email.trim(),
-                      password: password,
-                      confirmPassword: confirmPassword,
-                      fonction: fonction
-                    };
-                    
-                    console.log('📤 Données envoyées:', { ...registrationData, password: '***', confirmPassword: '***' });
-                    
-                    const response = await fetch(`${API_BASE_URL}/api/register/`, {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify(registrationData),
-                    });
-                    
-                    const data = await response.json();
-                    console.log('📡 Réponse API enregistrement:', response.status, data);
-                    
-                    if (response.ok) {
-                      // Stockage sécurisé du token pour connexion automatique
-                      if (data.tokens) {
-                        await SecureStore.setItemAsync('access_token', data.tokens.access);
-                        await SecureStore.setItemAsync('refresh_token', data.tokens.refresh);
-                        console.log('🔐 Tokens stockés avec succès');
-                      }
-                      
-                      Alert.alert(
-                        'Compte créé avec succès !',
-                        `Bienvenue ${data.user.nom_complet}\n\nMatricule: ${data.employe.matricule}\nAgence: ${data.employe.agence}\nFonction: ${data.employe.fonction}\n\n${data.info}`,
-                        [
-                          {
-                            text: 'Continuer',
-                            onPress: () => {
-                              console.log('✅ Redirection vers l\'écran de pointage');
-                              router.push('/marquepresence');
-                            },
-                          },
-                        ]
-                      );
-                    } else {
-                      // Gestion des erreurs de validation
-                      if (data.errors) {
-                        console.log('❌ Erreurs de validation:', data.errors);
-                        setErrors(prevErrors => ({ ...prevErrors, ...data.errors }));
-                        
-                        // Afficher la première erreur dans une alerte
-                        const firstError = Object.values(data.errors)[0] as string;
-                        Alert.alert('Erreur de validation', firstError);
-                      } else {
-                        Alert.alert('Erreur', data.error || 'Une erreur est survenue lors de la création du compte');
-                      }
-                    }
-                  } catch (error) {
-                    console.error('💥 Erreur réseau lors de l\'enregistrement:', error);
-                    Alert.alert(
-                      'Erreur de connexion',
-                      'Impossible de se connecter au serveur. Vérifiez votre connexion internet et réessayez.'
-                    );
-                  }
-                }
+              onPress={() => {
+                console.log('🔴 BOUTON CLIQUE - Début du processus');
+                console.log('📊 État actuel des champs:', {
+                  agence, nom, username, telephone, email, password, confirmPassword, fonction
+                });
+                console.log('🔄 Appel de handleSubmit...');
+                handleSubmit();
               }}
             >
               <Text style={styles.buttonText}>Valider</Text>
