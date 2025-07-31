@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('DJANGO_SECRET_KEY', default='django-insecure-change-me!')
 DEBUG = config('DJANGO_DEBUG', default=True, cast=bool)
 # Lecture et nettoyage avancé de la variable d'environnement
-raw_hosts = "127.0.0.1,localhost,192.168.93.242,172.24.1.195"
+raw_hosts = "127.0.0.1,localhost,192.168.93.242,192.168.37.185"
 print('DJANGO_ALLOWED_HOSTS from env:', raw_hosts)
 ALLOWED_HOSTS = list({h.strip() for h in raw_hosts.split(',') if h.strip()})
 

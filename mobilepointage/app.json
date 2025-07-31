@@ -1,35 +1,34 @@
 {
   "expo": {
-    "name": "pointage1",
-    "slug": "pointage1",
+    "name": "mobilepointage",
+    "slug": "mobilepointage",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "pointage1",
-    "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "scheme": "mobilepointage",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "package": "com.carmel38.mobilepointage"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
+          "image": "./assets/splash.png",
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
@@ -38,6 +37,13 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "API_BASE_URL": "http://192.168.37.185:8000",
+      "router": {},
+      "eas": {
+        "projectId": "c529b4ca-f4dc-4695-a759-805efb39a317"
+      }
     }
   }
 }

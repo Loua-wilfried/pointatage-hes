@@ -1,44 +1,85 @@
 import * as SecureStore from 'expo-secure-store';
-import { useState, useEffect, useLayoutEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Animated } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { router, useNavigation } from 'expo-router';
-import { ArrowLeft, Camera, CircleAlert as AlertCircle } from 'lucide-react-native';
+import { ArrowLeft, Camera, CircleAlert as AlertCircle, CheckCircle, XCircle } from 'lucide-react-native';
 import Constants from 'expo-constants';
 
 const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || '';
 
 export default function ScanScreen() {
   const navigation = useNavigation();
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      title: "",
-      headerStyle: {
-        backgroundColor: '#fff',      // Couleur de fond du header
-        shadowColor: '#fff',             // Couleur de l'ombre (iOS)
-        shadowOffset: { height: 4 },     // Décalage vertical de l'ombre (iOS)
-        shadowOpacity: 1,                // Opacité de l'ombre (iOS)
-        shadowRadius: 8,                 // Flou de l'ombre (iOS)
-        elevation: 10,                   // Ombre portée (Android)
-        borderBottomWidth: 0,            // Masque la bordure du bas (iOS)
-        borderBottomColor: "transparent", // Bordure du bas invisible
-      },
-      headerTitleStyle: { color: '#fff', fontWeight: 'bold', fontSize: 22 },
-      headerTintColor: '#000',
-      headerTitleAlign: 'center',
-    });
+  
+  // Configuration du header avec une approche plus stable
+  React.useEffect(() => {
+    const configureHeader = () => {
+      navigation.setOptions({
+        headerShown: true,
+        title: "",
+        headerStyle: {
+          backgroundColor: '#fff',      // Couleur de fond du header
+          shadowColor: '#fff',             // Couleur de l'ombre (iOS)
+          shadowOffset: { height: 4 },     // Décalage vertical de l'ombre (iOS)
+          shadowOpacity: 1,                // Opacité de l'ombre (iOS)
+          shadowRadius: 8,                 // Flou de l'ombre (iOS)
+          elevation: 10,                   // Ombre portée (Android)
+          borderBottomWidth: 0,            // Masque la bordure du bas (iOS)
+          borderBottomColor: "transparent", // Bordure du bas invisible
+        },
+        headerTitleStyle: { color: '#fff', fontWeight: 'bold', fontSize: 22 },
+        headerTintColor: '#000',
+        headerTitleAlign: 'center',
+      });
+    };
+    
+    // Délai léger pour éviter les conflits de timing
+    const timer = setTimeout(configureHeader, 0);
+    return () => clearTimeout(timer);
   }, [navigation]);
 
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
+  
+  // États pour les messages temporaires
+  const [showMessage, setShowMessage] = useState(false);
+  const [messageType, setMessageType] = useState<'success' | 'error'>('success');
+  const [messageText, setMessageText] = useState('');
+  const fadeAnim = useState(new Animated.Value(0))[0];
 
   useEffect(() => {
     if (!permission?.granted) {
       requestPermission();
     }
   }, [permission]);
+
+  // Fonction pour afficher un message temporaire
+  const showTemporaryMessage = (type: 'success' | 'error', text: string) => {
+    setMessageType(type);
+    setMessageText(text);
+    setShowMessage(true);
+    
+    // Animation d'apparition
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+    
+    // Disparition automatique après 1 seconde
+    setTimeout(() => {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => {
+        setShowMessage(false);
+        // Redirection vers marquepresence dans TOUS les cas (succès ET erreur)
+        router.replace('/marquepresence');
+      });
+    }, 1000);
+  };
 
   const handleBarCodeScanned = async ({ type, data }: { type: string; data: string }) => {
     if (scanned) return;
@@ -48,8 +89,7 @@ export default function ScanScreen() {
     try {
       qrData = JSON.parse(data); // Le QR doit contenir un JSON
     } catch (e) {
-      Alert.alert("QR code invalide", "Format non reconnu.");
-      setScanned(false);
+      showTemporaryMessage('error', '❌ QR Code Invalide\nFormat non reconnu');
       return;
     }
 
@@ -57,8 +97,7 @@ export default function ScanScreen() {
       // Récupérer employe_id du stockage sécurisé après login
       const employe_id = await SecureStore.getItemAsync('employe_id');
       if (!employe_id) {
-        Alert.alert("Erreur", "Impossible de récupérer l'identifiant employé. Veuillez vous reconnecter.");
-        setScanned(false);
+        showTemporaryMessage('error', '❌ Erreur\nImpossible de récupérer l\'identifiant employé');
         return;
       }
       
@@ -116,14 +155,34 @@ export default function ScanScreen() {
       const result = await response.json();
       console.log('Résultat du scan:', result);
       
-      Alert.alert("Succès", "Pointage enregistré avec succès!", [
-        { text: 'OK', onPress: () => router.replace('/marquepresence') }
-      ]);
+      showTemporaryMessage('success', '✅ Pointage Réussi\nEnregistré avec succès!');
       
     } catch (err: any) {
       console.error('Erreur lors du scan:', err);
-      Alert.alert("Erreur", err.message || "Impossible d'enregistrer le pointage.");
-      setScanned(false);
+      
+      // Extraire un message d'erreur plus lisible
+      let errorMessage = err.message || "Impossible d'enregistrer le pointage";
+      
+      console.log('Message d\'erreur original:', errorMessage);
+      
+      // Gestion spéciale pour l'erreur de double pointage
+      if (errorMessage.includes('déjà effectué un pointage')) {
+        // Extraire le type de pointage (entree ou sortie)
+        const match = errorMessage.match(/pointage '(\w+)'/); 
+        const typePointage = match ? match[1] : 'pointage';
+        const typeDisplay = typePointage === 'entree' ? 'entrée' : 'sortie';
+        errorMessage = `⚠️ Pointage Déjà Effectué\nVous avez déjà fait votre ${typeDisplay} aujourd'hui`;
+      } else if (errorMessage.includes('ErrorDetail')) {
+        // Nettoyer les messages d'erreur du backend - amélioration de la regex
+        const cleanMessage = errorMessage.replace(/\[ErrorDetail\(string="(.+?)", code='[^']*'\)\]/g, '$1');
+        errorMessage = `❌ Erreur de Pointage\n${cleanMessage}`;
+      } else {
+        errorMessage = `❌ Erreur\n${errorMessage}`;
+      }
+      
+      console.log('Message d\'erreur traité:', errorMessage);
+      
+      showTemporaryMessage('error', errorMessage);
     }
   };
 
@@ -193,8 +252,29 @@ export default function ScanScreen() {
         <Text style={styles.instructionText}>
           Pointez la caméra vers un code QR
         </Text>
-
       </View>
+
+      {/* Message temporaire */}
+      {showMessage && (
+        <Animated.View 
+          style={[
+            styles.messageContainer,
+            {
+              opacity: fadeAnim,
+              backgroundColor: messageType === 'success' ? '#10b981' : '#ef4444'
+            }
+          ]}
+        >
+          <View style={styles.messageContent}>
+            {messageType === 'success' ? (
+              <CheckCircle size={24} color="white" strokeWidth={2} />
+            ) : (
+              <XCircle size={24} color="white" strokeWidth={2} />
+            )}
+            <Text style={styles.messageText}>{messageText}</Text>
+          </View>
+        </Animated.View>
+      )}
     </View>
   );
 }
@@ -342,5 +422,36 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: '600',
+  },
+  messageContainer: {
+    position: 'absolute',
+    top: '40%',
+    left: 20,
+    right: 20,
+    borderRadius: 12,
+    paddingVertical: 20,
+    paddingHorizontal: 24,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+    zIndex: 1000,
+  },
+  messageContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  messageText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+    marginLeft: 12,
+    textAlign: 'center',
+    lineHeight: 22,
   },
 });
